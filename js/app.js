@@ -1001,39 +1001,39 @@
     }
 
     if (featured) {
-      const board = featured.closest(".markets-board") || featured.parentElement;
       if (!demoLaunches.length) {
-        featured.innerHTML = "";
-        if (empty) {
-          empty.hidden = false;
-          empty.innerHTML =
-            '<p class="empty-title">Markets board is empty</p>' +
-            '<p class="empty-sub">Launch a DEMO coin with BNB, XAUt, or PAXG. Rows stay in this browser.</p>' +
-            '<div class="demo-empty-actions">' +
-            '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO coin</button>' +
-            "</div>";
-        }
-        if (board) board.hidden = true;
-      } else if (!rows.length) {
+        featured.className = "demo-launch-grid";
         featured.innerHTML =
-          '<tr><td colspan="6" class="empty-cell">No DEMO markets in this filter.</td></tr>';
-        if (empty) empty.hidden = true;
-        if (board) board.hidden = false;
+          '<div class="empty-state">' +
+          '<p class="empty-title">Demo board is empty</p>' +
+          '<p class="empty-sub">Launch a local DEMO coin with BNB, XAUt, or PAXG. Cards stay in this browser only.</p>' +
+          '<div class="demo-empty-actions">' +
+          '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO coin</button>' +
+          "</div></div>";
       } else {
-        featured.innerHTML = rows.map(marketsRowHtml).join("");
-        if (empty) empty.hidden = true;
-        if (board) board.hidden = false;
-        bindMarketsRows(featured);
+        featured.className = "demo-launch-grid";
+        featured.innerHTML = demoLaunches.map(demoCardHtml).join("");
       }
-      if (empty) {
-        $all("[data-goto]", empty).forEach((el) => {
-          el.addEventListener("click", (e) => {
-            e.preventDefault();
-            const id = el.getAttribute("data-goto");
-            if (id) showView(id);
-          });
+      $all("[data-goto]", featured).forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = el.getAttribute("data-goto");
+          if (id) showView(id);
         });
-      }
+      });
+      $all(".demo-card[data-demo-id]", featured).forEach((card) => {
+        card.setAttribute("role", "link");
+        card.setAttribute("tabindex", "0");
+        const go = () => openTokenPage(card.getAttribute("data-demo-id"));
+        card.addEventListener("click", go);
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            go();
+          }
+        });
+      });
     }
 
     if (tbody) {

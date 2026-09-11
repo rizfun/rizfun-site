@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/styles.css?v=footer-fix-1"/>
+<link rel="stylesheet" href="css/styles.css?v=demo-cards-1"/>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -72,8 +72,8 @@
       <aside class="hero-stage" aria-label="Brand animation">
         <div class="riz-stage">
           <video id="rizImagine" class="riz-imagine" autoplay muted playsinline
-            src="assets/riz-hero-imagine.mp4?v=footer-fix-1"
-            poster="assets/riz-hero-final-hold.png?v=footer-fix-1"></video>
+            src="assets/riz-hero-imagine.mp4?v=demo-cards-1"
+            poster="assets/riz-hero-final-hold.png?v=demo-cards-1"></video>
 </div>
       </aside>
     </div>
@@ -81,40 +81,16 @@
     <div class="section">
       <div class="section-h">
         <div>
-          <h2>Markets</h2>
-          <p>Local DEMO board. Pair, quote, mock mcap, vol, curve %. Click a row to open the token.</p>
+          <h2>Demo board</h2>
+          <p>Local DEMO coins you make here. Bonding curve mock, not on-chain.</p>
         </div>
         <button type="button" class="btn btn-ghost btn-sm" data-goto="create">Launch DEMO</button>
       </div>
       <div class="demo-banner mono" role="status">
         <span class="demo-badge">DEMO</span>
-        <span>Mock board in this browser only. No contracts. No real balances.</span>
+        <span>Browser-only mock board. Persisted in localStorage. No contracts. No txs.</span>
       </div>
-      <div class="markets-toolbar">
-        <div class="tabs" id="marketsFilters" role="tablist" aria-label="Markets filters"></div>
-        <div class="mono board-label" id="marketsCount" style="color:var(--muted);font-size:.78rem"></div>
-      </div>
-      <div class="board markets-board">
-        <div class="board-top">
-          <div class="mono board-label">DEMO markets</div>
-        </div>
-        <div class="table-wrap">
-          <table class="markets-table" id="marketsTable">
-            <thead>
-              <tr>
-                <th>Pair</th>
-                <th>Quote</th>
-                <th>Mock mcap</th>
-                <th>Vol</th>
-                <th>Curve %</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="featuredLaunches"></tbody>
-          </table>
-        </div>
-      </div>
-      <div id="marketsEmpty" class="empty-state" hidden></div>
+      <div id="featuredLaunches" class="demo-launch-grid"></div>
     </div>
   </section>
 
@@ -944,7 +920,7 @@
   </div>
 </footer>
 
-<script src="js/wallet.js?v=footer-fix-1"></script>
-<script src="js/app.js?v=footer-fix-1"></script>
+<script src="js/wallet.js?v=demo-cards-1"></script>
+<script src="js/app.js?v=demo-cards-1"></script>
 </body>
 </html>
