@@ -555,6 +555,7 @@
   }
 
   function renderCommodityGallery() {
+    /* Home no longer lists commodities — full catalog is view-commodities only. */
     const el = $("#homeLiveQuotes");
     if (!el) return;
     const live = (STATE.commodities || []).filter(function (c) {
