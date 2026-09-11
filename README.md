@@ -21,10 +21,11 @@ Open http://127.0.0.1:8765/
 
 | Tab | What |
 |-----|------|
-| **Home** | Left: “Memes that pair with commodities”. Right: fluid walk → glasses on → final hold freezes above “Got commodity rizz.” Gallery + empty launches |
+| **Home** | Pitch + hero video + DEMO Markets board (pair / quote / mcap / vol / curve / status) |
 | **Commodities** | Full quote-asset directory (table + grid); Live / Soon |
 | **Create** | Live commodity picker (BNB / XAUt / PAXG) + token details |
-| **Rewards** | `#rewards` or `#view-rewards`. Holder fee share pitch + DEMO earnings panel (mock, wallet connect) |
+| **Rewards** | `#rewards`. Holder fee share + DEMO earnings + DEMO leaderboard |
+| **$RIZ** | `#riz`. Protocol token page. 30% buyback leg. MOCK / Soon stats. No fake live address |
 | **Docs** | `#about` or `#docs`. How it works, fees, quotes, FAQ. Markdown copies in `docs/` |
 | **Token (DEMO)** | `#token/<demoId>` or `?token=<id>`. Chart, buy/sell mock, curve, trades. Local only |
 
@@ -39,7 +40,7 @@ Open http://127.0.0.1:8765/
 
 ## Honest empty state
 
-No fake sample memecoins. Launches board shows **No launches yet** until the protocol ships.
+DEMO Markets board fills from local Create launches. Honest DEMO badges. Explorer stays Soon until real addresses.
 
 ## Deploy
 

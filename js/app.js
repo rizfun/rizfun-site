@@ -59,6 +59,7 @@
   const DEMO_MCAP_GRAD = 35000;
   const DEMO_BUY_NAMES = ["anon", "whale", "degen", "ct", "based", "farmer", "sniper", "ape"];
   let demoLaunches = [];
+  let marketsFilter = "ALL";
   let demoTickTimer = null;
   let demoImageDataUrl = "";
   let currentTokenId = null;
@@ -734,6 +735,198 @@
     return '<div class="avatar ' + cls + '">' + letters + "</div>";
   }
 
+
+  function isGraduated(launch) {
+    return Number(launch && launch.mcap) >= DEMO_MCAP_GRAD;
+  }
+
+  function marketStatusLabel(launch) {
+    return isGraduated(launch) ? "Graduated" : "On curve";
+  }
+
+  function marketStatusBadge(launch) {
+    if (isGraduated(launch)) {
+      return '<span class="status-badge live">Graduated</span>';
+    }
+    return '<span class="status-badge soon">On curve</span>';
+  }
+
+  function filteredDemoLaunches() {
+    if (marketsFilter === "curve") return demoLaunches.filter((L) => !isGraduated(L));
+    if (marketsFilter === "grad") return demoLaunches.filter((L) => isGraduated(L));
+    return demoLaunches.slice();
+  }
+
+  function marketsRowHtml(launch) {
+    const pct = curvePct(launch.mcap);
+    const pair = "$" + escapeHtml(launch.ticker) + " / " + escapeHtml(launch.quote);
+    return (
+      '<tr class="markets-row" data-demo-id="' +
+      escapeHtml(launch.id) +
+      '" title="Open token" role="link" tabindex="0">' +
+      "<td><div class=\"pair\">" +
+      demoAvatarHtml(launch) +
+      "<div><div class=\"name\">" +
+      escapeHtml(launch.name) +
+      ' <span class="demo-badge" style="margin-left:6px;vertical-align:middle">DEMO</span></div>' +
+      '<div class="sym mono">' +
+      pair +
+      "</div></div></div></td>" +
+      '<td class="mono">' +
+      escapeHtml(launch.quote) +
+      "</td>" +
+      '<td class="mono">' +
+      usd(launch.mcap) +
+      "</td>" +
+      '<td class="mono">' +
+      usd(launch.volume) +
+      "</td>" +
+      '<td class="mcap-cell"><div class="mono">' +
+      pct +
+      '%</div><div class="progress"><i style="width:' +
+      pct +
+      '%"></i></div>' +
+      '<div class="mcap-meta"><span>' +
+      usd(DEMO_MCAP_START) +
+      "</span><span>" +
+      usd(DEMO_MCAP_GRAD) +
+      "</span></div></td>" +
+      "<td>" +
+      marketStatusBadge(launch) +
+      "</td>" +
+      "</tr>"
+    );
+  }
+
+  function bindMarketsRows(root) {
+    if (!root) return;
+    $all("tr[data-demo-id]", root).forEach((row) => {
+      const go = () => openTokenPage(row.getAttribute("data-demo-id"));
+      row.addEventListener("click", go);
+      row.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          go();
+        }
+      });
+    });
+  }
+
+  function renderMarketsFilters() {
+    const el = $("#marketsFilters");
+    if (!el) return;
+    const tabs = [
+      ["ALL", "All"],
+      ["curve", "On curve"],
+      ["grad", "Graduated"],
+    ];
+    el.innerHTML = tabs
+      .map(
+        ([id, label]) =>
+          '<button type="button" class="tab' +
+          (marketsFilter === id ? " active" : "") +
+          '" data-mkt-filter="' +
+          id +
+          '">' +
+          label +
+          " (DEMO)</button>"
+      )
+      .join("");
+    $all("[data-mkt-filter]", el).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        marketsFilter = btn.getAttribute("data-mkt-filter") || "ALL";
+        renderMarketsFilters();
+        renderDemoLaunches();
+      });
+    });
+  }
+
+  function mockWallet(seed) {
+    const h = hashSeed(String(seed || "w"));
+    const hex = (h.toString(16) + "abcdef0123456789").slice(0, 8);
+    return "0x" + hex + "…" + ((h >>> 8) & 0xffff).toString(16).padStart(4, "0");
+  }
+
+  function renderRewardsLeaderboard() {
+    const body = $("#rewardsLeaderboardBody");
+    if (!body) return;
+    const rows = [];
+    const list = demoLaunches.slice().sort((a, b) => (b.volume || 0) - (a.volume || 0));
+    if (!list.length) {
+      // still show a few fake wallets so the section is not empty
+      for (let i = 0; i < 5; i++) {
+        rows.push({
+          rank: i + 1,
+          wallet: mockWallet("empty-" + i),
+          market: " - ",
+          ticker: "",
+          quote: "BNB",
+          accrued: (0.01 + hash01("e" + i) * 0.12).toFixed(4),
+        });
+      }
+      // fix emdash
+      rows.forEach((r) => { if (r.market === " - ") r.market = "no market yet"; });
+    } else {
+      list.slice(0, 8).forEach((L, i) => {
+        const accrued = mockAccruedForLaunch(L, mockWallet(L.id + ":lb"));
+        rows.push({
+          rank: i + 1,
+          wallet: mockWallet(L.id + ":top"),
+          market: L.name,
+          ticker: L.ticker,
+          quote: L.quote,
+          accrued: accrued,
+        });
+        if (i < 4) {
+          rows.push({
+            rank: rows.length + 1,
+            wallet: mockWallet(L.id + ":rand"),
+            market: L.name,
+            ticker: L.ticker,
+            quote: L.quote,
+            accrued: Math.round(accrued * (0.35 + hash01(L.id + "r") * 0.5) * 1e5) / 1e5,
+          });
+        }
+      });
+      rows.sort((a, b) => Number(b.accrued) - Number(a.accrued));
+      rows.forEach((r, i) => { r.rank = i + 1; });
+    }
+    body.innerHTML = rows
+      .slice(0, 10)
+      .map((r) => {
+        const mkt =
+          r.ticker
+            ? '<div class="rewards-mkt"><strong>' +
+              escapeHtml(r.market) +
+              '</strong><span class="mono">$' +
+              escapeHtml(r.ticker) +
+              "</span></div>"
+            : '<span class="mono">' + escapeHtml(r.market) + "</span>";
+        return (
+          "<tr>" +
+          '<td class="mono">' +
+          r.rank +
+          "</td>" +
+          '<td class="mono">' +
+          escapeHtml(r.wallet) +
+          "</td>" +
+          "<td>" +
+          mkt +
+          "</td>" +
+          '<td class="mono">' +
+          escapeHtml(r.quote) +
+          "</td>" +
+          '<td class="mono rewards-accrued">' +
+          r.accrued +
+          " " +
+          escapeHtml(r.quote) +
+          "</td>" +
+          "</tr>"
+        );
+      })
+      .join("");
+  }
+
   function demoCardHtml(launch) {
     const pct = curvePct(launch.mcap);
     const buy = launch.recentBuys && launch.recentBuys[0];
@@ -745,7 +938,7 @@
         "</span><span class=\"buy-ago\">" +
         timeAgo(buy.at) +
         "</span></div>"
-      : '<div class="demo-buy"><span>Waiting for mock buys…</span></div>';
+      : '<div class="demo-buy"><span>Waiting for mock buys...</span></div>';
     return (
       '<article class="demo-card" data-demo-id="' +
       escapeHtml(launch.id) +
@@ -799,90 +992,61 @@
   function renderDemoLaunches() {
     const featured = $("#featuredLaunches");
     const tbody = $("#launchesBody");
+    const empty = $("#marketsEmpty");
+    const countEl = $("#marketsCount");
+    const rows = filteredDemoLaunches();
+
+    if (countEl) {
+      countEl.textContent = rows.length + " of " + demoLaunches.length + " DEMO";
+    }
 
     if (featured) {
+      const board = featured.closest(".markets-board") || featured.parentElement;
       if (!demoLaunches.length) {
+        featured.innerHTML = "";
+        if (empty) {
+          empty.hidden = false;
+          empty.innerHTML =
+            '<p class="empty-title">Markets is empty</p>' +
+            '<p class="empty-sub">Launch a DEMO coin with BNB, XAUt, or PAXG. Rows stay in this browser.</p>' +
+            '<div class="demo-empty-actions">' +
+            '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO coin</button>' +
+            "</div>";
+        }
+        if (board) board.hidden = true;
+      } else if (!rows.length) {
         featured.innerHTML =
-          '<div class="empty-state">' +
-          '<p class="empty-title">Demo board is empty</p>' +
-          '<p class="empty-sub">Launch a local DEMO coin with a live quote (BNB / XAUt / PAXG). Cards stay in this browser only. protocol is not live.</p>' +
-          '<div class="demo-empty-actions">' +
-          '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO coin</button>' +
-          "</div></div>";
+          '<tr><td colspan="6" class="empty-cell">No DEMO markets in this filter.</td></tr>';
+        if (empty) empty.hidden = true;
+        if (board) board.hidden = false;
       } else {
-        featured.innerHTML = demoLaunches.map(demoCardHtml).join("");
+        featured.innerHTML = rows.map(marketsRowHtml).join("");
+        if (empty) empty.hidden = true;
+        if (board) board.hidden = false;
+        bindMarketsRows(featured);
       }
-      $all("[data-goto]", featured).forEach((el) => {
-        el.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const id = el.getAttribute("data-goto");
-          if (id) showView(id);
-        });
-      });
-      $all(".demo-card[data-demo-id]", featured).forEach((card) => {
-        card.setAttribute("role", "link");
-        card.setAttribute("tabindex", "0");
-        const go = () => openTokenPage(card.getAttribute("data-demo-id"));
-        card.addEventListener("click", go);
-        card.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
+      if (empty) {
+        $all("[data-goto]", empty).forEach((el) => {
+          el.addEventListener("click", (e) => {
             e.preventDefault();
-            go();
-          }
+            const id = el.getAttribute("data-goto");
+            if (id) showView(id);
+          });
         });
-      });
+      }
     }
 
     if (tbody) {
       if (!demoLaunches.length) {
         tbody.innerHTML =
-          '<tr><td colspan="6" class="empty-cell">No DEMO coins yet. use Create to add a mock card.</td></tr>';
+          '<tr><td colspan="6" class="empty-cell">No DEMO coins yet. Use Launch to add a mock row.</td></tr>';
       } else {
-        tbody.innerHTML = demoLaunches
-          .map((launch, i) => {
-            const pct = curvePct(launch.mcap);
-            return (
-              '<tr data-demo-id="' +
-              escapeHtml(launch.id) +
-              '" title="Open token">' +
-              '<td class="mono">' +
-              (i + 1) +
-              "</td>" +
-              "<td><div class=\"pair\">" +
-              demoAvatarHtml(launch) +
-              "<div><div class=\"name\">" +
-              escapeHtml(launch.name) +
-              ' <span class="demo-badge" style="margin-left:6px;vertical-align:middle">DEMO</span></div>' +
-              '<div class="sym mono">$' +
-              escapeHtml(launch.ticker) +
-              "</div></div></div></td>" +
-              '<td class="mono">' +
-              escapeHtml(launch.quote) +
-              "</td>" +
-              '<td class="mcap-cell"><div class="mono">' +
-              usd(launch.mcap) +
-              '</div><div class="progress"><i style="width:' +
-              pct +
-              '%"></i></div>' +
-              '<div class="mcap-meta"><span>' +
-              pct +
-              "%</span><span>" +
-              usd(DEMO_MCAP_GRAD) +
-              "</span></div></td>" +
-              '<td class="mono">' +
-              usd(launch.volume) +
-              "</td>" +
-              '<td><span class="status-badge soon">DEMO · not on-chain</span></td>' +
-              "</tr>"
-            );
-          })
-          .join("");
-        $all("tr[data-demo-id]", tbody).forEach((row) => {
-          row.addEventListener("click", () => openTokenPage(row.getAttribute("data-demo-id")));
-        });
+        tbody.innerHTML = demoLaunches.map(marketsRowHtml).join("");
+        bindMarketsRows(tbody);
       }
     }
+
+    try { renderRewardsLeaderboard(); } catch (_) {}
 
     const tokenView = $("#view-token");
     if (tokenView && tokenView.classList.contains("active") && currentTokenId) {
@@ -969,7 +1133,7 @@
         launch.name +
         "” ($" +
         launch.ticker +
-        ") added to Markets. Local only. not on-chain.";
+        ") added to Markets. Local DEMO only.";
       msg.hidden = false;
     }
     showView("home");
@@ -1095,7 +1259,8 @@
       }
     }
     if (id === "token") renderTokenPage();
-    if (id === "rewards") renderRewardsPanel();
+    if (id === "rewards") { renderRewardsPanel(); renderRewardsLeaderboard(); }
+    if (id === "home") renderDemoLaunches();
   }
 
   function selectCommodity(symbol, opts) {
@@ -1497,8 +1662,8 @@
         return;
       }
       const hash = (location.hash || "#home").replace("#", "");
-      const allowed = ["home", "commodities", "create", "rewards", "about", "docs"];
-      const legacy = { markets: "commodities", launches: "commodities", docs: "about", "view-rewards": "rewards" };
+      const allowed = ["home", "commodities", "create", "rewards", "riz", "about", "docs"];
+      const legacy = { markets: "home", launches: "home", docs: "about", "view-rewards": "rewards", "view-riz": "riz" };
       const resolved = legacy[hash] || hash;
       currentTokenId = null;
       showView(allowed.includes(resolved) ? resolved : "home", { skipHash: true });
@@ -1539,7 +1704,9 @@
     renderCommodityGallery();
     renderDirectoryFilters();
     renderDirectory();
+    renderMarketsFilters();
     renderDemoLaunches();
+    renderRewardsLeaderboard();
     startDemoTicker();
     renderCreateQuotes();
     updateSummary();

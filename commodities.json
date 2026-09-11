@@ -2,7 +2,7 @@
   "chainId": 56,
   "chain": "bsc",
   "updatedAt": "2026-09-11",
-  "notes": "Riz.Fun commodity quote registry on BNB Chain. Day-1 live quotes ship with real mints; the wider CME-style catalog expands as tokenized quotes come online. Native BNB uses address(0). Soon entries have no contract mint.",
+  "notes": "Riz.Fun quote registry on BNB Chain. Day-1 live quotes ship with real mints. Wider catalog expands as tokenized quotes come online. Native BNB uses address(0). Soon entries have no contract mint.",
   "quotes": [
     {
       "symbol": "BNB",
@@ -14,8 +14,8 @@
       "status": "live",
       "enabled": true,
       "minLiquidityUsd": 0,
-      "icon": "🍚",
-      "vibe": "Native gas · rice narrative on BSC",
+      "icon": "\ud83c\udf5a",
+      "vibe": "Native gas on BNB Chain",
       "notes": "Native gas token on BNB Chain."
     },
     {
@@ -28,8 +28,8 @@
       "status": "live",
       "enabled": true,
       "minLiquidityUsd": 50000,
-      "icon": "✦",
-      "vibe": "Tokenized gold · soft auric pair",
+      "icon": "\u2726",
+      "vibe": "Tokenized gold on BSC",
       "notes": "Tether Gold on BNB Chain (6 decimals)."
     },
     {
@@ -42,8 +42,8 @@
       "status": "live",
       "enabled": true,
       "minLiquidityUsd": 50000,
-      "icon": "◈",
-      "vibe": "Tokenized gold · Binance-peg on BSC",
+      "icon": "\u25c8",
+      "vibe": "Tokenized gold on BSC",
       "notes": "Binance-peg PAXG (BEP-20) on BNB Chain."
     },
     {
@@ -56,9 +56,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "◇",
-      "vibe": "Industrial metal · quiet shine",
-      "notes": "Tokenized silver quote TBD."
+      "icon": "\u25c7",
+      "vibe": "Silver",
+      "notes": "Tokenized silver. Mint not live yet."
     },
     {
       "symbol": "XPT",
@@ -70,9 +70,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "◎",
-      "vibe": "PGM complex · autocatalyst lore",
-      "notes": "Tokenized platinum quote TBD."
+      "icon": "\u25ce",
+      "vibe": "Platinum",
+      "notes": "Tokenized platinum. Mint not live yet."
     },
     {
       "symbol": "XPD",
@@ -84,9 +84,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "◉",
-      "vibe": "PGM twin · catalytic demand",
-      "notes": "Tokenized palladium quote TBD."
+      "icon": "\u25c9",
+      "vibe": "Palladium",
+      "notes": "Tokenized palladium. Mint not live yet."
     },
     {
       "symbol": "COPPER",
@@ -98,9 +98,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🟧",
-      "vibe": "Red metal · grid & growth",
-      "notes": "Tokenized copper quote TBD."
+      "icon": "\ud83d\udfe7",
+      "vibe": "Copper",
+      "notes": "Tokenized copper. Mint not live yet."
     },
     {
       "symbol": "ALU",
@@ -112,9 +112,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "⬜",
-      "vibe": "Light metal · cans to aerospace",
-      "notes": "Tokenized aluminum quote TBD."
+      "icon": "\u2b1c",
+      "vibe": "Aluminum",
+      "notes": "Tokenized aluminum. Mint not live yet."
     },
     {
       "symbol": "IRON",
@@ -126,9 +126,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🪨",
-      "vibe": "Steel feedstock · China demand pulse",
-      "notes": "Tokenized iron ore quote TBD."
+      "icon": "\ud83e\udea8",
+      "vibe": "Iron ore",
+      "notes": "Tokenized iron ore. Mint not live yet."
     },
     {
       "symbol": "LI",
@@ -140,9 +140,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🔋",
-      "vibe": "Battery metal · EV supply chain",
-      "notes": "Tokenized lithium quote TBD."
+      "icon": "\ud83d\udd0b",
+      "vibe": "Lithium",
+      "notes": "Tokenized lithium. Mint not live yet."
     },
     {
       "symbol": "U",
@@ -154,9 +154,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "☢",
-      "vibe": "Nuclear fuel · long-cycle energy",
-      "notes": "Tokenized uranium quote TBD."
+      "icon": "\u2622",
+      "vibe": "Uranium",
+      "notes": "Tokenized uranium. Mint not live yet."
     },
     {
       "symbol": "WTI",
@@ -168,9 +168,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🛢",
-      "vibe": "WTI crude · black-gold energy",
-      "notes": "Tokenized WTI crude quote TBD."
+      "icon": "\ud83d\udee2",
+      "vibe": "WTI crude",
+      "notes": "Tokenized WTI crude. Mint not live yet."
     },
     {
       "symbol": "BRENT",
@@ -182,9 +182,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🌊",
-      "vibe": "North Sea crude · global oil marker",
-      "notes": "Tokenized Brent quote TBD."
+      "icon": "\ud83c\udf0a",
+      "vibe": "Brent crude",
+      "notes": "Tokenized Brent. Mint not live yet."
     },
     {
       "symbol": "NG",
@@ -196,9 +196,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🔥",
-      "vibe": "Henry Hub energy · winter spike lore",
-      "notes": "Tokenized natural gas quote TBD."
+      "icon": "\ud83d\udd25",
+      "vibe": "Natural gas",
+      "notes": "Tokenized natural gas. Mint not live yet."
     },
     {
       "symbol": "COAL",
@@ -210,9 +210,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "⬛",
-      "vibe": "Thermal & met coal · power feedstock",
-      "notes": "Tokenized coal quote TBD."
+      "icon": "\u2b1b",
+      "vibe": "Coal",
+      "notes": "Tokenized coal. Mint not live yet."
     },
     {
       "symbol": "WHEAT",
@@ -224,9 +224,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🌾",
-      "vibe": "Soft wheat · harvest season",
-      "notes": "Tokenized wheat quote TBD."
+      "icon": "\ud83c\udf3e",
+      "vibe": "Wheat",
+      "notes": "Tokenized wheat. Mint not live yet."
     },
     {
       "symbol": "CORN",
@@ -238,9 +238,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🌽",
-      "vibe": "Yellow grain · midwest pulse",
-      "notes": "Tokenized corn quote TBD."
+      "icon": "\ud83c\udf3d",
+      "vibe": "Corn",
+      "notes": "Tokenized corn. Mint not live yet."
     },
     {
       "symbol": "SOYB",
@@ -252,9 +252,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🫘",
-      "vibe": "Oilseed complex · crush spread",
-      "notes": "Tokenized soybeans quote TBD."
+      "icon": "\ud83e\uded8",
+      "vibe": "Soybeans",
+      "notes": "Tokenized soybeans. Mint not live yet."
     },
     {
       "symbol": "RICE",
@@ -266,9 +266,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🍚",
-      "vibe": "Namesake grain · narrative quote TBD",
-      "notes": "Narrative tokenized rice quote TBD."
+      "icon": "\ud83c\udf5a",
+      "vibe": "Rice",
+      "notes": "Tokenized rice. Mint not live yet."
     },
     {
       "symbol": "COFFEE",
@@ -280,9 +280,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "☕",
-      "vibe": "Arabica softs · morning open",
-      "notes": "Tokenized coffee quote TBD."
+      "icon": "\u2615",
+      "vibe": "Coffee",
+      "notes": "Tokenized coffee. Mint not live yet."
     },
     {
       "symbol": "COCOA",
@@ -294,9 +294,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🍫",
-      "vibe": "Bean softs · confection lore",
-      "notes": "Tokenized cocoa quote TBD."
+      "icon": "\ud83c\udf6b",
+      "vibe": "Cocoa",
+      "notes": "Tokenized cocoa. Mint not live yet."
     },
     {
       "symbol": "SUGAR",
@@ -308,9 +308,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🍬",
-      "vibe": "Soft sugar · sweet basis",
-      "notes": "Tokenized sugar quote TBD."
+      "icon": "\ud83c\udf6c",
+      "vibe": "Sugar",
+      "notes": "Tokenized sugar. Mint not live yet."
     },
     {
       "symbol": "COTTON",
@@ -322,9 +322,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🧶",
-      "vibe": "Fiber softs · mill demand",
-      "notes": "Tokenized cotton quote TBD."
+      "icon": "\ud83e\uddf6",
+      "vibe": "Cotton",
+      "notes": "Tokenized cotton. Mint not live yet."
     },
     {
       "symbol": "OJ",
@@ -336,9 +336,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🍊",
-      "vibe": "FCOJ softs · freeze-risk classic",
-      "notes": "Tokenized orange juice quote TBD."
+      "icon": "\ud83c\udf4a",
+      "vibe": "Orange juice",
+      "notes": "Tokenized orange juice. Mint not live yet."
     },
     {
       "symbol": "MILK",
@@ -350,9 +350,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🥛",
-      "vibe": "Class III dairy · protein complex",
-      "notes": "Tokenized milk / Class III quote TBD."
+      "icon": "\ud83e\udd5b",
+      "vibe": "Milk",
+      "notes": "Tokenized milk. Mint not live yet."
     },
     {
       "symbol": "LEAN",
@@ -364,9 +364,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🐷",
-      "vibe": "Livestock · protein complex",
-      "notes": "Tokenized lean hogs quote TBD."
+      "icon": "\ud83d\udc37",
+      "vibe": "Lean hogs",
+      "notes": "Tokenized lean hogs. Mint not live yet."
     },
     {
       "symbol": "CATTLE",
@@ -378,9 +378,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🐄",
-      "vibe": "Fed cattle · beef complex",
-      "notes": "Tokenized live cattle quote TBD."
+      "icon": "\ud83d\udc04",
+      "vibe": "Live cattle",
+      "notes": "Tokenized live cattle. Mint not live yet."
     },
     {
       "symbol": "LBR",
@@ -392,9 +392,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🪵",
-      "vibe": "Softwood · housing cycle",
-      "notes": "Tokenized lumber quote TBD."
+      "icon": "\ud83e\udeb5",
+      "vibe": "Lumber",
+      "notes": "Tokenized lumber. Mint not live yet."
     },
     {
       "symbol": "RUB",
@@ -406,9 +406,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🛞",
-      "vibe": "Natural rubber · tire demand",
-      "notes": "Tokenized rubber quote TBD."
+      "icon": "\ud83d\udede",
+      "vibe": "Rubber",
+      "notes": "Tokenized rubber. Mint not live yet."
     },
     {
       "symbol": "SALT",
@@ -420,9 +420,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "🧂",
-      "vibe": "Industrial mineral · food & chem",
-      "notes": "Optional tokenized salt quote TBD."
+      "icon": "\ud83e\uddc2",
+      "vibe": "Salt",
+      "notes": "Tokenized salt. Mint not live yet."
     },
     {
       "symbol": "H2O",
@@ -434,9 +434,9 @@
       "status": "soon",
       "enabled": false,
       "minLiquidityUsd": 0,
-      "icon": "💧",
-      "vibe": "Water rights index · scarcity narrative",
-      "notes": "Optional water index quote TBD."
+      "icon": "\ud83d\udca7",
+      "vibe": "Water",
+      "notes": "Tokenized water. Mint not live yet."
     }
   ]
 }

@@ -1,4 +1,4 @@
-/* Riz.Fun — LOCKED brand: cream rice-grain + black, professional neo-brutal fintech */
+/* Riz.Fun  -  LOCKED brand: cream rice-grain + black, professional neo-brutal fintech */
 :root{
   --bg:#000000;
   --bg2:#0a0a0a;
@@ -101,7 +101,7 @@ a:hover{text-decoration:underline;text-underline-offset:3px}
 .view{display:none;padding-bottom:56px}
 .view.active{display:block}
 
-/* HERO — two columns: product pitch left, one-shot rice anim right */
+/* HERO  -  two columns: product pitch left, one-shot rice anim right */
 .hero{
   padding:40px 0 36px;
   display:grid;
@@ -145,7 +145,7 @@ a:hover{text-decoration:underline;text-underline-offset:3px}
   line-height:1.35;
 }
 
-/* RIGHT STAGE — open black (NO card) · fluid walk → glasses on → FREEZE final hold + tagline */
+/* RIGHT STAGE  -  open black (NO card) · fluid walk → glasses on → FREEZE final hold + tagline */
 .hero-stage{
   min-width:0;
   display:flex;
@@ -230,7 +230,7 @@ a:hover{text-decoration:underline;text-underline-offset:3px}
   transform-origin:112px 168px;
   animation:rizLegR 6.4s cubic-bezier(.45,.05,.25,1) forwards;
 }
-/* Logo sunglasses PNG — cream block frames + solid black lenses */
+/* Logo sunglasses PNG  -  cream block frames + solid black lenses */
 .riz-glasses{
   position:absolute;
   left:50%;
@@ -243,7 +243,7 @@ a:hover{text-decoration:underline;text-underline-offset:3px}
   transform-origin:50% 50%;
   animation:rizGlasses 6.4s cubic-bezier(.45,.05,.25,1) forwards;
 }
-/* Final hold — hands-on-hips + logo black-lens sunglasses; FREEZES forever */
+/* Final hold  -  hands-on-hips + logo black-lens sunglasses; FREEZES forever */
 .riz-hold{
   position:absolute;
   inset:0;
@@ -777,7 +777,7 @@ footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--bo
   background:var(--cream);color:var(--ink);font-size:1rem;
 }
 
-/* WALLET (nav + create) — match Create / chain-pill compact size */
+/* WALLET (nav + create)  -  match Create / chain-pill compact size */
 .nav-links > .btn-sm,
 .nav-links .wallet-btn{
   padding:6px 11px;
@@ -809,7 +809,7 @@ footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--bo
 }
 
 
-/* STATIC HOLD — temporary while Imagine video is made; no broken limb anim */
+/* STATIC HOLD  -  temporary while Imagine video is made; no broken limb anim */
 .riz-char-static{display:flex;align-items:center;justify-content:center}
 .riz-hold-static{
   position:relative !important;inset:auto !important;
@@ -1200,3 +1200,38 @@ tr[data-demo-id]:hover td{background:rgba(249,240,223,.04)}
 @media(max-width:640px){
   .rewards-tick{align-items:flex-start;width:100%}
 }
+
+
+/* Markets board (exchange-style DEMO table) */
+.markets-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.markets-board .markets-table th{white-space:nowrap}
+.markets-table tr.markets-row{cursor:pointer}
+.markets-table tr.markets-row:hover{background:rgba(249,240,223,.06)}
+.markets-table .mcap-cell .progress{margin-top:6px;height:6px}
+.markets-table .mcap-meta{display:flex;justify-content:space-between;gap:8px;margin-top:4px;font-size:.64rem;color:var(--dim);font-family:var(--mono)}
+.explorer-soon,
+button.explorer-soon,
+a.explorer-soon{
+  opacity:.55;cursor:not-allowed;pointer-events:none;
+}
+.token-explorer-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap}
+
+/* $RIZ protocol page */
+.riz-hero-card{padding:22px}
+.riz-hero-top{display:flex;gap:16px;align-items:flex-start}
+.riz-mark img{border-radius:var(--radius);border:var(--border) solid var(--cream);display:block;background:var(--bg2)}
+.riz-title{margin:0 0 8px;font-size:1.25rem;font-weight:900;color:var(--cream);letter-spacing:-.02em}
+.riz-lead{margin:0;color:var(--muted);font-size:.98rem;line-height:1.55;font-weight:500;max-width:62ch}
+.riz-split-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.riz-split-row .split-chip{
+  display:inline-flex;padding:4px 10px;border-radius:var(--radius);
+  border:1px solid var(--line2);background:var(--bg2);color:var(--cream);
+  font-family:var(--mono);font-size:.72rem;font-weight:700;
+}
+.riz-split-row .split-chip.hot{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.riz-stats{margin-top:4px}
+.leaderboard-table td,.leaderboard-table th{vertical-align:middle}
+@media(max-width:720px){
+  .riz-hero-top{flex-direction:column}
+}
+
