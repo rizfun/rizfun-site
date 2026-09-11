@@ -1,6 +1,6 @@
 # Riz.Fun — public site
 
-Static HTML/CSS/JS for **Riz.Fun** (`$RIZ`, rice + rizz) on **BNB Chain**.
+Static HTML/CSS/JS for **Riz.Fun** (`$RIZ`) on **BNB Chain**.
 
 **Brand lock:** hard neo-brutal cream rice-grain + black block sunglasses — Inter Black / grotesque, pure `#000` + cream `#F3E6C8`. Not soft gold Instrument Serif luxury.
 
