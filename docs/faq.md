@@ -22,7 +22,7 @@ No. Quotes are tokenized (or native BNB). No vault. No warehouse receipt.
 
 ## Where does liquidity go after the curve?
 
-Locked **Uniswap v4** pool on BSC. Hook fees post-grad. Pancake is not the default.
+Locked **Uniswap v4** pool on BSC. Hook fees post-grad.
 
 ## Why is the home page not a full commodity list?
 

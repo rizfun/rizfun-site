@@ -27,7 +27,6 @@ At the endpoint, curve reserves seed a **Uniswap v4** full-range pool on BSC.
 
 - Post-grad fees go through the **v4 hook**
 - LP is locked. Nobody pulls it.
-- **Pancake is not the default**
 
 ## Honest status
 
