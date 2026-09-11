@@ -1160,3 +1160,43 @@ tr[data-demo-id]:hover td{background:rgba(249,240,223,.04)}
   from{opacity:0;transform:translateY(8px)}
   to{opacity:1;transform:translateY(0)}
 }
+
+
+/* Rewards DEMO */
+.rewards-hero-card{padding:22px 22px 20px}
+.rewards-pitch-title{
+  margin:0 0 10px;font-size:clamp(1.25rem,2.4vw,1.65rem);font-weight:900;
+  letter-spacing:-.03em;color:var(--cream);line-height:1.15;
+}
+.rewards-pitch{margin:0 0 16px;color:var(--muted);font-size:1rem;line-height:1.55;font-weight:500;max-width:62ch}
+.rewards-split-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rewards-split-row .split-chip,
+.rewards-hero-card .split-chip{
+  display:inline-flex;padding:6px 11px;border-radius:var(--radius);
+  border:1px solid var(--cream);background:var(--bg2);color:var(--cream);
+  font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.02em;
+}
+.rewards-split-row .split-chip.hot{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.rewards-split-row .split-chip.muted{opacity:.72;border-color:var(--line2)}
+.rewards-tick{
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+  padding:10px 12px;border:var(--border) solid var(--cream);border-radius:var(--radius);
+  background:rgba(249,240,223,.05);min-width:120px;
+}
+.rewards-tick-label{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:800}
+.rewards-tick-val{font-size:1.15rem;font-weight:800;color:var(--cream)}
+.rewards-connect-card{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  padding:22px;
+}
+.rewards-connect-copy{max-width:52ch}
+.rewards-connect-copy h3{margin:0 0 8px;font-size:1.15rem;font-weight:900;color:var(--cream)}
+.rewards-connect-copy p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.5;font-weight:500}
+.rewards-table td,.rewards-table th{vertical-align:middle}
+.rewards-mkt{display:flex;flex-direction:column;gap:2px}
+.rewards-mkt strong{color:var(--cream);font-weight:800}
+.rewards-mkt .mono{color:var(--muted);font-size:.75rem}
+.rewards-accrued{color:var(--green);font-weight:800}
+@media(max-width:640px){
+  .rewards-tick{align-items:flex-start;width:100%}
+}

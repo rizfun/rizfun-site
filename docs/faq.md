@@ -33,3 +33,7 @@ Home stays light: live quotes + Demo board. Full directory lives under **Commodi
 - Site Docs: https://rizfun.github.io/rizfun-site/#about
 - X: https://x.com/RizForFun
 - These markdown files in `docs/`
+
+## How do holder rewards work?
+
+40% of trading fees go to holders of that market, paid in the paired commodity. Target cadence is every 15 minutes with nothing to claim. See the **Rewards** tab (`#rewards`). DEMO only for now.

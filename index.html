@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/styles.css?v=no-en-ct-1"/>
+<link rel="stylesheet" href="css/styles.css?v=rewards-1"/>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -28,6 +28,7 @@
       <button type="button" class="nav-btn" data-view="home">Home</button>
       <button type="button" class="nav-btn" data-view="commodities">Commodities</button>
       <button type="button" class="nav-btn" data-view="create">Launch</button>
+      <button type="button" class="nav-btn" data-view="rewards">Rewards</button>
       <button type="button" class="nav-btn" data-view="about">Docs</button>
       <span class="chain-pill mono"><span class="dot"></span> BSC</span>
       <div class="wallet-slot" id="walletSlot">
@@ -68,8 +69,8 @@
       <aside class="hero-stage" aria-label="Brand animation">
         <div class="riz-stage">
           <video id="rizImagine" class="riz-imagine" autoplay muted playsinline
-            src="assets/riz-hero-imagine.mp4?v=no-en-ct-1"
-            poster="assets/riz-hero-final-hold.png?v=no-en-ct-1"></video>
+            src="assets/riz-hero-imagine.mp4?v=rewards-1"
+            poster="assets/riz-hero-final-hold.png?v=rewards-1"></video>
 </div>
       </aside>
     </div>
@@ -426,6 +427,147 @@
 
   <div class="toast-host" id="toastHost" aria-live="polite"></div>
 
+
+  <!-- REWARDS (DEMO) -->
+  <section class="view" id="view-rewards">
+    <div class="section" style="padding-top:28px">
+      <div class="section-h">
+        <div>
+          <div class="kicker mono" style="margin-bottom:10px">HOLDERS · PAIRED COMMODITY · AUTO</div>
+          <h2>Rewards</h2>
+          <p>Hold a market, get paid in commodities. 40% of trading fees go to holders of that market, in the paired commodity, every 15 minutes. Nothing to claim.</p>
+        </div>
+      </div>
+
+      <div class="demo-banner mono" role="status">
+        <span class="demo-badge">DEMO</span>
+        <span>Protocol not live · earnings below are mock · no claim tx · no distributor on-chain yet</span>
+      </div>
+
+      <div class="card rewards-hero-card">
+        <h3 class="rewards-pitch-title">Hold a market, get paid in commodities.</h3>
+        <p class="rewards-pitch">
+          40% of every trading fee is paid to holders of that market, in the commodity coin it is paired with, every 15 minutes.
+          Nothing to claim. Connect to see DEMO earnings from your local mock coins.
+        </p>
+        <div class="rewards-split-row" aria-label="Fee split">
+          <span class="split-chip hot">40% holders</span>
+          <span class="split-chip">30% $RIZ buyback</span>
+          <span class="split-chip">30% protocol</span>
+          <span class="split-chip muted">0% creator</span>
+        </div>
+        <p class="docs-note" style="margin-top:14px;margin-bottom:0">
+          Holders get the commodity quote of that market (BNB, XAUt, PAXG today). Sell-to-stable comes later. No fake USDG rail on this DEMO.
+        </p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-h">
+        <div>
+          <h2>How payouts work</h2>
+          <p>Same spirit as a holder rewards desk. Riz.Fun voice. Auto every 15 minutes once live.</p>
+        </div>
+      </div>
+      <div class="how">
+        <div class="step">
+          <div class="n">01</div>
+          <h3>Hold any market token</h3>
+          <p>Every trade on that market charges its fee. 40% is set aside for holders. Creator cut stays 0%.</p>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h3>Get paid automatically</h3>
+          <p>Each cycle targets every 15 minutes. Paid in the paired commodity, weighted by balance, straight to the wallet. Nothing to claim.</p>
+        </div>
+        <div class="step">
+          <div class="n">03</div>
+          <h3>Keep the commodity</h3>
+          <p>You earn the quote asset of that market. Hold it. Sell-to-stable is a later path, not live here.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-h">
+        <div>
+          <h2>DEMO earnings</h2>
+          <p>Mock accrued amounts for DEMO coins in this browser. Connect to preview. Not real balances.</p>
+        </div>
+        <div class="rewards-tick mono" id="rewardsTick" aria-live="polite">
+          <span class="rewards-tick-label">Next DEMO tick</span>
+          <span class="rewards-tick-val" id="rewardsCountdown">--:--</span>
+        </div>
+      </div>
+
+      <div id="rewardsPanel">
+        <div class="card rewards-connect-card" id="rewardsDisconnected">
+          <div class="rewards-connect-copy">
+            <h3>Connect to see DEMO earnings</h3>
+            <p>Injected wallet only. We mock accrued commodity amounts from your local DEMO launches and holdings. No txs. Protocol not live.</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="rewardsConnectBtn" data-wallet-action="connect">Connect Wallet</button>
+        </div>
+
+        <div id="rewardsConnected" hidden>
+          <div class="board">
+            <div class="board-top">
+              <div class="mono board-label">Accrued (DEMO)</div>
+              <div class="pill soft" id="rewardsWalletPill">wallet</div>
+            </div>
+            <div class="table-wrap">
+              <table class="rewards-table">
+                <thead>
+                  <tr>
+                    <th>Market</th>
+                    <th>Quote</th>
+                    <th>Your bag</th>
+                    <th>Accrued</th>
+                    <th>Last tick</th>
+                  </tr>
+                </thead>
+                <tbody id="rewardsBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <p class="docs-note" id="rewardsEmptyNote" hidden>
+            No DEMO coins yet. <button type="button" class="linkish inline-link" data-goto="create">Launch a DEMO coin</button>, trade it on the token page, then come back. Accruals stay in localStorage.
+          </p>
+          <div class="demo-banner compact mono" style="margin-top:14px">
+            <span class="demo-badge">DEMO</span>
+            <span>Auto payout mock · nothing to claim · numbers are illustrative</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-h">
+        <div>
+          <h2>Full fee split</h2>
+          <p>Fixed product lock. Creator special cut is zero.</p>
+        </div>
+      </div>
+      <div class="card" style="overflow:auto">
+        <table class="split-table">
+          <thead>
+            <tr><th>Share</th><th>%</th><th>Goes to</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Holders</td><td class="mono">40%</td><td>Paid in the <strong>paired commodity</strong> of that market</td></tr>
+            <tr><td>Buyback</td><td class="mono">30%</td><td>Buy + burn of protocol token <strong>$RIZ</strong></td></tr>
+            <tr><td>Protocol</td><td class="mono">30%</td><td>Treasury / ops</td></tr>
+            <tr><td>Creator</td><td class="mono">0%</td><td>No VIP cut. Earn as a holder like everyone else.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="docs-note">
+        See also <button type="button" class="linkish inline-link" data-docs-jump="docs-fees">Docs · Fees</button>.
+        Cadence target once live: every 15 minutes, automatic.
+      </p>
+    </div>
+  </section>
+
   <!-- DOCS (about alias) -->
   <section class="view" id="view-about">
     <div class="section" style="padding-top:28px">
@@ -438,6 +580,7 @@
       <nav class="docs-toc" aria-label="Docs sections">
         <button type="button" class="docs-toc-link" data-docs-jump="docs-how">How it works</button>
         <button type="button" class="docs-toc-link" data-docs-jump="docs-fees">Fees</button>
+        <button type="button" class="docs-toc-link" data-goto="rewards">Rewards</button>
         <button type="button" class="docs-toc-link" data-docs-jump="docs-quotes">Quotes</button>
         <button type="button" class="docs-toc-link" data-docs-jump="docs-faq">FAQ</button>
         <button type="button" class="docs-toc-link" data-docs-jump="docs-about">About</button>
@@ -490,7 +633,7 @@
           </tbody>
         </table>
       </div>
-      <p class="docs-note">Holder payout cadence is a live-protocol target. DEMO buttons do not move real fees.</p>
+      <p class="docs-note">Holder payout cadence target: every 15 minutes, automatic, nothing to claim. DEMO buttons do not move real fees. Preview the mock desk on <button type="button" class="linkish inline-link" data-goto="rewards">Rewards</button>.</p>
     </div>
 
     <div class="section" id="docs-quotes">
@@ -530,6 +673,10 @@
         <details class="faq-item">
           <summary>What is DEMO?</summary>
           <p>Create DEMO stores a launch in your browser. Cards, mock trades, and <span class="mono">#token/&lt;id&gt;</span> pages are local. Clear site data and they vanish. No mainnet txs.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do holder rewards work?</summary>
+          <p>40% of trading fees go to holders of that market, paid in the paired commodity. Target cadence is every 15 minutes with nothing to claim. See <button type="button" class="linkish inline-link" data-goto="rewards">Rewards</button>. DEMO only for now.</p>
         </details>
         <details class="faq-item">
           <summary>What is $RIZ?</summary>
@@ -591,13 +738,14 @@
       <button type="button" class="linkish" data-goto="home">Home</button>
       <button type="button" class="linkish" data-goto="commodities">Commodities</button>
       <button type="button" class="linkish" data-goto="create">Launch</button>
+      <button type="button" class="linkish" data-goto="rewards">Rewards</button>
       <button type="button" class="linkish" data-goto="about">Docs</button>
       <a class="linkish" href="https://x.com/RizForFun" target="_blank" rel="noopener">X</a>
     </div>
   </div>
 </footer>
 
-<script src="js/wallet.js?v=no-en-ct-1"></script>
-<script src="js/app.js?v=no-en-ct-1"></script>
+<script src="js/wallet.js?v=rewards-1"></script>
+<script src="js/app.js?v=rewards-1"></script>
 </body>
 </html>

@@ -17,6 +17,8 @@ No creator VIP cut. If you hold, you get the holder share like everyone else.
 
 ## Notes
 
-Holder payout cadence is a product target (~every 15 minutes once the distributor path is live). Do not assume it works on DEMO.
+Holder payout cadence is a product target (every 15 minutes once the distributor path is live). Nothing to claim. Do not assume it works on DEMO.
+
+Preview the mock holder desk on the site **Rewards** tab (`#rewards`).
 
 DEMO buy/sell buttons on token pages only update local mock state. No wallet tx. No fee routing.

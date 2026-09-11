@@ -105,6 +105,7 @@
     } catch (err) {
       console.warn("Could not persist demo launches", err);
     }
+    try { renderRewardsPanel(); } catch (_) {}
   }
 
   function loadDemoHoldings() {
@@ -124,6 +125,7 @@
     } catch (err) {
       console.warn("Could not persist demo holdings", err);
     }
+    try { renderRewardsPanel(); } catch (_) {}
   }
 
   function getHolding(id) {
@@ -134,6 +136,216 @@
     demoHoldings[id] = Math.max(0, Math.round(Number(n) || 0));
     saveDemoHoldings();
   }
+
+  const DEMO_REWARDS_KEY = "rizfun.demoRewards.v1";
+  const REWARDS_PERIOD_MS = 15 * 60 * 1000;
+  let rewardsCountdownTimer = null;
+
+  function loadDemoRewardsMeta() {
+    try {
+      const raw = localStorage.getItem(DEMO_REWARDS_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveDemoRewardsMeta(meta) {
+    try {
+      localStorage.setItem(DEMO_REWARDS_KEY, JSON.stringify(meta || {}));
+    } catch (err) {
+      console.warn("Could not persist demo rewards", err);
+    }
+  }
+
+  function nextRewardsTick(now) {
+    const t = Number(now) || Date.now();
+    return Math.ceil((t + 1) / REWARDS_PERIOD_MS) * REWARDS_PERIOD_MS;
+  }
+
+  function lastRewardsTick(now) {
+    const t = Number(now) || Date.now();
+    return Math.floor(t / REWARDS_PERIOD_MS) * REWARDS_PERIOD_MS;
+  }
+
+  function formatCountdown(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return String(m).padStart(2, "0") + ":" + String(r).padStart(2, "0");
+  }
+
+  function formatAgoShort(ts) {
+    const d = Math.max(0, Date.now() - Number(ts || 0));
+    if (d < 60000) return "just now";
+    if (d < 3600000) return Math.floor(d / 60000) + "m ago";
+    return Math.floor(d / 3600000) + "h ago";
+  }
+
+  function hash01(str) {
+    let h = 2166136261;
+    const s = String(str || "");
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0) / 4294967295;
+  }
+
+  function mockAccruedForLaunch(launch, walletAddr) {
+    if (!launch) return 0;
+    const hold = getHolding(launch.id);
+    const vol = Math.max(0, Number(launch.volume) || 0);
+    const fee = Math.max(0.5, Number(launch.fee) || 2) / 100;
+    const holderShare = 0.4;
+    const bagWeight = hold > 0 ? Math.min(1, hold / 250000) : 0.08;
+    const base = vol * fee * holderShare * bagWeight;
+    const jitter = 0.65 + hash01((walletAddr || "anon") + ":" + launch.id) * 0.7;
+    const tickBoost = 0.0008 + hash01(launch.id + ":tick") * 0.0025;
+    const ticks = Math.max(1, Math.floor((Date.now() - (launch.createdAt || Date.now())) / REWARDS_PERIOD_MS));
+    const accrued = base * jitter + ticks * tickBoost * (0.3 + bagWeight);
+    // Keep amounts readable for quote units
+    if ((launch.quote || "").toUpperCase() === "BNB") return Math.round(accrued * 10000) / 10000;
+    return Math.round(accrued * 100000) / 100000;
+  }
+
+  function ensureRewardsMeta(walletAddr) {
+    const meta = loadDemoRewardsMeta();
+    const key = (walletAddr || "anon").toLowerCase();
+    if (!meta[key]) meta[key] = { byId: {} };
+    if (!meta[key].byId) meta[key].byId = {};
+    let changed = false;
+    demoLaunches.forEach((L) => {
+      if (!meta[key].byId[L.id]) {
+        meta[key].byId[L.id] = {
+          accrued: mockAccruedForLaunch(L, walletAddr),
+          lastTick: lastRewardsTick(Date.now()),
+        };
+        changed = true;
+      } else {
+        // Soft refresh accrued upward toward latest mock so DEMO feels alive
+        const next = mockAccruedForLaunch(L, walletAddr);
+        const prev = Number(meta[key].byId[L.id].accrued) || 0;
+        if (next > prev) {
+          meta[key].byId[L.id].accrued = next;
+          changed = true;
+        }
+        const last = lastRewardsTick(Date.now());
+        if (Number(meta[key].byId[L.id].lastTick) !== last) {
+          meta[key].byId[L.id].lastTick = last;
+          changed = true;
+        }
+      }
+    });
+    if (changed) saveDemoRewardsMeta(meta);
+    return meta[key];
+  }
+
+  function updateRewardsCountdown() {
+    const el = $("#rewardsCountdown");
+    if (!el) return;
+    const now = Date.now();
+    const next = nextRewardsTick(now);
+    el.textContent = formatCountdown(next - now);
+  }
+
+  function startRewardsCountdown() {
+    updateRewardsCountdown();
+    if (rewardsCountdownTimer) clearInterval(rewardsCountdownTimer);
+    rewardsCountdownTimer = setInterval(updateRewardsCountdown, 1000);
+  }
+
+  function renderRewardsPanel() {
+    const disconnected = $("#rewardsDisconnected");
+    const connected = $("#rewardsConnected");
+    const body = $("#rewardsBody");
+    const emptyNote = $("#rewardsEmptyNote");
+    const pill = $("#rewardsWalletPill");
+    if (!disconnected || !connected || !body) return;
+
+    const w = (window.RizWallet && window.RizWallet.getState && window.RizWallet.getState()) || {};
+    const isConnected = !!w.connected && !!w.address;
+
+    disconnected.hidden = isConnected;
+    connected.hidden = !isConnected;
+    if (!isConnected) {
+      body.innerHTML = "";
+      return;
+    }
+
+    if (pill) pill.textContent = w.truncated || "connected";
+    const bag = ensureRewardsMeta(w.address);
+    if (!demoLaunches.length) {
+      body.innerHTML =
+        '<tr><td colspan="5"><div class="empty-state" style="padding:28px 12px">' +
+        '<p class="empty-title">No DEMO markets yet</p>' +
+        '<p class="empty-sub">Launch a DEMO coin, mock a trade, then check accrued quote here.</p>' +
+        '<div class="demo-empty-actions">' +
+        '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO</button>' +
+        "</div></div></td></tr>";
+      if (emptyNote) emptyNote.hidden = false;
+      return;
+    }
+    if (emptyNote) emptyNote.hidden = true;
+
+    body.innerHTML = demoLaunches
+      .slice()
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+      .map((L) => {
+        const row = (bag.byId && bag.byId[L.id]) || {};
+        const accrued = Number(row.accrued);
+        const amt = Number.isFinite(accrued) ? accrued : mockAccruedForLaunch(L, w.address);
+        const hold = getHolding(L.id);
+        const quote = escapeHtml(L.quote || "?");
+        const last = Number(row.lastTick) || lastRewardsTick(Date.now());
+        return (
+          "<tr>" +
+          '<td><div class="rewards-mkt"><strong>' +
+          escapeHtml(L.name) +
+          '</strong><span class="mono">$' +
+          escapeHtml(L.ticker) +
+          "</span></div></td>" +
+          '<td class="mono">' +
+          quote +
+          "</td>" +
+          '<td class="mono">' +
+          (hold > 0 ? hold.toLocaleString() : "viewer") +
+          "</td>" +
+          '<td class="mono rewards-accrued">' +
+          amt +
+          " " +
+          quote +
+          "</td>" +
+          '<td class="mono">' +
+          formatAgoShort(last) +
+          "</td>" +
+          "</tr>"
+        );
+      })
+      .join("");
+  }
+
+  function setupRewards() {
+    startRewardsCountdown();
+    renderRewardsPanel();
+    const btn = $("#rewardsConnectBtn");
+    if (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (window.RizWallet && typeof window.RizWallet.connect === "function") {
+          window.RizWallet.connect().catch(function () {});
+        }
+      });
+    }
+    if (window.RizWallet && typeof window.RizWallet.onChange === "function") {
+      window.RizWallet.onChange(function () {
+        renderRewardsPanel();
+      });
+    }
+  }
+
 
   function showToast(msg) {
     const host = $("#toastHost");
@@ -882,6 +1094,7 @@
       }
     }
     if (id === "token") renderTokenPage();
+    if (id === "rewards") renderRewardsPanel();
   }
 
   function selectCommodity(symbol, opts) {
@@ -1283,8 +1496,8 @@
         return;
       }
       const hash = (location.hash || "#home").replace("#", "");
-      const allowed = ["home", "commodities", "create", "about", "docs"];
-      const legacy = { markets: "commodities", launches: "commodities", docs: "about" };
+      const allowed = ["home", "commodities", "create", "rewards", "about", "docs"];
+      const legacy = { markets: "commodities", launches: "commodities", docs: "about", "view-rewards": "rewards" };
       const resolved = legacy[hash] || hash;
       currentTokenId = null;
       showView(allowed.includes(resolved) ? resolved : "home", { skipHash: true });
@@ -1317,6 +1530,7 @@
     setupNav();
     setupCreateForm();
     setupTokenPage();
+    setupRewards();
     demoLaunches = loadDemoLaunches();
     demoHoldings = loadDemoHoldings();
     await loadQuotes();
