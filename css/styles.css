@@ -836,3 +836,22 @@ footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--bo
   .hero{grid-template-columns:1fr}
   .hero-stage{order:-1}
 }
+
+.riz-tagline-img{
+  display:block;
+  width:min(100%,340px);
+  height:auto;
+  margin:0 auto;
+  object-fit:contain;
+  background:transparent;
+}
+.riz-tagline-img.riz-tagline-wait{
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity .45s ease, transform .45s ease;
+  pointer-events:none;
+}
+.riz-tagline-img.riz-tagline-wait.is-on{
+  opacity:1;
+  transform:translateY(0);
+}
