@@ -14,7 +14,7 @@ Create DEMO saves a launch in your browser (`localStorage`). Cards, mock trades,
 
 ## Got commodity rizz. What does that mean?
 
-Brand line. Memes that pair with commodities. Cream mark, black UI, English CT.
+Brand line. Memes that pair with commodities. Cream mark, black UI.
 
 ## Do you hold physical commodities?
 
