@@ -777,3 +777,11 @@ footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--bo
 }
 .riz-tagline-static{opacity:1 !important;animation:none !important;transform:none !important}
 .riz-play,.riz-figure,.riz-limbs,.riz-body,.riz-glasses{display:none !important}
+
+
+/* HERO SINGLE until Imagine video — no right drawing */
+.hero{
+  grid-template-columns:1fr !important;
+  max-width:40rem;
+}
+.hero-stage{display:none !important}
