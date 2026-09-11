@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/styles.css?v=token-demo-1"/>
+<link rel="stylesheet" href="css/styles.css?v=docs-1"/>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -28,7 +28,7 @@
       <button type="button" class="nav-btn" data-view="home">Home</button>
       <button type="button" class="nav-btn" data-view="commodities">Commodities</button>
       <button type="button" class="nav-btn" data-view="create">Create</button>
-      <button type="button" class="nav-btn" data-view="about">How it works</button>
+      <button type="button" class="nav-btn" data-view="about">Docs</button>
       <span class="chain-pill mono"><span class="dot"></span> BSC</span>
       <div class="wallet-slot" id="walletSlot">
         <button type="button" class="btn btn-primary btn-sm wallet-btn" data-wallet-action="connect">Connect Wallet</button>
@@ -426,78 +426,153 @@
 
   <div class="toast-host" id="toastHost" aria-live="polite"></div>
 
-  <!-- ABOUT / HOW IT WORKS -->
+  <!-- DOCS (about alias) -->
   <section class="view" id="view-about">
     <div class="section" style="padding-top:28px">
       <div class="section-h">
         <div>
+          <h2>Docs</h2>
+          <p>How Riz.Fun works. Short version. Protocol not live yet. This site is DEMO UI.</p>
+        </div>
+      </div>
+      <nav class="docs-toc" aria-label="Docs sections">
+        <button type="button" class="docs-toc-link" data-docs-jump="docs-how">How it works</button>
+        <button type="button" class="docs-toc-link" data-docs-jump="docs-fees">Fees</button>
+        <button type="button" class="docs-toc-link" data-docs-jump="docs-quotes">Quotes</button>
+        <button type="button" class="docs-toc-link" data-docs-jump="docs-faq">FAQ</button>
+        <button type="button" class="docs-toc-link" data-docs-jump="docs-about">About</button>
+        <a href="docs/README.md" class="docs-toc-link mono" target="_blank" rel="noopener">docs/*.md</a>
+      </nav>
+    </div>
+
+    <div class="section" id="docs-how">
+      <div class="section-h">
+        <div>
           <h2>How it works</h2>
-          <p>Commodity pair → bonding curve → <strong>locked Uniswap v4</strong> pool (not Pancake).</p>
+          <p>Pair a meme with a commodity quote. Trade the curve. Graduate to a locked Uniswap v4 pool.</p>
         </div>
       </div>
       <div class="how">
         <div class="step">
           <div class="n">01</div>
           <h3>Pair with a commodity</h3>
-          <p>Day-1 live quotes: BNB, XAUt, PAXG. Your meme bonds against that quote from day one. The directory lists metals, energy, and agriculture as Soon until mints land.</p>
+          <p>Live quotes today: <strong>BNB</strong>, <strong>XAUt</strong>, <strong>PAXG</strong>. Your coin trades against that quote from day one. Metals, energy, and ag sit in the directory as Soon until mints land.</p>
         </div>
         <div class="step">
           <div class="n">02</div>
           <h3>Ride the curve</h3>
-          <p>Constant-product bonding curve from ~$5k to ~$35k. Fixed 1B supply. Trade in the chosen commodity until graduation.</p>
+          <p>Bonding curve from about <strong>$5k</strong> to about <strong>$35k</strong>. Fixed <strong>1B</strong> supply. You buy and sell in the paired quote until graduation.</p>
         </div>
         <div class="step">
           <div class="n">03</div>
           <h3>Graduate to locked Uniswap v4</h3>
-          <p>At the endpoint, reserves seed a <strong>Uniswap v4</strong> full-range pool on BSC. Post-grad fees go through the <strong>v4 hook</strong>. LP is locked permanently. Pancake is not the default.</p>
+          <p>Curve reserves seed a <strong>Uniswap v4</strong> full-range pool on BSC. Fees after grad go through the <strong>v4 hook</strong>. LP stays locked. Pancake is not the default.</p>
         </div>
       </div>
     </div>
 
-    <div class="section">
+    <div class="section" id="docs-fees">
       <div class="section-h">
         <div>
-          <h2>Fee split</h2>
-          <p>Of the trading fee on the quote leg.</p>
+          <h2>Fees</h2>
+          <p>Creator picks <strong>1% to 3%</strong> at launch. Fee hits the quote leg. Split is fixed.</p>
         </div>
       </div>
       <div class="card" style="overflow:auto">
         <table class="split-table">
           <thead>
-            <tr><th>Share</th><th>%</th><th>Destination</th></tr>
+            <tr><th>Share</th><th>%</th><th>Goes to</th></tr>
           </thead>
           <tbody>
             <tr><td>Holders</td><td class="mono">40%</td><td>Paid in the <strong>paired commodity</strong></td></tr>
             <tr><td>Buyback</td><td class="mono">30%</td><td>Buy + burn of protocol token <strong>$RIZ</strong></td></tr>
             <tr><td>Protocol</td><td class="mono">30%</td><td>Treasury / ops</td></tr>
-            <tr><td>Creator</td><td class="mono">0%</td><td>Earns only as a holder — no special cut</td></tr>
+            <tr><td>Creator</td><td class="mono">0%</td><td>No special cut. Earn as a holder.</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="docs-note">Holder payout cadence is a live-protocol target. DEMO buttons do not move real fees.</p>
     </div>
 
-    <div class="section">
+    <div class="section" id="docs-quotes">
+      <div class="section-h">
+        <div>
+          <h2>Quotes</h2>
+          <p>Quotes are the pair assets. Memes orbit them.</p>
+        </div>
+      </div>
+      <div class="how how-2">
+        <div class="step">
+          <div class="n">LIVE</div>
+          <h3>BNB · XAUt · PAXG</h3>
+          <p>These three work in Create today. Native BNB plus two tokenized gold quotes on BSC.</p>
+        </div>
+        <div class="step">
+          <div class="n">SOON</div>
+          <h3>Full directory</h3>
+          <p>Commodities tab lists softs, metals, energy, and more as Soon. Registry only until mints are approved. No fake meme rows on Home.</p>
+        </div>
+      </div>
+      <p class="docs-note">Tokenized quotes only. Not a physical vault. See <span class="mono">commodities.json</span> and <button type="button" class="linkish inline-link" data-goto="commodities">Commodities</button>.</p>
+    </div>
+
+    <div class="section" id="docs-faq">
+      <div class="section-h">
+        <div>
+          <h2>FAQ</h2>
+          <p>Straight answers.</p>
+        </div>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Is it live on-chain?</summary>
+          <p>No. Protocol contracts are not deployed for public use. This site is DEMO UI.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What is DEMO?</summary>
+          <p>Create DEMO stores a launch in your browser. Cards, mock trades, and <span class="mono">#token/&lt;id&gt;</span> pages are local. Clear site data and they vanish. No mainnet txs.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What is $RIZ?</summary>
+          <p><strong>$RIZ</strong> is the protocol token. It is the 30% buyback leg. Your launch still has its own ticker.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do you custody gold or oil?</summary>
+          <p>No. On-chain quotes only. No warehouse, no vault claim.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Where does liquidity go after the curve?</summary>
+          <p>Locked Uniswap v4 on BSC. Hook fees after grad. Pancake is not the default.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Why is Home not the full commodity list?</summary>
+          <p>Home stays light: live quotes plus the Demo board. Full catalog is under Commodities.</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="section" id="docs-about">
       <div class="section-h">
         <div>
           <h2>About Riz.Fun</h2>
-          <p>Commodities-first · CT English · BSC · <a href="https://x.com/RizForFun" target="_blank" rel="noopener">@RizForFun</a></p>
+          <p>Commodities-first. English CT. BSC. <a href="https://x.com/RizForFun" target="_blank" rel="noopener">@RizForFun</a></p>
         </div>
       </div>
       <div class="how">
         <div class="step">
           <div class="n">BRAND</div>
-          <h3>Got commodity rizz</h3>
-          <p>Hard cream grain mark with block sunglasses. Pure black + cream. Protocol token <strong>$RIZ</strong>. Got commodity rizz. Memes that pair with commodities.</p>
+          <h3>Got commodity rizz.</h3>
+          <p>Cream grain mark, block sunglasses, black UI. Tagline stays. Memes that pair with commodities.</p>
         </div>
         <div class="step">
-          <div class="n">QUOTES</div>
-          <h3>Directory + live mints</h3>
-          <p>Live: BNB, XAUt, PAXG. The directory tracks a full softs / metals / energy list as Soon — no fake sample memecoins. See <span class="mono">commodities.json</span>.</p>
+          <div class="n">STACK</div>
+          <h3>Curve then Uniswap v4</h3>
+          <p>Bonding curve first. Graduation seeds a locked v4 pool. Hook fees. Not Pancake by default.</p>
         </div>
         <div class="step">
           <div class="n">SCOPE</div>
-          <h3>On-chain quotes only</h3>
-          <p>Tokenized commodity quotes — not a physical vault. No invented live contract addresses.</p>
+          <h3>Honest DEMO</h3>
+          <p>No invented live factory addresses. Markdown copies live under <span class="mono">docs/</span> on this site.</p>
         </div>
       </div>
     </div>
@@ -517,13 +592,13 @@
       <button type="button" class="linkish" data-goto="home">Home</button>
       <button type="button" class="linkish" data-goto="commodities">Commodities</button>
       <button type="button" class="linkish" data-goto="create">Create</button>
-      <button type="button" class="linkish" data-goto="about">How it works</button>
+      <button type="button" class="linkish" data-goto="about">Docs</button>
       <a class="linkish" href="https://x.com/RizForFun" target="_blank" rel="noopener">X</a>
     </div>
   </div>
 </footer>
 
-<script src="js/wallet.js?v=token-demo-1"></script>
-<script src="js/app.js?v=token-demo-1"></script>
+<script src="js/wallet.js?v=docs-1"></script>
+<script src="js/app.js?v=docs-1"></script>
 </body>
 </html>

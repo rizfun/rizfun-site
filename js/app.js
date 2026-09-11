@@ -867,6 +867,7 @@
 
   function showView(id, opts) {
     opts = opts || {};
+    if (id === "docs") id = "about";
     $all(".view").forEach((v) => v.classList.toggle("active", v.id === "view-" + id));
     $all(".nav-btn[data-view]").forEach((b) =>
       b.classList.toggle("active", b.getAttribute("data-view") === id)
@@ -1256,11 +1257,21 @@
 
   function setupNav() {
     document.addEventListener("click", (e) => {
+      const jump = e.target && e.target.closest && e.target.closest("[data-docs-jump]");
+      if (jump) {
+        e.preventDefault();
+        const targetId = jump.getAttribute("data-docs-jump");
+        showView("about");
+        const node = targetId && document.getElementById(targetId);
+        if (node) setTimeout(() => node.scrollIntoView({ behavior: "smooth", block: "start" }), 40);
+        return;
+      }
       const el = e.target && e.target.closest && e.target.closest(".nav-btn[data-view], [data-goto]");
       if (!el) return;
       e.preventDefault();
-      const id = el.getAttribute("data-view") || el.getAttribute("data-goto");
+      let id = el.getAttribute("data-view") || el.getAttribute("data-goto");
       if (!id) return;
+      if (id === "docs") id = "about";
       if (id !== "token") currentTokenId = null;
       showView(id);
     });
@@ -1272,8 +1283,8 @@
         return;
       }
       const hash = (location.hash || "#home").replace("#", "");
-      const allowed = ["home", "commodities", "create", "about"];
-      const legacy = { markets: "commodities", launches: "commodities" };
+      const allowed = ["home", "commodities", "create", "about", "docs"];
+      const legacy = { markets: "commodities", launches: "commodities", docs: "about" };
       const resolved = legacy[hash] || hash;
       currentTokenId = null;
       showView(allowed.includes(resolved) ? resolved : "home", { skipHash: true });

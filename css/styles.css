@@ -701,6 +701,47 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cream)}
 .split-table th{color:var(--dim);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
 .split-table tr:last-child td{border-bottom:0}
 
+/* DOCS */
+.docs-toc{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;
+}
+.docs-toc-link{
+  display:inline-flex;align-items:center;
+  padding:8px 12px;border:var(--border) solid var(--cream);border-radius:var(--radius);
+  background:var(--panel);color:var(--cream);text-decoration:none;
+  font-size:.78rem;font-weight:800;letter-spacing:.01em;
+}
+.docs-toc-link:hover{background:var(--cream);color:var(--ink)}
+button.docs-toc-link{font:inherit;cursor:pointer}
+.how-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:760px){.how-2{grid-template-columns:1fr}}
+.docs-note{
+  margin:14px 0 0;color:var(--muted);font-size:.86rem;line-height:1.5;font-weight:500;
+}
+.inline-link{
+  display:inline;padding:0 2px;font-size:inherit;font-weight:800;color:var(--cream);
+  text-decoration:underline;text-underline-offset:2px;
+}
+.inline-link:hover{background:var(--cream);color:var(--ink)}
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{
+  background:var(--panel);
+  border:var(--border) solid var(--cream);border-radius:var(--radius);
+  padding:0;
+}
+.faq-item summary{
+  cursor:pointer;list-style:none;
+  padding:16px 18px;font-weight:900;color:var(--cream);font-size:.98rem;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{
+  content:"+";float:right;font-family:var(--mono);font-weight:700;color:var(--dim);
+}
+.faq-item[open] summary::after{content:"-"}
+.faq-item p{
+  margin:0;padding:0 18px 16px;color:var(--muted);font-size:.9rem;line-height:1.55;font-weight:500;
+}
+
 /* FOOTER */
 footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--border) solid var(--cream);margin-top:48px}
 .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
