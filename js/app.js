@@ -847,12 +847,12 @@
   }
 
   function setupNav() {
-    $all(".nav-btn[data-view], [data-goto]").forEach((el) => {
-      el.addEventListener("click", (e) => {
-        e.preventDefault();
-        const id = el.getAttribute("data-view") || el.getAttribute("data-goto");
-        if (id) showView(id);
-      });
+    document.addEventListener("click", (e) => {
+      const el = e.target && e.target.closest && e.target.closest(".nav-btn[data-view], [data-goto]");
+      if (!el) return;
+      e.preventDefault();
+      const id = el.getAttribute("data-view") || el.getAttribute("data-goto");
+      if (id) showView(id);
     });
     const hash = (location.hash || "#home").replace("#", "");
     const allowed = ["home", "commodities", "create", "about"];
