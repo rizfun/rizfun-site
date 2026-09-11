@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/styles.css?v=home-nodir"/>
+<link rel="stylesheet" href="css/styles.css?v=token-demo-1"/>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -269,6 +269,163 @@
     </div>
   </section>
 
+
+  <!-- TOKEN DETAIL (DEMO) -->
+  <section class="view" id="view-token">
+    <div class="section token-page" style="padding-top:22px">
+      <div class="token-back-row">
+        <button type="button" class="btn btn-ghost btn-sm" data-goto="home" id="tokenBackBtn">← Demo board</button>
+        <span class="demo-badge">DEMO</span>
+      </div>
+
+      <div id="tokenEmpty" class="empty-state" hidden>
+        <p class="empty-title">No DEMO here</p>
+        <p class="empty-sub">That id is missing. Create one first. Cards stay in this browser.</p>
+        <div class="demo-empty-actions">
+          <button type="button" class="btn btn-primary btn-sm" data-goto="create">Create DEMO</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-goto="home">Demo board</button>
+        </div>
+      </div>
+
+      <div id="tokenContent" hidden>
+        <header class="token-hero">
+          <div class="token-hero-left">
+            <div class="token-avatar" id="tokenAvatar"></div>
+            <div class="token-id-block">
+              <div class="token-title-row">
+                <h1 class="token-name" id="tokenName">-</h1>
+                <span class="token-ticker mono" id="tokenTicker">$-</span>
+              </div>
+              <div class="token-meta-row">
+                <span class="token-pair-pill mono" id="tokenPairPill">Paired with -</span>
+                <span class="demo-badge">DEMO</span>
+                <span class="token-fee-pill mono" id="tokenFeePill">Fee -</span>
+              </div>
+            </div>
+          </div>
+          <div class="token-hero-right">
+            <div class="token-mcap-label mono">Mock mcap</div>
+            <div class="token-mcap-val mono" id="tokenMcap">$-</div>
+            <div class="token-mcap-sub mono" id="tokenMcapSub">Curve $5k to $35k</div>
+          </div>
+        </header>
+
+        <div class="token-stats-row" id="tokenStatsRow">
+          <div class="token-stat-card">
+            <div class="l">Curve progress</div>
+            <div class="v mono" id="tokenCurvePct">-%</div>
+            <div class="progress token-curve-bar" aria-hidden="true"><i id="tokenCurveBar" style="width:0%"></i></div>
+            <div class="s mono" id="tokenCurveMeta">$5k to $35k</div>
+          </div>
+          <div class="token-stat-card">
+            <div class="l">Mock vol</div>
+            <div class="v mono" id="tokenVol">$-</div>
+            <div class="s">Local DEMO only</div>
+          </div>
+          <div class="token-stat-card">
+            <div class="l">Fee</div>
+            <div class="v mono" id="tokenFee">-%</div>
+            <div class="s">On the quote leg</div>
+          </div>
+          <div class="token-stat-card">
+            <div class="l">Fee split</div>
+            <div class="token-split-chips">
+              <span class="split-chip">40% holders</span>
+              <span class="split-chip">30% $RIZ</span>
+              <span class="split-chip">30% protocol</span>
+            </div>
+            <div class="s">Paid in the pair quote</div>
+          </div>
+        </div>
+
+        <div class="token-grid">
+          <div class="token-main">
+            <div class="card token-chart-card">
+              <div class="token-chart-head">
+                <div>
+                  <div class="mono board-label">Mock chart</div>
+                  <div class="token-chart-pair mono" id="tokenChartPair">$TICKER / QUOTE</div>
+                </div>
+                <div class="token-chart-tabs" role="tablist" aria-label="Timeframe">
+                  <button type="button" class="tab active" data-tf="1m">1m</button>
+                  <button type="button" class="tab" data-tf="5m">5m</button>
+                  <button type="button" class="tab" data-tf="1h">1h</button>
+                  <button type="button" class="tab" data-tf="1d">1d</button>
+                </div>
+              </div>
+              <div class="token-chart-wrap" id="tokenChartWrap" aria-hidden="true"></div>
+              <div class="token-chart-footnote mono">Fake sparkline. No APIs. DEMO only.</div>
+            </div>
+
+            <div class="card token-trades-card">
+              <div class="section-h" style="margin-bottom:12px">
+                <div>
+                  <h2 style="font-size:1.05rem;margin:0">Recent trades</h2>
+                  <p style="margin:4px 0 0">Mock flow from the DEMO board. Not on-chain.</p>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="token-trades-table">
+                  <thead>
+                    <tr>
+                      <th>Side</th>
+                      <th>Who</th>
+                      <th>Amount</th>
+                      <th>Quote</th>
+                      <th>When</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tokenTradesBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card token-contract-card">
+              <div class="mono board-label" style="margin-bottom:8px">Contract</div>
+              <div class="token-contract-line">
+                <span class="token-contract-label">Demo id. Not on-chain.</span>
+                <code class="mono" id="tokenContractId">-</code>
+                <button type="button" class="btn btn-ghost btn-sm" id="tokenCopyId">Copy</button>
+              </div>
+              <p class="submit-note" style="margin-top:10px">No contracts live yet. This is a local DEMO id in your browser.</p>
+            </div>
+          </div>
+
+          <aside class="token-side">
+            <div class="card token-trade-panel">
+              <div class="token-trade-tabs">
+                <button type="button" class="token-trade-tab on" data-side="buy" id="tabBuy">Buy</button>
+                <button type="button" class="token-trade-tab" data-side="sell" id="tabSell">Sell</button>
+              </div>
+              <div class="token-pay-row">
+                <span class="l">Pay with</span>
+                <span class="token-pay-pill mono" id="tokenPayPill">BNB</span>
+              </div>
+              <label for="tokenTradeAmt">Amount <span class="hint" id="tokenAmtHint">(quote)</span></label>
+              <input id="tokenTradeAmt" type="number" min="0" step="any" placeholder="0.0" value="0.1"/>
+              <div class="token-holdings mono" id="tokenHoldings">Bag: 0</div>
+              <button type="button" class="btn btn-primary" id="tokenTradeBtn" style="width:100%;margin-top:14px">Buy DEMO</button>
+              <p class="submit-note">Local mock only. No wallet tx. No contracts.</p>
+            </div>
+
+            <div class="card token-liq-card">
+              <div class="mono board-label" style="margin-bottom:10px">Liquidity</div>
+              <div class="summary">
+                <div class="row"><span class="k">Mode</span><span>Bonding curve</span></div>
+                <div class="row"><span class="k">Start</span><span class="mono">~$5k</span></div>
+                <div class="row"><span class="k">Grad</span><span class="mono">~$35k</span></div>
+                <div class="row"><span class="k">After</span><span>Locked Uniswap v4</span></div>
+                <div class="row"><span class="k">Pair</span><span class="mono" id="tokenLiqPair">- / -</span></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast-host" id="toastHost" aria-live="polite"></div>
+
   <!-- ABOUT / HOW IT WORKS -->
   <section class="view" id="view-about">
     <div class="section" style="padding-top:28px">
@@ -366,7 +523,7 @@
   </div>
 </footer>
 
-<script src="js/wallet.js?v=home-nodir"></script>
-<script src="js/app.js?v=home-nodir"></script>
+<script src="js/wallet.js?v=token-demo-1"></script>
+<script src="js/app.js?v=token-demo-1"></script>
 </body>
 </html>

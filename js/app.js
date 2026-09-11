@@ -60,6 +60,11 @@
   let demoLaunches = [];
   let demoTickTimer = null;
   let demoImageDataUrl = "";
+  let currentTokenId = null;
+  let tokenTradeSide = "buy";
+  let tokenChartTf = "1m";
+  const DEMO_HOLDINGS_KEY = "rizfun.demoHoldings.v1";
+  let demoHoldings = {};
 
   function loadDemoLaunches() {
     try {
@@ -79,7 +84,15 @@
           volume: Math.max(0, Number(x.volume) || 0),
           createdAt: Number(x.createdAt) || Date.now(),
           imageDataUrl: typeof x.imageDataUrl === "string" ? x.imageDataUrl : "",
-          recentBuys: Array.isArray(x.recentBuys) ? x.recentBuys.slice(0, 6) : [],
+          recentBuys: Array.isArray(x.recentBuys)
+            ? x.recentBuys.slice(0, 8).map((b) => ({
+                who: String((b && b.who) || "anon"),
+                amountUsd: Number((b && b.amountUsd) || 0),
+                quote: String((b && b.quote) || x.quote || ""),
+                at: Number((b && b.at) || Date.now()),
+                side: (b && b.side) === "sell" ? "sell" : "buy",
+              }))
+            : [],
         }));
     } catch (_) {
       return [];
@@ -92,6 +105,364 @@
     } catch (err) {
       console.warn("Could not persist demo launches", err);
     }
+  }
+
+  function loadDemoHoldings() {
+    try {
+      const raw = localStorage.getItem(DEMO_HOLDINGS_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveDemoHoldings() {
+    try {
+      localStorage.setItem(DEMO_HOLDINGS_KEY, JSON.stringify(demoHoldings));
+    } catch (err) {
+      console.warn("Could not persist demo holdings", err);
+    }
+  }
+
+  function getHolding(id) {
+    return Math.max(0, Number(demoHoldings[id]) || 0);
+  }
+
+  function setHolding(id, n) {
+    demoHoldings[id] = Math.max(0, Math.round(Number(n) || 0));
+    saveDemoHoldings();
+  }
+
+  function showToast(msg) {
+    const host = $("#toastHost");
+    if (!host) return;
+    const el = document.createElement("div");
+    el.className = "toast";
+    el.textContent = String(msg || "");
+    host.appendChild(el);
+    setTimeout(() => {
+      el.classList.add("is-out");
+      setTimeout(() => el.remove(), 220);
+    }, 2600);
+  }
+
+  function findDemoLaunch(id) {
+    if (!id) return null;
+    return demoLaunches.find((x) => x.id === id) || null;
+  }
+
+  function hashSeed(str) {
+    let h = 2166136261;
+    const s = String(str || "");
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function mulberry32(a) {
+    return function () {
+      let t = (a += 0x6d2b79f5);
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function buildSparkPoints(launch, tf) {
+    const n = tf === "1d" ? 28 : tf === "1h" ? 36 : tf === "5m" ? 40 : 48;
+    const seed = hashSeed((launch && launch.id) || "demo") ^ (tf || "1m").length * 97;
+    const rnd = mulberry32(seed);
+    const end = Math.max(DEMO_MCAP_START, Number(launch && launch.mcap) || DEMO_MCAP_START);
+    const pts = [];
+    let v = end * (0.72 + rnd() * 0.18);
+    for (let i = 0; i < n; i++) {
+      const t = i / Math.max(1, n - 1);
+      const drift = (end - v) * (0.04 + t * 0.08);
+      const noise = (rnd() - 0.48) * end * 0.035;
+      v = Math.max(DEMO_MCAP_START * 0.85, v + drift + noise);
+      pts.push(v);
+    }
+    pts[pts.length - 1] = end;
+    return pts;
+  }
+
+  function renderSparkline(launch) {
+    const wrap = $("#tokenChartWrap");
+    if (!wrap) return;
+    const pts = buildSparkPoints(launch, tokenChartTf);
+    const w = 640;
+    const h = 220;
+    const padX = 8;
+    const padY = 16;
+    const min = Math.min.apply(null, pts);
+    const max = Math.max.apply(null, pts);
+    const span = Math.max(1, max - min);
+    const coords = pts.map((v, i) => {
+      const x = padX + (i / Math.max(1, pts.length - 1)) * (w - padX * 2);
+      const y = h - padY - ((v - min) / span) * (h - padY * 2);
+      return [x, y];
+    });
+    const line = coords.map((c, i) => (i ? "L" : "M") + c[0].toFixed(1) + "," + c[1].toFixed(1)).join(" ");
+    const area =
+      line +
+      " L" +
+      coords[coords.length - 1][0].toFixed(1) +
+      "," +
+      (h - 2) +
+      " L" +
+      coords[0][0].toFixed(1) +
+      "," +
+      (h - 2) +
+      " Z";
+    const lastY = coords[coords.length - 1][1];
+    wrap.innerHTML =
+      '<svg viewBox="0 0 ' +
+      w +
+      " " +
+      h +
+      '" preserveAspectRatio="none" role="img" aria-label="Demo sparkline">' +
+      '<defs><linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="#F9F0DF" stop-opacity="0.35"/>' +
+      '<stop offset="100%" stop-color="#F9F0DF" stop-opacity="0"/>' +
+      "</linearGradient></defs>" +
+      '<path d="' +
+      area +
+      '" fill="url(#sparkFill)"/>' +
+      '<path d="' +
+      line +
+      '" fill="none" stroke="#F9F0DF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<line x1="' +
+      padX +
+      '" x2="' +
+      (w - padX) +
+      '" y1="' +
+      lastY.toFixed(1) +
+      '" y2="' +
+      lastY.toFixed(1) +
+      '" stroke="#3ddc97" stroke-width="1" stroke-dasharray="4 4" opacity="0.85"/>' +
+      "</svg>";
+  }
+
+  function openTokenPage(id) {
+    currentTokenId = id || null;
+    const path = id ? "#token/" + encodeURIComponent(id) : "#token";
+    if (location.hash !== path) {
+      history.replaceState(null, "", path);
+    }
+    showView("token", { skipHash: true });
+    renderTokenPage();
+  }
+
+  function renderTokenPage() {
+    const empty = $("#tokenEmpty");
+    const content = $("#tokenContent");
+    const launch = findDemoLaunch(currentTokenId);
+    if (!launch) {
+      if (empty) empty.hidden = false;
+      if (content) content.hidden = true;
+      return;
+    }
+    if (empty) empty.hidden = true;
+    if (content) content.hidden = false;
+
+    const pct = curvePct(launch.mcap);
+    const av = $("#tokenAvatar");
+    if (av) {
+      av.className = "token-avatar " + avatarClass(launch.quote);
+      if (launch.imageDataUrl) {
+        av.innerHTML = '<img src="' + launch.imageDataUrl + '" alt=""/>';
+      } else {
+        av.textContent = (launch.ticker || "?").slice(0, 4);
+      }
+    }
+    const setTxt = (sel, val) => {
+      const el = $(sel);
+      if (el) el.textContent = val;
+    };
+    setTxt("#tokenName", launch.name);
+    setTxt("#tokenTicker", "$" + launch.ticker);
+    setTxt("#tokenPairPill", "Paired with " + launch.quote);
+    setTxt("#tokenFeePill", "Fee " + Number(launch.fee || 2).toFixed(1) + "%");
+    setTxt("#tokenMcap", usd(launch.mcap));
+    setTxt("#tokenMcapSub", "Curve " + usd(DEMO_MCAP_START) + " to " + usd(DEMO_MCAP_GRAD));
+    setTxt("#tokenCurvePct", pct + "%");
+    setTxt("#tokenCurveMeta", usd(DEMO_MCAP_START) + " to " + usd(DEMO_MCAP_GRAD));
+    const bar = $("#tokenCurveBar");
+    if (bar) bar.style.width = pct + "%";
+    setTxt("#tokenVol", usd(launch.volume));
+    setTxt("#tokenFee", Number(launch.fee || 2).toFixed(1) + "%");
+    setTxt("#tokenChartPair", "$" + launch.ticker + " / " + launch.quote);
+    setTxt("#tokenPayPill", launch.quote);
+    setTxt("#tokenLiqPair", "$" + launch.ticker + " / " + launch.quote);
+    setTxt("#tokenContractId", launch.id);
+    const hint = $("#tokenAmtHint");
+    if (hint) hint.textContent = tokenTradeSide === "buy" ? "(" + launch.quote + ")" : "($ tokens mock)";
+    const hold = getHolding(launch.id);
+    setTxt("#tokenHoldings", "Bag: " + hold.toLocaleString("en-US") + " $" + launch.ticker);
+    updateTradeTabUi();
+    renderSparkline(launch);
+
+    const tbody = $("#tokenTradesBody");
+    if (tbody) {
+      const rows = (launch.recentBuys || []).slice();
+      if (!rows.length) {
+        tbody.innerHTML =
+          '<tr><td colspan="5" class="empty-cell">No trades yet. Hit Buy or Sell.</td></tr>';
+      } else {
+        tbody.innerHTML = rows
+          .map((b) => {
+            const side = b.side === "sell" ? "sell" : "buy";
+            return (
+              "<tr>" +
+              '<td class="side-' +
+              side +
+              ' mono">' +
+              side.toUpperCase() +
+              "</td>" +
+              "<td>" +
+              escapeHtml(b.who) +
+              "</td>" +
+              '<td class="mono">' +
+              usd(b.amountUsd) +
+              "</td>" +
+              '<td class="mono">' +
+              escapeHtml(b.quote || launch.quote) +
+              "</td>" +
+              '<td class="mono">' +
+              timeAgo(b.at) +
+              "</td>" +
+              "</tr>"
+            );
+          })
+          .join("");
+      }
+    }
+  }
+
+  function updateTradeTabUi() {
+    $all(".token-trade-tab").forEach((btn) => {
+      btn.classList.toggle("on", btn.getAttribute("data-side") === tokenTradeSide);
+    });
+    const tradeBtn = $("#tokenTradeBtn");
+    if (tradeBtn) {
+      tradeBtn.textContent = tokenTradeSide === "buy" ? "Buy DEMO" : "Sell DEMO";
+      tradeBtn.classList.toggle("sell-mode", tokenTradeSide === "sell");
+    }
+  }
+
+  function executeDemoTrade() {
+    const launch = findDemoLaunch(currentTokenId);
+    if (!launch) {
+      showToast("No DEMO for that id");
+      return;
+    }
+    const amtEl = $("#tokenTradeAmt");
+    const amt = Number(amtEl && amtEl.value);
+    if (!(amt > 0)) {
+      showToast("Amount needs to be > 0");
+      return;
+    }
+
+    if (tokenTradeSide === "buy") {
+      const usdNotional = Math.round(amt * (launch.quote === "BNB" ? 600 : 2400) * (0.85 + Math.random() * 0.3));
+      const tokensOut = Math.max(1, Math.round(usdNotional * (18 + Math.random() * 40)));
+      const buy = {
+        who: "you",
+        amountUsd: Math.max(1, usdNotional),
+        quote: launch.quote,
+        at: Date.now(),
+        side: "buy",
+      };
+      launch.recentBuys = [buy].concat(launch.recentBuys || []).slice(0, 8);
+      launch.volume = Math.round((Number(launch.volume) || 0) + buy.amountUsd);
+      const bump = Math.round(buy.amountUsd * (0.4 + Math.random() * 0.85));
+      launch.mcap = Math.min(DEMO_MCAP_GRAD, Math.round(Number(launch.mcap) + bump));
+      setHolding(launch.id, getHolding(launch.id) + tokensOut);
+      saveDemoLaunches();
+      renderDemoLaunches();
+      renderTokenPage();
+      showToast("Bought +" + tokensOut.toLocaleString("en-US") + " $" + launch.ticker + " (DEMO)");
+      return;
+    }
+
+    const bag = getHolding(launch.id);
+    if (bag <= 0) {
+      showToast("Bag empty. Buy first.");
+      return;
+    }
+    const sellTokens = Math.min(bag, Math.max(1, Math.round(amt)));
+    const usdNotional = Math.max(1, Math.round(sellTokens / (25 + Math.random() * 30)));
+    const sell = {
+      who: "you",
+      amountUsd: usdNotional,
+      quote: launch.quote,
+      at: Date.now(),
+      side: "sell",
+    };
+    launch.recentBuys = [sell].concat(launch.recentBuys || []).slice(0, 8);
+    launch.volume = Math.round((Number(launch.volume) || 0) + usdNotional);
+    const drop = Math.round(usdNotional * (0.25 + Math.random() * 0.55));
+    launch.mcap = Math.max(DEMO_MCAP_START, Math.round(Number(launch.mcap) - drop));
+    setHolding(launch.id, bag - sellTokens);
+    saveDemoLaunches();
+    renderDemoLaunches();
+    renderTokenPage();
+    showToast("Sold -" + sellTokens.toLocaleString("en-US") + " $" + launch.ticker + " (DEMO)");
+  }
+
+  function setupTokenPage() {
+    $all(".token-trade-tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tokenTradeSide = btn.getAttribute("data-side") === "sell" ? "sell" : "buy";
+        updateTradeTabUi();
+        const launch = findDemoLaunch(currentTokenId);
+        if (launch) {
+          const hint = $("#tokenAmtHint");
+          if (hint) hint.textContent = tokenTradeSide === "buy" ? "(" + launch.quote + ")" : "($ tokens mock)";
+        }
+      });
+    });
+    $all(".token-chart-tabs .tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tokenChartTf = btn.getAttribute("data-tf") || "1m";
+        $all(".token-chart-tabs .tab").forEach((t) =>
+          t.classList.toggle("active", t.getAttribute("data-tf") === tokenChartTf)
+        );
+        const launch = findDemoLaunch(currentTokenId);
+        if (launch) renderSparkline(launch);
+      });
+    });
+    const tradeBtn = $("#tokenTradeBtn");
+    if (tradeBtn) tradeBtn.addEventListener("click", executeDemoTrade);
+    const copyBtn = $("#tokenCopyId");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", async () => {
+        const id = currentTokenId || (($("#tokenContractId") && $("#tokenContractId").textContent) || "");
+        if (!id || id === "-" || id === "—") return;
+        try {
+          await navigator.clipboard.writeText(id);
+          showToast("Copied");
+        } catch (_) {
+          showToast(id);
+        }
+      });
+    }
+  }
+
+  function parseTokenRoute() {
+    const params = new URLSearchParams(location.search);
+    const q = params.get("token");
+    if (q) return { view: "token", id: q };
+    const hash = (location.hash || "#home").replace(/^#/, "");
+    if (hash.startsWith("token/")) {
+      return { view: "token", id: decodeURIComponent(hash.slice(6)) || null };
+    }
+    if (hash === "token") return { view: "token", id: null };
+    return null;
   }
 
   function usd(n) {
@@ -123,6 +494,7 @@
       amountUsd: Number(amt),
       quote: quote,
       at: Date.now(),
+      side: "buy",
     };
   }
 
@@ -230,8 +602,21 @@
       $all("[data-goto]", featured).forEach((el) => {
         el.addEventListener("click", (e) => {
           e.preventDefault();
+          e.stopPropagation();
           const id = el.getAttribute("data-goto");
           if (id) showView(id);
+        });
+      });
+      $all(".demo-card[data-demo-id]", featured).forEach((card) => {
+        card.setAttribute("role", "link");
+        card.setAttribute("tabindex", "0");
+        const go = () => openTokenPage(card.getAttribute("data-demo-id"));
+        card.addEventListener("click", go);
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            go();
+          }
         });
       });
     }
@@ -245,7 +630,9 @@
           .map((launch, i) => {
             const pct = curvePct(launch.mcap);
             return (
-              "<tr>" +
+              '<tr data-demo-id="' +
+              escapeHtml(launch.id) +
+              '" title="Open token">' +
               '<td class="mono">' +
               (i + 1) +
               "</td>" +
@@ -278,7 +665,15 @@
             );
           })
           .join("");
+        $all("tr[data-demo-id]", tbody).forEach((row) => {
+          row.addEventListener("click", () => openTokenPage(row.getAttribute("data-demo-id")));
+        });
       }
+    }
+
+    const tokenView = $("#view-token");
+    if (tokenView && tokenView.classList.contains("active") && currentTokenId) {
+      renderTokenPage();
     }
   }
 
@@ -300,6 +695,10 @@
     } else {
       /* still refresh "ago" labels */
       renderDemoLaunches();
+    }
+    const tokenView = $("#view-token");
+    if (tokenView && tokenView.classList.contains("active") && currentTokenId) {
+      renderTokenPage();
     }
   }
 
@@ -369,6 +768,7 @@
   window.RizDemo = {
     createFromForm: createDemoLaunchFromForm,
     render: renderDemoLaunches,
+    openToken: openTokenPage,
     list: function () {
       return demoLaunches.slice();
     },
@@ -465,15 +865,22 @@
     });
   }
 
-  function showView(id) {
+  function showView(id, opts) {
+    opts = opts || {};
     $all(".view").forEach((v) => v.classList.toggle("active", v.id === "view-" + id));
     $all(".nav-btn[data-view]").forEach((b) =>
       b.classList.toggle("active", b.getAttribute("data-view") === id)
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
-    if (location.hash !== "#" + id) {
-      history.replaceState(null, "", "#" + id);
+    if (!opts.skipHash) {
+      if (id === "token") {
+        const path = currentTokenId ? "#token/" + encodeURIComponent(currentTokenId) : "#token";
+        if (location.hash !== path) history.replaceState(null, "", path);
+      } else if (location.hash !== "#" + id) {
+        history.replaceState(null, "", "#" + id);
+      }
     }
+    if (id === "token") renderTokenPage();
   }
 
   function selectCommodity(symbol, opts) {
@@ -853,18 +1260,27 @@
       if (!el) return;
       e.preventDefault();
       const id = el.getAttribute("data-view") || el.getAttribute("data-goto");
-      if (id) showView(id);
+      if (!id) return;
+      if (id !== "token") currentTokenId = null;
+      showView(id);
     });
-    const hash = (location.hash || "#home").replace("#", "");
-    const allowed = ["home", "commodities", "create", "about"];
-    const legacy = { markets: "commodities", launches: "commodities" };
-    const resolved = legacy[hash] || hash;
-    showView(allowed.includes(resolved) ? resolved : "home");
-    window.addEventListener("hashchange", () => {
-      const h = (location.hash || "#home").replace("#", "");
-      const r = legacy[h] || h;
-      if (allowed.includes(r)) showView(r);
-    });
+    const applyRoute = () => {
+      const tokenRoute = parseTokenRoute();
+      if (tokenRoute) {
+        currentTokenId = tokenRoute.id;
+        showView("token", { skipHash: true });
+        return;
+      }
+      const hash = (location.hash || "#home").replace("#", "");
+      const allowed = ["home", "commodities", "create", "about"];
+      const legacy = { markets: "commodities", launches: "commodities" };
+      const resolved = legacy[hash] || hash;
+      currentTokenId = null;
+      showView(allowed.includes(resolved) ? resolved : "home", { skipHash: true });
+    };
+    applyRoute();
+    window.addEventListener("hashchange", applyRoute);
+    window.addEventListener("popstate", applyRoute);
   }
 
   async function loadQuotes() {
@@ -889,7 +1305,9 @@
   async function init() {
     setupNav();
     setupCreateForm();
+    setupTokenPage();
     demoLaunches = loadDemoLaunches();
+    demoHoldings = loadDemoHoldings();
     await loadQuotes();
     updateCatalogStats();
     renderCommodityGallery();

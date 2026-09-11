@@ -25,6 +25,7 @@ Open http://127.0.0.1:8765/
 | **Commodities** | Full quote-asset directory (table + grid); Live / Soon |
 | **Create** | Live commodity picker (BNB / XAUt / PAXG) + token details |
 | **How it works** | Pair → curve (~$5k→~$35k) → **locked Uniswap v4** (hook fees; **not Pancake**); fee split 40/30/30 |
+| **Token (DEMO)** | `#token/<demoId>` or `?token=<id>` — chart, buy/sell mock, curve, trades. Local only |
 
 ## Assets
 
