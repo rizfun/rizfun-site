@@ -6,6 +6,8 @@
 <title>Riz.Fun · Got commodity rizz.</title>
 <meta name="description" content="Riz.Fun. Got commodity rizz. Memes that pair with commodities on BNB Chain. Directory: gold, silver, oil, wheat, corn, coffee and more. Live BNB · XAUt · PAXG. @RizForFun"/>
 <meta name="theme-color" content="#000000"/>
+<meta name="referrer" content="strict-origin-when-cross-origin"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob:; media-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self'"/>
 <meta property="og:title" content="Riz.Fun · Got commodity rizz."/>
 <meta property="og:description" content="Got commodity rizz. Memes that pair with commodities on BNB. @RizForFun"/>
 <meta property="og:image" content="assets/rizfun-logo.png"/>
@@ -582,6 +584,7 @@
         <button type="button" class="docs-toc-link" data-docs-jump="docs-fees">Fees</button>
         <button type="button" class="docs-toc-link" data-goto="rewards">Rewards</button>
         <button type="button" class="docs-toc-link" data-docs-jump="docs-quotes">Quotes</button>
+        <button type="button" class="docs-toc-link" data-docs-jump="docs-security">Security</button>
         <button type="button" class="docs-toc-link" data-docs-jump="docs-faq">FAQ</button>
         <button type="button" class="docs-toc-link" data-docs-jump="docs-about">About</button>
       </nav>
@@ -658,6 +661,43 @@
       <p class="docs-note">Tokenized quotes only. Not a physical vault. See <span class="mono">commodities.json</span> and <button type="button" class="linkish inline-link" data-goto="commodities">Commodities</button>.</p>
     </div>
 
+
+    <div class="section" id="docs-security">
+      <div class="section-h">
+        <div>
+          <h2>Security</h2>
+          <p>What DEMO allows today, and what must be true before anyone calls this live.</p>
+        </div>
+      </div>
+      <div class="how how-2">
+        <div class="step">
+          <div class="n">DEMO</div>
+          <h3>Safe to expect now</h3>
+          <p>Connect uses an injected wallet only. We never ask for a seed or private key. Launch, Markets, token pages, and Rewards are browser mock data. No public mainnet contracts. DEMO actions do not move real funds.</p>
+        </div>
+        <div class="step">
+          <div class="n">LIVE</div>
+          <h3>Required before mainnet</h3>
+          <p>External audit. Multisig treasury and owner. No keys in the browser or repo. Contracts verified on BscScan. LP lock with no admin withdraw. Keeper-gated fee distribute. Real oracle, not the mock.</p>
+        </div>
+      </div>
+      <div class="faq-list" style="margin-top:18px">
+        <details class="faq-item" open>
+          <summary>Will this site ever ask for my seed?</summary>
+          <p>No. If anything asks you to type a seed, mnemonic, or private key, close it. That is not Riz.Fun.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What sits in localStorage?</summary>
+          <p>DEMO launches, mock holdings, mock reward ticks, and optionally your connected address for reconnect. Not secrets.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What should I reject in my wallet?</summary>
+          <p>Unexpected signatures or chain switches. This DEMO UI only needs account access and BNB Smart Chain (56).</p>
+        </details>
+      </div>
+      <p class="docs-note">Full checklist: <span class="mono">docs/security.md</span> in the site repo. Contract checklist: <span class="mono">SECURITY.md</span> in the Foundry repo.</p>
+    </div>
+
     <div class="section" id="docs-faq">
       <div class="section-h">
         <div>
@@ -669,6 +709,11 @@
         <details class="faq-item" open>
           <summary>Is it live on-chain?</summary>
           <p>No. Protocol contracts are not deployed for public use. This site is DEMO UI.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do you ask for a seed or private key?</summary>
+          <p>No. Connect is injected wallet only. Never type a seed into this site.</p>
         </details>
         <details class="faq-item">
           <summary>What is DEMO?</summary>
@@ -745,7 +790,7 @@
   </div>
 </footer>
 
-<script src="js/wallet.js?v=rewards-1"></script>
-<script src="js/app.js?v=rewards-1"></script>
+<script src="js/wallet.js?v=sec-1"></script>
+<script src="js/app.js?v=sec-1"></script>
 </body>
 </html>

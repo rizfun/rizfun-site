@@ -1,4 +1,7 @@
-/* Riz.Fun. EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet). No WC cloud. */
+/* Riz.Fun. EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet).
+ * No WalletConnect cloud. Never asks for seed / private key.
+ * Connect = eth_requestAccounts only. No blind message signing from this module.
+ */
 (function (global) {
   "use strict";
 
@@ -15,6 +18,7 @@
     blockExplorerUrls: ["https://bscscan.com"],
   };
 
+  /* localStorage: connected address only. Never seed, private key, or API secret. */
   var STORAGE_KEY = "rizfun.wallet.v1";
   var listeners = [];
   var state = {
@@ -122,9 +126,22 @@
     emit();
   }
 
+  /* Strict allowlist: connect + chain only. Never personal_sign / eth_sign / typed data /
+     sendTransaction from this helper. DEMO create does not need signatures. */
+  var ALLOWED_METHODS = {
+    eth_requestAccounts: true,
+    eth_accounts: true,
+    eth_chainId: true,
+    wallet_switchEthereumChain: true,
+    wallet_addEthereumChain: true,
+  };
+
   async function request(method, params) {
     var provider = getProvider();
     if (!provider) throw new Error("No injected wallet. Install MetaMask, Rabby, or Binance Wallet.");
+    if (!ALLOWED_METHODS[method]) {
+      throw new Error("Blocked wallet method: " + method + ". Riz.Fun never requests seeds, blind signatures, or arbitrary txs from this UI.");
+    }
     return provider.request({ method: method, params: params || [] });
   }
 

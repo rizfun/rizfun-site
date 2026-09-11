@@ -53,6 +53,7 @@
   let filterStatus = "ALL";
   let feePct = 2;
 
+  /* localStorage DEMO mock only (launches / holdings / rewards). Never secrets. */
   const DEMO_STORAGE_KEY = "rizfun.demoLaunches.v1";
   const DEMO_MCAP_START = 5000;
   const DEMO_MCAP_GRAD = 35000;
