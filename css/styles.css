@@ -766,3 +766,14 @@ footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--bo
   .wallet-slot{order:5;width:100%;margin:6px 0 0;justify-content:flex-end}
   .nav-links{justify-content:flex-end}
 }
+
+
+/* STATIC HOLD — temporary while Imagine video is made; no broken limb anim */
+.riz-char-static{display:flex;align-items:center;justify-content:center}
+.riz-hold-static{
+  position:relative !important;inset:auto !important;
+  opacity:1 !important;animation:none !important;
+  width:min(100%,320px);height:auto;max-height:360px;object-fit:contain;
+}
+.riz-tagline-static{opacity:1 !important;animation:none !important;transform:none !important}
+.riz-play,.riz-figure,.riz-limbs,.riz-body,.riz-glasses{display:none !important}
