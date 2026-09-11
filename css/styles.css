@@ -652,16 +652,30 @@ footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--bo
   background:var(--cream);color:var(--ink);font-size:1rem;
 }
 
-/* WALLET (nav + create) — injected EIP-1193; do not touch hero-stage */
-.wallet-slot{display:inline-flex;align-items:center;gap:8px;margin-left:4px}
-.wallet-connected{display:inline-flex;align-items:center;gap:8px}
-.wallet-addr{
-  font-size:.72rem;font-weight:700;letter-spacing:.02em;
-  padding:6px 10px;border-radius:var(--radius);
-  border:var(--border) solid var(--cream);color:var(--cream);
-  background:rgba(243,230,200,.06);max-width:12ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+/* WALLET (nav + create) — match Create / chain-pill compact size */
+.nav-links > .btn-sm,
+.nav-links .wallet-btn{
+  padding:6px 11px;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  line-height:1.2;
+  min-height:0;
+  height:auto;
+  box-shadow:none;
+  white-space:nowrap;
 }
-.wallet-btn{white-space:nowrap}
+.nav-links .btn-primary.wallet-btn{box-shadow:none}
+.nav-links .btn-primary.wallet-btn:hover{box-shadow:none;transform:none;background:var(--cream2)}
+.wallet-slot{display:inline-flex;align-items:center;gap:6px;margin-left:4px}
+.wallet-connected{display:inline-flex;align-items:center;gap:6px}
+.wallet-addr{
+  font-size:.7rem;font-weight:700;letter-spacing:.04em;
+  padding:6px 11px;border-radius:var(--radius);
+  border:var(--border) solid var(--cream);color:var(--cream);
+  background:transparent;max-width:11ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  line-height:1.2;
+}
 .wallet-wrong{border-color:#e8a54b;color:#e8a54b}
 .wallet-wrong:hover{background:#e8a54b;color:var(--ink)}
 @media(max-width:720px){
