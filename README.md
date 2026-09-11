@@ -32,6 +32,10 @@ Open http://127.0.0.1:8765/
 - Optional brand banner (not shown on homepage): `assets/rizfun-banner.png`
 - Quote registry: `commodities.json` (~31 CME-style softs / metals / energy)
 
+## Wallet
+
+Nav **Connect Wallet** uses free injected `window.ethereum` (MetaMask / Rabby / Binance Wallet) on **BSC** (`0x38`). No WalletConnect cloud. Launch stays honestly disabled until contracts ship.
+
 ## Honest empty state
 
 No fake sample memecoins. Launches board shows **No launches yet** until the protocol ships.
