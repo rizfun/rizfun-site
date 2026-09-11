@@ -53,6 +53,328 @@
   let filterStatus = "ALL";
   let feePct = 2;
 
+  const DEMO_STORAGE_KEY = "rizfun.demoLaunches.v1";
+  const DEMO_MCAP_START = 5000;
+  const DEMO_MCAP_GRAD = 35000;
+  const DEMO_BUY_NAMES = ["anon", "whale", "degen", "ct", "based", "farmer", "sniper", "ape"];
+  let demoLaunches = [];
+  let demoTickTimer = null;
+  let demoImageDataUrl = "";
+
+  function loadDemoLaunches() {
+    try {
+      const raw = localStorage.getItem(DEMO_STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed
+        .filter((x) => x && x.id && x.name && x.ticker && x.quote)
+        .map((x) => ({
+          id: String(x.id),
+          name: String(x.name).slice(0, 32),
+          ticker: String(x.ticker).toUpperCase().slice(0, 10),
+          quote: String(x.quote),
+          fee: Number(x.fee) || 2,
+          mcap: Math.max(DEMO_MCAP_START, Math.min(DEMO_MCAP_GRAD, Number(x.mcap) || DEMO_MCAP_START)),
+          volume: Math.max(0, Number(x.volume) || 0),
+          createdAt: Number(x.createdAt) || Date.now(),
+          imageDataUrl: typeof x.imageDataUrl === "string" ? x.imageDataUrl : "",
+          recentBuys: Array.isArray(x.recentBuys) ? x.recentBuys.slice(0, 6) : [],
+        }));
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveDemoLaunches() {
+    try {
+      localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(demoLaunches));
+    } catch (err) {
+      console.warn("Could not persist demo launches", err);
+    }
+  }
+
+  function usd(n) {
+    const v = Math.round(Number(n) || 0);
+    return "$" + v.toLocaleString("en-US");
+  }
+
+  function curvePct(mcap) {
+    const span = DEMO_MCAP_GRAD - DEMO_MCAP_START;
+    const p = ((Number(mcap) - DEMO_MCAP_START) / span) * 100;
+    return Math.max(0, Math.min(100, Math.round(p)));
+  }
+
+  function timeAgo(ts) {
+    const sec = Math.max(0, Math.floor((Date.now() - Number(ts)) / 1000));
+    if (sec < 5) return "just now";
+    if (sec < 60) return sec + "s ago";
+    const m = Math.floor(sec / 60);
+    if (m < 60) return m + "m ago";
+    const h = Math.floor(m / 60);
+    return h + "h ago";
+  }
+
+  function randomBuy(quote) {
+    const who = DEMO_BUY_NAMES[Math.floor(Math.random() * DEMO_BUY_NAMES.length)];
+    const amt = (Math.random() * 180 + 12).toFixed(0);
+    return {
+      who: who,
+      amountUsd: Number(amt),
+      quote: quote,
+      at: Date.now(),
+    };
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function demoAvatarHtml(launch) {
+    const cls = avatarClass(launch.quote);
+    if (launch.imageDataUrl) {
+      return (
+        '<div class="avatar ' +
+        cls +
+        '"><img src="' +
+        launch.imageDataUrl +
+        '" alt=""/></div>'
+      );
+    }
+    const letters = escapeHtml((launch.ticker || "?").slice(0, 4));
+    return '<div class="avatar ' + cls + '">' + letters + "</div>";
+  }
+
+  function demoCardHtml(launch) {
+    const pct = curvePct(launch.mcap);
+    const buy = launch.recentBuys && launch.recentBuys[0];
+    const buyHtml = buy
+      ? '<div class="demo-buy"><span><strong>' +
+        escapeHtml(buy.who) +
+        "</strong> bought</span><span class=\"buy-amt\">" +
+        usd(buy.amountUsd) +
+        "</span><span class=\"buy-ago\">" +
+        timeAgo(buy.at) +
+        "</span></div>"
+      : '<div class="demo-buy"><span>Waiting for mock buys…</span></div>';
+    return (
+      '<article class="demo-card" data-demo-id="' +
+      escapeHtml(launch.id) +
+      '">' +
+      '<div class="demo-card-top">' +
+      '<div class="demo-card-identity">' +
+      demoAvatarHtml(launch) +
+      "<div><div class=\"tok-name\">" +
+      escapeHtml(launch.name) +
+      '</div><div class="tok-sym mono">$' +
+      escapeHtml(launch.ticker) +
+      " · " +
+      escapeHtml(launch.quote) +
+      "</div></div></div>" +
+      '<div class="demo-card-badges">' +
+      '<span class="demo-badge">DEMO</span>' +
+      '<span class="quote-pill">' +
+      escapeHtml(launch.quote) +
+      "</span></div></div>" +
+      '<div class="demo-card-stats">' +
+      '<div class="demo-stat"><div class="l">Mock mcap</div><div class="v">' +
+      usd(launch.mcap) +
+      '</div></div>' +
+      '<div class="demo-stat"><div class="l">Mock volume</div><div class="v">' +
+      usd(launch.volume) +
+      "</div></div></div>" +
+      '<div class="demo-curve">' +
+      '<div class="demo-curve-meta mono"><span>Bonding curve</span><span>' +
+      pct +
+      "% · " +
+      usd(DEMO_MCAP_START) +
+      "→" +
+      usd(DEMO_MCAP_GRAD) +
+      "</span></div>" +
+      '<div class="progress" aria-hidden="true"><i style="width:' +
+      pct +
+      '%"></i></div></div>' +
+      '<div class="demo-fee-split">' +
+      '<span>Fee split</span>' +
+      '<span class="split-chip">40% holders</span>' +
+      '<span class="split-chip">30% $RIZ</span>' +
+      '<span class="split-chip">30% protocol</span>' +
+      "</div>" +
+      '<div class="demo-activity">' +
+      '<div class="demo-activity-label mono">Mock recent buys</div>' +
+      buyHtml +
+      "</div></article>"
+    );
+  }
+
+  function renderDemoLaunches() {
+    const featured = $("#featuredLaunches");
+    const tbody = $("#launchesBody");
+
+    if (featured) {
+      if (!demoLaunches.length) {
+        featured.innerHTML =
+          '<div class="empty-state">' +
+          '<p class="empty-title">Demo board is empty</p>' +
+          '<p class="empty-sub">Create a local DEMO launch with a live quote (BNB / XAUt / PAXG). Cards stay in this browser only — protocol is not live.</p>' +
+          '<div class="demo-empty-actions">' +
+          '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Create DEMO launch</button>' +
+          "</div></div>";
+      } else {
+        featured.innerHTML = demoLaunches.map(demoCardHtml).join("");
+      }
+      $all("[data-goto]", featured).forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          const id = el.getAttribute("data-goto");
+          if (id) showView(id);
+        });
+      });
+    }
+
+    if (tbody) {
+      if (!demoLaunches.length) {
+        tbody.innerHTML =
+          '<tr><td colspan="6" class="empty-cell">No DEMO launches yet — use Create to add a mock card.</td></tr>';
+      } else {
+        tbody.innerHTML = demoLaunches
+          .map((launch, i) => {
+            const pct = curvePct(launch.mcap);
+            return (
+              "<tr>" +
+              '<td class="mono">' +
+              (i + 1) +
+              "</td>" +
+              "<td><div class=\"pair\">" +
+              demoAvatarHtml(launch) +
+              "<div><div class=\"name\">" +
+              escapeHtml(launch.name) +
+              ' <span class="demo-badge" style="margin-left:6px;vertical-align:middle">DEMO</span></div>' +
+              '<div class="sym mono">$' +
+              escapeHtml(launch.ticker) +
+              "</div></div></div></td>" +
+              '<td class="mono">' +
+              escapeHtml(launch.quote) +
+              "</td>" +
+              '<td class="mcap-cell"><div class="mono">' +
+              usd(launch.mcap) +
+              '</div><div class="progress"><i style="width:' +
+              pct +
+              '%"></i></div>' +
+              '<div class="mcap-meta"><span>' +
+              pct +
+              "%</span><span>" +
+              usd(DEMO_MCAP_GRAD) +
+              "</span></div></td>" +
+              '<td class="mono">' +
+              usd(launch.volume) +
+              "</td>" +
+              '<td><span class="status-badge soon">DEMO · not on-chain</span></td>' +
+              "</tr>"
+            );
+          })
+          .join("");
+      }
+    }
+  }
+
+  function tickDemoActivity() {
+    if (!demoLaunches.length) return;
+    let changed = false;
+    demoLaunches.forEach((launch) => {
+      if (Math.random() > 0.55) return;
+      const buy = randomBuy(launch.quote);
+      launch.recentBuys = [buy].concat(launch.recentBuys || []).slice(0, 5);
+      launch.volume = Math.round((Number(launch.volume) || 0) + buy.amountUsd);
+      const bump = Math.round(buy.amountUsd * (0.35 + Math.random() * 0.9));
+      launch.mcap = Math.min(DEMO_MCAP_GRAD, Math.round(Number(launch.mcap) + bump));
+      changed = true;
+    });
+    if (changed) {
+      saveDemoLaunches();
+      renderDemoLaunches();
+    } else {
+      /* still refresh "ago" labels */
+      renderDemoLaunches();
+    }
+  }
+
+  function startDemoTicker() {
+    if (demoTickTimer) clearInterval(demoTickTimer);
+    demoTickTimer = setInterval(tickDemoActivity, 3500);
+  }
+
+  function createDemoLaunchFromForm() {
+    const nameEl = $("#tokName");
+    const tickEl = $("#tokTicker");
+    const msg = $("#createMsg");
+    const name = (nameEl && nameEl.value.trim()) || "";
+    const ticker = (tickEl && tickEl.value.trim().toUpperCase()) || "";
+    if (!name || !ticker) {
+      if (msg) {
+        msg.textContent = "Add a name and ticker to create a DEMO launch.";
+        msg.hidden = false;
+      }
+      return false;
+    }
+    const q = quotes.find((x) => x.symbol === selectedQuote);
+    if (!isLive(q)) {
+      if (msg) {
+        msg.textContent = "Pick a live quote: BNB, XAUt, or PAXG.";
+        msg.hidden = false;
+      }
+      return false;
+    }
+    const firstBuyRaw = ($("#firstBuy") && $("#firstBuy").value.trim()) || "0";
+    const firstBuy = Number(firstBuyRaw) > 0 ? Number(firstBuyRaw) : 0;
+    const seedMcap = Math.min(
+      DEMO_MCAP_GRAD - 500,
+      DEMO_MCAP_START + Math.round(800 + Math.random() * 4200) + (firstBuy > 0 ? 900 : 0)
+    );
+    const launch = {
+      id: "demo-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7),
+      name: name.slice(0, 32),
+      ticker: ticker.slice(0, 10),
+      quote: selectedQuote,
+      fee: feePct,
+      mcap: seedMcap,
+      volume: Math.round(200 + Math.random() * 1800) + (firstBuy > 0 ? 400 : 0),
+      createdAt: Date.now(),
+      imageDataUrl: demoImageDataUrl || "",
+      recentBuys: [randomBuy(selectedQuote)],
+    };
+    demoLaunches.unshift(launch);
+    if (demoLaunches.length > 24) demoLaunches = demoLaunches.slice(0, 24);
+    saveDemoLaunches();
+    renderDemoLaunches();
+    if (msg) {
+      msg.textContent =
+        "DEMO launch “" +
+        launch.name +
+        "” ($" +
+        launch.ticker +
+        ") added to Markets. Local only — not on-chain.";
+      msg.hidden = false;
+    }
+    showView("home");
+    const board = $("#featuredLaunches");
+    if (board) board.scrollIntoView({ behavior: "smooth", block: "start" });
+    return true;
+  }
+
+  window.RizDemo = {
+    createFromForm: createDemoLaunchFromForm,
+    render: renderDemoLaunches,
+    list: function () {
+      return demoLaunches.slice();
+    },
+  };
+
+
   function $(sel, root) {
     return (root || document).querySelector(sel);
   }
@@ -381,23 +703,7 @@
   }
 
   function renderLaunchesEmpty() {
-    const tbody = $("#launchesBody");
-    if (tbody) {
-      tbody.innerHTML =
-        '<tr><td colspan="5" class="empty-cell">No launches yet</td></tr>';
-    }
-    const featured = $("#featuredLaunches");
-    if (featured) {
-      featured.innerHTML =
-        '<div class="empty-state"><p class="empty-title">No launches yet</p><p class="empty-sub">When the protocol ships, new commodity-paired launches will appear here.</p><button type="button" class="btn btn-primary btn-sm" data-goto="create">Create a launch</button></div>';
-      $all("[data-goto]", featured).forEach((el) => {
-        el.addEventListener("click", (e) => {
-          e.preventDefault();
-          const id = el.getAttribute("data-goto");
-          if (id) showView(id);
-        });
-      });
-    }
+    renderDemoLaunches();
   }
 
   function renderCreateQuotes() {
@@ -498,24 +804,32 @@
         if (!file) {
           preview.classList.remove("show");
           preview.removeAttribute("src");
+          demoImageDataUrl = "";
           return;
         }
-        preview.src = URL.createObjectURL(file);
-        preview.classList.add("show");
+        if (file.size > 400000) {
+          const msg = $("#createMsg");
+          if (msg) {
+            msg.textContent = "Image too large for DEMO storage — try under ~400KB.";
+            msg.hidden = false;
+          }
+          imgInput.value = "";
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          demoImageDataUrl = String(reader.result || "");
+          preview.src = demoImageDataUrl;
+          preview.classList.add("show");
+        };
+        reader.readAsDataURL(file);
       });
     }
     const form = $("#createForm");
     if (form) {
       form.addEventListener("submit", (e) => {
-        /* Wallet module handles connect / network / honest-disabled launch (capture phase). */
-        if (window.RizWallet) return;
         e.preventDefault();
-        const msg = $("#createMsg");
-        if (msg) {
-          msg.textContent =
-            "Launch opens when the protocol ships. Connect a wallet from the nav when you are ready.";
-          msg.hidden = false;
-        }
+        createDemoLaunchFromForm();
       });
     }
   }
@@ -562,14 +876,22 @@
   async function init() {
     setupNav();
     setupCreateForm();
+    demoLaunches = loadDemoLaunches();
     await loadQuotes();
     updateCatalogStats();
     renderCommodityGallery();
     renderDirectoryFilters();
     renderDirectory();
-    renderLaunchesEmpty();
+    renderDemoLaunches();
+    startDemoTicker();
     renderCreateQuotes();
     updateSummary();
+    const submit = $("#createSubmit");
+    if (submit) {
+      submit.disabled = false;
+      submit.dataset.mode = "demo";
+      submit.textContent = "Create DEMO launch";
+    }
   }
 
   if (document.readyState === "loading") {

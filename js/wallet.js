@@ -304,21 +304,11 @@
     var msg = $("#createMsg");
     if (!submit) return;
     var s = getState();
-    /* Protocol not deployed — never fake a successful launch tx */
-    submit.disabled = true;
-    if (!s.connected) {
-      submit.textContent = "Connect wallet to launch";
-      submit.disabled = false;
-      submit.dataset.mode = "connect";
-    } else if (!s.onBsc) {
-      submit.textContent = "Switch to BNB Smart Chain";
-      submit.disabled = false;
-      submit.dataset.mode = "switch";
-    } else {
-      submit.textContent = "Launch opens when protocol ships";
-      submit.disabled = true;
-      submit.dataset.mode = "soon";
-    }
+    /* Create is local DEMO only — never claim an on-chain launch tx.
+       Nav Connect Wallet stays independent (injected BSC). */
+    submit.disabled = false;
+    submit.dataset.mode = "demo";
+    submit.textContent = "Create DEMO launch";
     if (msg && s.error) {
       msg.textContent = s.error;
       msg.hidden = false;
@@ -334,49 +324,15 @@
       function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        var submit = $("#createSubmit");
+        /* Local DEMO create — no wallet tx, no claim of deployed contracts */
+        if (global.RizDemo && typeof global.RizDemo.createFromForm === "function") {
+          global.RizDemo.createFromForm();
+          return;
+        }
         var msg = $("#createMsg");
-        var mode = submit && submit.dataset.mode;
-        var s = getState();
-
-        if (mode === "connect" || !s.connected) {
-          connect()
-            .then(function () {
-              if (msg) {
-                msg.textContent =
-                  "Wallet connected. Launch opens when the protocol ships — no fake transactions.";
-                msg.hidden = false;
-              }
-              updateCreateUi();
-            })
-            .catch(function (err) {
-              if (msg) {
-                msg.textContent = (err && err.message) || "Could not connect wallet.";
-                msg.hidden = false;
-              }
-            });
-          return;
-        }
-        if (mode === "switch" || !s.onBsc) {
-          ensureBsc()
-            .then(function () {
-              if (msg) {
-                msg.textContent = "On BNB Smart Chain. Launch opens when the protocol ships.";
-                msg.hidden = false;
-              }
-              updateCreateUi();
-            })
-            .catch(function (err) {
-              if (msg) {
-                msg.textContent = (err && err.message) || "Could not switch network.";
-                msg.hidden = false;
-              }
-            });
-          return;
-        }
         if (msg) {
           msg.textContent =
-            "Launch creation opens when the protocol ships. Contracts are not deployed yet — no transaction was sent.";
+            "DEMO board unavailable. Refresh the page. Protocol contracts are not deployed — no transaction was sent.";
           msg.hidden = false;
         }
       },

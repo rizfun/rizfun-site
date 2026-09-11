@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/styles.css?v=cream-f9f0df"/>
+<link rel="stylesheet" href="css/styles.css?v=demo-board-1"/>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -88,11 +88,16 @@
     <div class="section">
       <div class="section-h">
         <div>
-          <h2>Launches</h2>
-          <p>Honest empty board until the protocol ships real launches.</p>
+          <h2>Demo board</h2>
+          <p>Local DEMO launches you create here — bonding curve mock, not on-chain. Protocol is not live.</p>
         </div>
+        <button type="button" class="btn btn-ghost btn-sm" data-goto="create">Create DEMO →</button>
       </div>
-      <div id="featuredLaunches"></div>
+      <div class="demo-banner mono" role="status">
+        <span class="demo-badge">DEMO</span>
+        <span>Browser-only mock board · persisted in localStorage · no contracts · no txs</span>
+      </div>
+      <div id="featuredLaunches" class="demo-launch-grid"></div>
     </div>
   </section>
 
@@ -145,14 +150,18 @@
       <div class="section" style="padding-top:8px">
         <div class="section-h">
           <div>
-            <h2>Launches board</h2>
-            <p>No fake sample rows — empty until real launches exist.</p>
+            <h2>Demo launches board</h2>
+            <p>Same local DEMO cards as Home — not live protocol activity.</p>
           </div>
+        </div>
+        <div class="demo-banner mono" role="status">
+          <span class="demo-badge">DEMO</span>
+          <span>Protocol not live · these rows are mock launches from Create</span>
         </div>
         <div class="board">
           <div class="board-top">
-            <div class="mono board-label">Launches</div>
-            <div class="pill soft">Live board</div>
+            <div class="mono board-label">Demo launches</div>
+            <div class="pill soft">DEMO board</div>
           </div>
           <div class="table-wrap">
             <table>
@@ -161,8 +170,9 @@
                   <th>#</th>
                   <th>Name</th>
                   <th>Commodity</th>
+                  <th>Curve</th>
+                  <th>Volume</th>
                   <th>Status</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody id="launchesBody"></tbody>
@@ -178,8 +188,8 @@
     <div class="section" style="padding-top:28px">
       <div class="section-h">
         <div>
-          <h2>Create a launch</h2>
-          <p>Step 1 — choose a <strong>live</strong> commodity pair. Then name, ticker, image, and fee.</p>
+          <h2>Create a DEMO launch</h2>
+          <p>Pick a <strong>live</strong> quote (BNB / XAUt / PAXG), name it, then add a local DEMO card to Markets. Not on-chain.</p>
         </div>
       </div>
 
@@ -231,9 +241,9 @@
               </div>
             </div>
             <div style="margin-top:20px">
-              <button class="btn btn-primary" type="submit" id="createSubmit" style="width:100%" data-mode="connect">Connect wallet to launch</button>
+              <button class="btn btn-primary" type="submit" id="createSubmit" style="width:100%" data-mode="demo">Create DEMO launch</button>
               <p id="createMsg" class="soft-note" hidden></p>
-              <p class="submit-note">Connect an injected wallet (MetaMask / Rabby / Binance). Launch opens when the protocol ships — no fake txs. Never share a seed phrase.</p>
+              <p class="submit-note">Adds a <strong>DEMO</strong> card to the Markets board in this browser only (localStorage). Protocol contracts are not deployed — no transaction is sent. Connect Wallet in the nav stays available for when mainnet ships. Never share a seed phrase.</p>
             </div>
           </div>
         </div>
@@ -260,6 +270,10 @@
             Fee split: <strong>40%</strong> holders (in paired commodity) ·
             <strong>30%</strong> buyback <strong>$RIZ</strong> ·
             <strong>30%</strong> protocol.
+          </div>
+          <div class="demo-banner compact mono" style="margin-top:14px">
+            <span class="demo-badge">DEMO</span>
+            <span>Preview only — Create adds a mock Markets card</span>
           </div>
         </aside>
       </form>
@@ -363,7 +377,7 @@
   </div>
 </footer>
 
-<script src="js/wallet.js"></script>
-<script src="js/app.js"></script>
+<script src="js/wallet.js?v=demo-board-1"></script>
+<script src="js/app.js?v=demo-board-1"></script>
 </body>
 </html>
