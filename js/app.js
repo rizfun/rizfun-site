@@ -1,4 +1,4 @@
-/* Riz.Fun — commodities directory + create UI (frontend only) */
+/* Riz.Fun. commodities directory + create UI (frontend only) */
 (function () {
   "use strict";
 
@@ -442,7 +442,7 @@
     if (copyBtn) {
       copyBtn.addEventListener("click", async () => {
         const id = currentTokenId || (($("#tokenContractId") && $("#tokenContractId").textContent) || "");
-        if (!id || id === "-" || id === "—") return;
+        if (!id || id === "-" || id === ". ") return;
         try {
           await navigator.clipboard.writeText(id);
           showToast("Copied");
@@ -592,9 +592,9 @@
         featured.innerHTML =
           '<div class="empty-state">' +
           '<p class="empty-title">Demo board is empty</p>' +
-          '<p class="empty-sub">Create a local DEMO launch with a live quote (BNB / XAUt / PAXG). Cards stay in this browser only — protocol is not live.</p>' +
+          '<p class="empty-sub">Launch a local DEMO coin with a live quote (BNB / XAUt / PAXG). Cards stay in this browser only. protocol is not live.</p>' +
           '<div class="demo-empty-actions">' +
-          '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Create DEMO launch</button>' +
+          '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO coin</button>' +
           "</div></div>";
       } else {
         featured.innerHTML = demoLaunches.map(demoCardHtml).join("");
@@ -624,7 +624,7 @@
     if (tbody) {
       if (!demoLaunches.length) {
         tbody.innerHTML =
-          '<tr><td colspan="6" class="empty-cell">No DEMO launches yet — use Create to add a mock card.</td></tr>';
+          '<tr><td colspan="6" class="empty-cell">No DEMO coins yet. use Create to add a mock card.</td></tr>';
       } else {
         tbody.innerHTML = demoLaunches
           .map((launch, i) => {
@@ -715,7 +715,7 @@
     const ticker = (tickEl && tickEl.value.trim().toUpperCase()) || "";
     if (!name || !ticker) {
       if (msg) {
-        msg.textContent = "Add a name and ticker to create a DEMO launch.";
+        msg.textContent = "Add a name and ticker to launch a DEMO coin.";
         msg.hidden = false;
       }
       return false;
@@ -752,11 +752,11 @@
     renderDemoLaunches();
     if (msg) {
       msg.textContent =
-        "DEMO launch “" +
+        "DEMO coin “" +
         launch.name +
         "” ($" +
         launch.ticker +
-        ") added to Markets. Local only — not on-chain.";
+        ") added to Markets. Local only. not on-chain.";
       msg.hidden = false;
     }
     showView("home");
@@ -963,7 +963,7 @@
   }
 
   function renderCommodityGallery() {
-    /* Home no longer lists commodities — full catalog is view-commodities only. */
+    /* Home no longer lists commodities. full catalog is view-commodities only. */
     const el = $("#homeLiveQuotes");
     if (!el) return;
     const live = (STATE.commodities || []).filter(function (c) {
@@ -1170,7 +1170,7 @@
 
   function updateSummary() {
     const meta = quoteMeta(selectedQuote);
-    const name = ($("#tokName") && $("#tokName").value.trim()) || "—";
+    const name = ($("#tokName") && $("#tokName").value.trim()) || ". ";
     const tickerRaw = ($("#tokTicker") && $("#tokTicker").value.trim().toUpperCase()) || "";
     const firstBuy = ($("#firstBuy") && $("#firstBuy").value.trim()) || "0";
 
@@ -1181,7 +1181,7 @@
     if (feeEl) feeEl.textContent = feePct.toFixed(1) + "%";
     if (quoteEl) quoteEl.textContent = selectedQuote;
     if (nameEl) nameEl.textContent = name;
-    if (tickEl) tickEl.textContent = tickerRaw ? "$" + tickerRaw : "—";
+    if (tickEl) tickEl.textContent = tickerRaw ? "$" + tickerRaw : ". ";
     const fb = $("#sumFirstBuy");
     if (fb)
       fb.textContent =
@@ -1231,7 +1231,7 @@
         if (file.size > 400000) {
           const msg = $("#createMsg");
           if (msg) {
-            msg.textContent = "Image too large for DEMO storage — try under ~400KB.";
+            msg.textContent = "Image too large for DEMO storage. try under ~400KB.";
             msg.hidden = false;
           }
           imgInput.value = "";
@@ -1332,7 +1332,7 @@
     if (submit) {
       submit.disabled = false;
       submit.dataset.mode = "demo";
-      submit.textContent = "Create DEMO launch";
+      submit.textContent = "Launch DEMO coin";
     }
   }
 

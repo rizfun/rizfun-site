@@ -1,4 +1,4 @@
-/* Riz.Fun — EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet). No WC cloud. */
+/* Riz.Fun. EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet). No WC cloud. */
 (function (global) {
   "use strict";
 
@@ -304,11 +304,11 @@
     var msg = $("#createMsg");
     if (!submit) return;
     var s = getState();
-    /* Create is local DEMO only — never claim an on-chain launch tx.
+    /* Create is local DEMO only. never claim an on-chain launch tx.
        Nav Connect Wallet stays independent (injected BSC). */
     submit.disabled = false;
     submit.dataset.mode = "demo";
-    submit.textContent = "Create DEMO launch";
+    submit.textContent = "Launch DEMO coin";
     if (msg && s.error) {
       msg.textContent = s.error;
       msg.hidden = false;
@@ -324,7 +324,7 @@
       function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        /* Local DEMO create — no wallet tx, no claim of deployed contracts */
+        /* Local DEMO create. no wallet tx, no claim of deployed contracts */
         if (global.RizDemo && typeof global.RizDemo.createFromForm === "function") {
           global.RizDemo.createFromForm();
           return;
@@ -332,7 +332,7 @@
         var msg = $("#createMsg");
         if (msg) {
           msg.textContent =
-            "DEMO board unavailable. Refresh the page. Protocol contracts are not deployed — no transaction was sent.";
+            "DEMO board unavailable. Refresh the page. Protocol contracts are not deployed. no transaction was sent.";
           msg.hidden = false;
         }
       },
