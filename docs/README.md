@@ -1,6 +1,6 @@
 # Riz.Fun docs
 
-Short product notes for the public site. Plain English. No fluff.
+Product notes for the public site. Plain English.
 
 Live UI (DEMO): https://rizfun.github.io/rizfun-site/#about
 
@@ -10,7 +10,7 @@ Live UI (DEMO): https://rizfun.github.io/rizfun-site/#about
 | [fees.md](./fees.md) | Fee band + 40/30/30 split |
 | [quotes.md](./quotes.md) | Live quotes vs Soon directory |
 | [faq.md](./faq.md) | Is it live? DEMO? $RIZ? Custody? |
-| [security.md](./security.md) | DEMO safety + pre-mainnet checklist |
+| [security.md](./security.md) | Wallet + DEMO honesty |
 
 Site nav: **Docs** opens the same content on the Pages UI.
 

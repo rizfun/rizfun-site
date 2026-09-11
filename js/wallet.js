@@ -138,7 +138,7 @@
 
   async function request(method, params) {
     var provider = getProvider();
-    if (!provider) throw new Error("No injected wallet. Install MetaMask, Rabby, or Binance Wallet.");
+    if (!provider) throw new Error("No browser wallet found. Install MetaMask, Rabby, or Binance Wallet.");
     if (!ALLOWED_METHODS[method]) {
       throw new Error("Blocked wallet method: " + method + ". Riz.Fun never requests seeds, blind signatures, or arbitrary txs from this UI.");
     }
@@ -176,7 +176,7 @@
     }
     await readChainId();
     if (!isBsc(state.chainId)) {
-      throw new Error("Please switch to BNB Smart Chain (56).");
+      throw new Error("Switch to BNB Smart Chain (56).");
     }
     return true;
   }
@@ -309,7 +309,7 @@
           disconnect();
         } else if (action === "switch") {
           ensureBsc().catch(function (err) {
-            setError((err && err.message) || "Could not switch network");
+            setError((err && err.message) || "Could not switch network.");
           });
         }
       });
@@ -349,7 +349,7 @@
         var msg = $("#createMsg");
         if (msg) {
           msg.textContent =
-            "DEMO board unavailable. Refresh the page. Protocol contracts are not deployed. no transaction was sent.";
+            "DEMO board unavailable. Refresh the page. Contracts are not deployed. No transaction was sent.";
           msg.hidden = false;
         }
       },

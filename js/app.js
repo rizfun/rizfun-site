@@ -13,7 +13,7 @@
       status: "live",
       enabled: true,
       icon: "🍚",
-      vibe: "Native gas · rice narrative on BSC",
+      vibe: "Native gas on BNB Chain",
     },
     {
       symbol: "XAUt",
@@ -25,7 +25,7 @@
       status: "live",
       enabled: true,
       icon: "✦",
-      vibe: "Tokenized gold · XAUt pair on BSC",
+      vibe: "Tokenized gold on BSC",
     },
     {
       symbol: "PAXG",
@@ -37,14 +37,14 @@
       status: "live",
       enabled: true,
       icon: "◈",
-      vibe: "Tokenized gold · Binance-peg on BSC",
+      vibe: "Tokenized gold on BSC",
     },
   ];
 
   const VIBES = {
-    BNB: "Native gas · rice narrative on BSC",
-    XAUt: "Tokenized gold · XAUt pair on BSC",
-    PAXG: "Tokenized gold · Binance-peg on BSC",
+    BNB: "Native gas on BNB Chain",
+    XAUt: "Tokenized gold on BSC",
+    PAXG: "Tokenized gold on BSC",
   };
 
   let quotes = FALLBACK_QUOTES.slice();
@@ -283,7 +283,7 @@
       body.innerHTML =
         '<tr><td colspan="5"><div class="empty-state" style="padding:28px 12px">' +
         '<p class="empty-title">No DEMO markets yet</p>' +
-        '<p class="empty-sub">Launch a DEMO coin, mock a trade, then check accrued quote here.</p>' +
+        '<p class="empty-sub">Launch a DEMO coin, run a mock trade, then check accrued quote here.</p>' +
         '<div class="demo-empty-actions">' +
         '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO</button>' +
         "</div></div></td></tr>";
@@ -514,7 +514,7 @@
     setTxt("#tokenLiqPair", "$" + launch.ticker + " / " + launch.quote);
     setTxt("#tokenContractId", launch.id);
     const hint = $("#tokenAmtHint");
-    if (hint) hint.textContent = tokenTradeSide === "buy" ? "(" + launch.quote + ")" : "($ tokens mock)";
+    if (hint) hint.textContent = tokenTradeSide === "buy" ? "(" + launch.quote + ")" : "(token units, mock)";
     const hold = getHolding(launch.id);
     setTxt("#tokenHoldings", "Bag: " + hold.toLocaleString("en-US") + " $" + launch.ticker);
     updateTradeTabUi();
@@ -525,7 +525,7 @@
       const rows = (launch.recentBuys || []).slice();
       if (!rows.length) {
         tbody.innerHTML =
-          '<tr><td colspan="5" class="empty-cell">No trades yet. Hit Buy or Sell.</td></tr>';
+          '<tr><td colspan="5" class="empty-cell">No trades yet. Use Buy or Sell.</td></tr>';
       } else {
         tbody.innerHTML = rows
           .map((b) => {
@@ -571,13 +571,13 @@
   function executeDemoTrade() {
     const launch = findDemoLaunch(currentTokenId);
     if (!launch) {
-      showToast("No DEMO for that id");
+      showToast("No DEMO coin for that id.");
       return;
     }
     const amtEl = $("#tokenTradeAmt");
     const amt = Number(amtEl && amtEl.value);
     if (!(amt > 0)) {
-      showToast("Amount needs to be > 0");
+      showToast("Enter an amount greater than 0.");
       return;
     }
 
@@ -605,7 +605,7 @@
 
     const bag = getHolding(launch.id);
     if (bag <= 0) {
-      showToast("Bag empty. Buy first.");
+      showToast("Bag is empty. Buy first.");
       return;
     }
     const sellTokens = Math.min(bag, Math.max(1, Math.round(amt)));
@@ -636,7 +636,7 @@
         const launch = findDemoLaunch(currentTokenId);
         if (launch) {
           const hint = $("#tokenAmtHint");
-          if (hint) hint.textContent = tokenTradeSide === "buy" ? "(" + launch.quote + ")" : "($ tokens mock)";
+          if (hint) hint.textContent = tokenTradeSide === "buy" ? "(" + launch.quote + ")" : "(token units, mock)";
         }
       });
     });
@@ -659,7 +659,7 @@
         if (!id || id === "-" || id === ". ") return;
         try {
           await navigator.clipboard.writeText(id);
-          showToast("Copied");
+          showToast("Copied.");
         } catch (_) {
           showToast(id);
         }
@@ -938,7 +938,7 @@
         "</span><span class=\"buy-ago\">" +
         timeAgo(buy.at) +
         "</span></div>"
-      : '<div class="demo-buy"><span>Waiting for mock buys...</span></div>';
+      : '<div class="demo-buy"><span>No mock buys yet.</span></div>';
     return (
       '<article class="demo-card" data-demo-id="' +
       escapeHtml(launch.id) +
@@ -962,7 +962,7 @@
       '<div class="demo-stat"><div class="l">Mock mcap</div><div class="v">' +
       usd(launch.mcap) +
       '</div></div>' +
-      '<div class="demo-stat"><div class="l">Mock volume</div><div class="v">' +
+      '<div class="demo-stat"><div class="l">Mock vol</div><div class="v">' +
       usd(launch.volume) +
       "</div></div></div>" +
       '<div class="demo-curve">' +
@@ -983,7 +983,7 @@
       '<span class="split-chip">30% protocol</span>' +
       "</div>" +
       '<div class="demo-activity">' +
-      '<div class="demo-activity-label mono">Mock recent buys</div>' +
+      '<div class="demo-activity-label mono">Recent buys (mock)</div>' +
       buyHtml +
       "</div></article>"
     );
@@ -1007,7 +1007,7 @@
         if (empty) {
           empty.hidden = false;
           empty.innerHTML =
-            '<p class="empty-title">Markets is empty</p>' +
+            '<p class="empty-title">Markets board is empty</p>' +
             '<p class="empty-sub">Launch a DEMO coin with BNB, XAUt, or PAXG. Rows stay in this browser.</p>' +
             '<div class="demo-empty-actions">' +
             '<button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO coin</button>' +
@@ -1092,7 +1092,7 @@
     const ticker = (tickEl && tickEl.value.trim().toUpperCase()) || "";
     if (!name || !ticker) {
       if (msg) {
-        msg.textContent = "Add a name and ticker to launch a DEMO coin.";
+        msg.textContent = "Add a name and ticker.";
         msg.hidden = false;
       }
       return false;
@@ -1133,7 +1133,7 @@
         launch.name +
         "” ($" +
         launch.ticker +
-        ") added to Markets. Local DEMO only.";
+        ") added to Markets. Local only. Not on-chain.";
       msg.hidden = false;
     }
     showView("home");
@@ -1303,7 +1303,7 @@
       ? '<span class="status-badge live">Live</span>'
       : '<span class="status-badge soon">Soon</span>';
     const hint = live
-      ? '<span class="cta-hint">Use in Create →</span>'
+      ? '<span class="cta-hint">Use in Launch</span>'
       : '<span class="cta-hint soon-hint">Registry · quote TBD</span>';
     const tag = live ? "button" : "div";
     const typeAttr = live ? ' type="button"' : "";
@@ -1356,7 +1356,7 @@
       const sym = escapeHtml(c.symbol || c.ticker || "?");
       const name = escapeHtml(c.name || "");
       return (
-        '<button type="button" class="live-quote-chip" data-goto="create" title="Create against ' + sym + '">' +
+        '<button type="button" class="live-quote-chip" data-goto="create" title="Launch against ' + sym + '">' +
           '<span class="dot-live" aria-hidden="true"></span>' +
           '<span><span class="sym mono">' + sym + '</span>' +
           '<div class="meta">' + name + ' · Live</div></span>' +
@@ -1610,7 +1610,7 @@
         if (file.size > 400000) {
           const msg = $("#createMsg");
           if (msg) {
-            msg.textContent = "Image too large for DEMO storage. try under ~400KB.";
+            msg.textContent = "Image too large for DEMO storage. Keep it under ~400KB.";
             msg.hidden = false;
           }
           imgInput.value = "";

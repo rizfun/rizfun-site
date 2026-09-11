@@ -1,6 +1,6 @@
 # Quotes
 
-Quotes are the assets your meme pairs against. They are the product surface. Memes are the satellites.
+Quotes are the assets your meme pairs against. Memes trade against them.
 
 ## Live (day-1)
 
@@ -10,13 +10,13 @@ Quotes are the assets your meme pairs against. They are the product surface. Mem
 | XAUt | Tokenized gold (Tether Gold on BSC) |
 | PAXG | Tokenized gold (Binance-peg PAXG) |
 
-Only live quotes can be selected in Create today.
+Only live quotes can be selected in Launch today.
 
 ## Soon (directory)
 
 The Commodities tab keeps a full softs / metals / energy style list as **Soon**. Examples: silver, oil, wheat, corn, coffee, platinum, and more.
 
-Soon means: tracked in the registry, mint not wired for launches yet. No fake sample memecoins on the home board.
+Soon means: tracked in the registry, mint not wired for launches yet. Home does not dump the full catalog.
 
 ## What this is not
 

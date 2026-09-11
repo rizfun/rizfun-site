@@ -2,7 +2,7 @@
 
 Riz.Fun is a commodity-paired memecoin launcher on BNB Chain (BSC).
 
-You pick a quote asset. You launch a coin against it. People trade on a bonding curve. At the end of the curve, liquidity moves into a locked Uniswap v4 pool.
+Pick a quote asset. Launch a coin against it. Trade on a bonding curve. At the end of the curve, liquidity moves into a locked Uniswap v4 pool.
 
 ## 1. Pair with a commodity
 
@@ -31,4 +31,4 @@ At the endpoint, curve reserves seed a **Uniswap v4** full-range pool on BSC.
 
 ## Honest status
 
-Protocol contracts are not live on mainnet yet. The public site Create flow is a **local DEMO** (browser storage only). No fake “live” factory addresses.
+Protocol contracts are not live on mainnet yet. The public Launch flow is a **local DEMO** (browser storage only). No fake live factory addresses.

@@ -2,9 +2,9 @@
 
 Creator picks a trading fee at launch in the **1% to 3%** band.
 
-That fee is taken on the **quote leg** (BNB, XAUt, or PAXG), not as a mystery tax on vibes.
+That fee is taken on the **quote leg** (BNB, XAUt, or PAXG).
 
-## Split (product lock)
+## Split (fixed)
 
 | Share | % | Goes to |
 |-------|---|---------|
