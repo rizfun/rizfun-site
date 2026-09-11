@@ -578,3 +578,26 @@
     init();
   }
 })();
+
+
+// Imagine hero: show tagline under character once pose is reached (video end)
+(function () {
+  var v = document.getElementById("rizImagine");
+  var tag = document.getElementById("rizTagline");
+  if (!v || !tag) return;
+  function showTag() {
+    tag.classList.add("is-on");
+    try {
+      v.pause();
+      if (isFinite(v.duration) && v.duration > 0) {
+        v.currentTime = Math.max(0, v.duration - 0.04);
+      }
+    } catch (e) {}
+  }
+  v.addEventListener("ended", showTag);
+  // fallback if metadata missing
+  v.addEventListener("timeupdate", function () {
+    if (!v.duration || !isFinite(v.duration)) return;
+    if (v.currentTime >= v.duration - 0.15) showTag();
+  });
+})();
