@@ -555,14 +555,26 @@
   }
 
   function renderCommodityGallery() {
-    const el = $("#commodityGallery");
+    const el = $("#homeLiveQuotes");
     if (!el) return;
-    el.innerHTML = quotes.map(commodityCardHtml).join("");
-    $all("[data-commodity]", el).forEach((btn) => {
-      btn.addEventListener("click", () => {
-        selectCommodity(btn.getAttribute("data-commodity"), { go: "create" });
-      });
-    });
+    const live = (STATE.commodities || []).filter(function (c) {
+      return String(c.status || "").toLowerCase() === "live";
+    }).slice(0, 3);
+    if (!live.length) {
+      el.innerHTML = '<p class="mono" style="color:var(--muted);font-size:.8rem">No live quotes yet.</p>';
+      return;
+    }
+    el.innerHTML = live.map(function (c) {
+      const sym = escapeHtml(c.symbol || c.ticker || "?");
+      const name = escapeHtml(c.name || "");
+      return (
+        '<button type="button" class="live-quote-chip" data-goto="create" title="Create against ' + sym + '">' +
+          '<span class="dot-live" aria-hidden="true"></span>' +
+          '<span><span class="sym mono">' + sym + '</span>' +
+          '<div class="meta">' + name + ' · Live</div></span>' +
+        '</button>'
+      );
+    }).join("");
   }
 
   function renderDirectoryFilters() {
