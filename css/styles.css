@@ -812,3 +812,8 @@ footer{padding:36px 0 52px;color:var(--dim);font-size:.82rem;border-top:var(--bo
 }
 .ca-icon:hover{background:var(--cream);color:var(--ink)}
 .ca-icon.copied{border-color:#9fe870;color:#9fe870}
+
+.footer-ca{margin-top:6px}
+.footer-ca-btn{font-size:.68rem !important;opacity:.75;border-bottom-color:rgba(249,240,223,.25) !important;max-width:100%}
+.footer-ca-btn:hover{opacity:1}
+.ca-icon-sm{width:24px;height:24px;font-size:.75rem}

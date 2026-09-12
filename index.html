@@ -66,7 +66,7 @@
           <div class="stat"><div class="l">Chain</div><div class="v">BSC</div><div class="s">BNB Chain</div></div>
           <div class="stat"><div class="l">Quotes</div><div class="v" id="statQuotesValue">31</div><div class="s" id="statQuotesSub">3 live · expanding registry</div></div>
           <div class="stat"><div class="l">Curve</div><div class="v">$5k→$35k</div><div class="s">then locked Uniswap v4</div></div>
-          <a class="stat" href="#riz-protocol" style="text-decoration:none;color:inherit"><div class="l">Token</div><div class="v">$RIZ</div><div class="s">0xf451…ffff</div></a>
+          <div class="stat"><div class="l">Token</div><div class="v">$RIZ</div><div class="s">buyback leg</div></div>
         </div>
       </div>
 
@@ -80,39 +80,7 @@
     </div>
 
 
-    <div class="section" id="riz-protocol">
-      <div class="section-h">
-        <div>
-          <h2>Protocol token · $RIZ</h2>
-          <p>Buyback leg (30%). Live on BNB Chain via Four.meme. Graduated.</p>
-        </div>
-        <span class="status-badge live">Graduated</span>
-      </div>
-      <div class="riz-feature card">
-        <div class="riz-feature-top">
-          <img src="assets/rizfun-logo.png" alt="$RIZ" width="56" height="56"/>
-          <div>
-            <div class="riz-feature-name">$RIZ <span class="mono soft">· Riz.Fun</span></div>
-            <div class="ca-row">
-              <button type="button" class="ca-copy mono" data-copy="0xf451035b8154d51850aba222df7640815692ffff" title="Copy contract" id="rizContractDisplay">0xf451035b8154d51850aba222df7640815692ffff</button>
-              <button type="button" class="ca-icon" data-copy="0xf451035b8154d51850aba222df7640815692ffff" aria-label="Copy contract" title="Copy">⧉</button>
-            </div>
-          </div>
-        </div>
-        <div class="riz-feature-meta">
-          <div><span class="k">Chain</span><span>BNB Chain (56)</span></div>
-          <div><span class="k">Status</span><span>Graduated (Four.meme mode 1)</span></div>
-          <div><span class="k">Supply</span><span class="mono">1,000,000,000</span></div>
-          <div><span class="k">Role</span><span>Protocol buyback token</span></div>
-        </div>
-        <div class="riz-feature-actions">
-          <button type="button" class="btn btn-ghost btn-sm" id="copyRizCa" data-copy="0xf451035b8154d51850aba222df7640815692ffff">Copy contract</button>
-          <a class="btn btn-ghost btn-sm" href="https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff" target="_blank" rel="noopener">BscScan</a>
-          <a class="btn btn-primary btn-sm" href="https://four.meme/token/0xf451035b8154d51850aba222df7640815692ffff" target="_blank" rel="noopener">Trade on Four.meme</a>
-        </div>
-      </div>
-    </div>
-
+    
     <div class="section">
       <div class="section-h">
         <div>
@@ -458,6 +426,10 @@
       <div>
         <div class="footer-name">Riz.Fun</div>
         <div class="footer-sub mono">Got commodity rizz. · $RIZ · BSC</div>
+        <div class="footer-ca ca-row" id="footerRizCa">
+          <button type="button" class="ca-copy mono footer-ca-btn" data-copy="0xf451035b8154d51850aba222df7640815692ffff" title="Copy $RIZ contract">0xf451035b8154d51850aba222df7640815692ffff</button>
+          <button type="button" class="ca-icon ca-icon-sm" data-copy="0xf451035b8154d51850aba222df7640815692ffff" aria-label="Copy" title="Copy">⧉</button>
+        </div>
       </div>
     </div>
     <div class="footer-links">
@@ -473,10 +445,10 @@
   </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
-<script src="js/deployments.js?v=copy-ca-2026-09-12"></script>
-<script src="js/launch.js?v=copy-ca-2026-09-12"></script>
-<script src="js/wallet.js?v=copy-ca-2026-09-12"></script>
-<script src="js/app.js?v=copy-ca-2026-09-12"></script>
+<script src="js/deployments.js?v=footer-ca-2026-09-12"></script>
+<script src="js/launch.js?v=footer-ca-2026-09-12"></script>
+<script src="js/wallet.js?v=footer-ca-2026-09-12"></script>
+<script src="js/app.js?v=footer-ca-2026-09-12"></script>
 
 </body>
 </html>
