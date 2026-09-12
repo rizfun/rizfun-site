@@ -1,4 +1,4 @@
-/* Riz.Fun — commodities directory + create UI (frontend only) */
+/* Riz.Fun  -  commodities directory + create UI (frontend only) */
 (function () {
   "use strict";
 
@@ -394,7 +394,7 @@
     if (tbody) {
       if (!list.length) {
         tbody.innerHTML =
-          '<tr><td colspan="5" class="empty-cell">No launches yet — create one on BSC Mainnet</td></tr>';
+          '<tr><td colspan="5" class="empty-cell">No launches yet  -  create one on BSC Mainnet</td></tr>';
       } else {
         tbody.innerHTML = list
           .map(function (L) {
@@ -504,7 +504,7 @@
 
   function updateSummary() {
     const meta = quoteMeta(selectedQuote);
-    const name = ($("#tokName") && $("#tokName").value.trim()) || "—";
+    const name = ($("#tokName") && $("#tokName").value.trim()) || " - ";
     const tickerRaw = ($("#tokTicker") && $("#tokTicker").value.trim().toUpperCase()) || "";
     const firstBuy = ($("#firstBuy") && $("#firstBuy").value.trim()) || "0";
 
@@ -515,7 +515,7 @@
     if (feeEl) feeEl.textContent = feePct.toFixed(1) + "%";
     if (quoteEl) quoteEl.textContent = selectedQuote;
     if (nameEl) nameEl.textContent = name;
-    if (tickEl) tickEl.textContent = tickerRaw ? "$" + tickerRaw : "—";
+    if (tickEl) tickEl.textContent = tickerRaw ? "$" + tickerRaw : " - ";
     const fb = $("#sumFirstBuy");
     if (fb)
       fb.textContent =
@@ -574,7 +574,7 @@
         const msg = $("#createMsg");
         if (msg) {
           msg.textContent =
-            "Launch opens when the protocol ships. Connect a wallet from the nav when you are ready.";
+            "Connect Wallet (nav or button), switch to BSC Mainnet, then Launch.";
           msg.hidden = false;
         }
       });
@@ -582,22 +582,42 @@
   }
 
   function setupNav() {
+    const allowed = ["home", "commodities", "create", "about"];
+    const legacy = {
+      markets: "commodities",
+      launches: "commodities",
+      docs: "about",
+      how: "about",
+      fees: "about",
+      faq: "about",
+      security: "about",
+      riz: "about",
+    };
+    const scrollIds = new Set(["how", "fees", "faq", "security"]);
+
+    function go(hash) {
+      const h = (hash || "home").replace(/^#/, "");
+      const view = legacy[h] || h;
+      const targetView = allowed.includes(view) ? view : "home";
+      showView(targetView);
+      if (scrollIds.has(h)) {
+        requestAnimationFrame(() => {
+          const el = document.getElementById(h);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    }
+
     $all(".nav-btn[data-view], [data-goto]").forEach((el) => {
       el.addEventListener("click", (e) => {
         e.preventDefault();
         const id = el.getAttribute("data-view") || el.getAttribute("data-goto");
-        if (id) showView(id);
+        if (id) go(id);
       });
     });
-    const hash = (location.hash || "#home").replace("#", "");
-    const allowed = ["home", "commodities", "create", "about"];
-    const legacy = { markets: "commodities", launches: "commodities" };
-    const resolved = legacy[hash] || hash;
-    showView(allowed.includes(resolved) ? resolved : "home");
+    go((location.hash || "#home").replace("#", ""));
     window.addEventListener("hashchange", () => {
-      const h = (location.hash || "#home").replace("#", "");
-      const r = legacy[h] || h;
-      if (allowed.includes(r)) showView(r);
+      go((location.hash || "#home").replace("#", ""));
     });
   }
 

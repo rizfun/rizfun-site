@@ -18,10 +18,23 @@
   "launchFeeWei": "1000000000000000",
   "defaultLaunchConfigId": 0,
   "quotes": {
-    "BNB": { "address": "0x0000000000000000000000000000000000000000", "decimals": 18, "approved": true },
-    "XAUt": { "address": "0x21cAef8A43163Eea865baeE23b9C2E327696A3bf", "decimals": 6, "approved": true },
-    "PAXG": { "address": "0x7950865a9140cB519342433146Ed5b40c6F210f7", "decimals": 18, "approved": true }
+    "BNB": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "decimals": 18,
+      "approved": true
+    },
+    "XAUt": {
+      "address": "0x21cAef8A43163Eea865baeE23b9C2E327696A3bf",
+      "decimals": 6,
+      "approved": true
+    },
+    "PAXG": {
+      "address": "0x7950865a9140cB519342433146Ed5b40c6F210f7",
+      "decimals": 18,
+      "approved": true
+    }
   },
   "obsoleteFactory": "0xFd0D4aaA8627646856CB14B1F9356C2f77a7F2ae",
-  "explorer": "https://bscscan.com"
+  "explorer": "https://bscscan.com",
+  "rizToken": "0xf451035b8154d51850aba222df7640815692ffff"
 }

@@ -1,25 +1,25 @@
 # Security
 
-Riz.Fun public site is DEMO UI until contracts deploy.
+Riz.Fun is live on **BSC Mainnet**. Non-custodial.
 
 ## Wallet
 
 - Connect uses an injected browser wallet only (EIP-1193: MetaMask, Rabby, Binance Wallet).
 - No recovery phrase forms.
 - No private key paste boxes.
-- Wallet stays read-only for trading until a real deploy.
+- You sign launches and trades in your wallet.
 
-## DEMO honesty
+## On-chain
 
-- DEMO badges stay visible.
-- Mock mcap, volume, rewards, and leaderboards are local to your browser.
-- Explorer and contract rows stay Soon until verified BSC addresses ship.
-- We do not invent live factory or token addresses on the site.
+- Launch factory: [`0x5da9d4bbe2eca15d198c254e4419a3d1c3b9c3c0`](https://bscscan.com/address/0x5da9d4bbe2eca15d198c254e4419a3d1c3b9c3c0)
+- Protocol token `$RIZ`: [`0xf451035b8154d51850aba222df7640815692ffff`](https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff)
+- Chain id **56**. Launch fee **0.001 BNB**.
+- Day-1 live quotes: BNB, XAUt, PAXG. Other commodities stay Soon until wired.
 
 ## What this is not
 
-- Not mainnet trading
 - Not custody of commodities
 - Not a place to enter seeds
+- Not financial advice
 
-If something looks spendable and the protocol is not live, it is not spendable.
+Trade size is your call.

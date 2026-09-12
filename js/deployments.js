@@ -1,4 +1,4 @@
-/* Riz.Fun — BSC mainnet deployments (production). Do not invent addresses. */
+/* Riz.Fun  -  BSC mainnet deployments (production). Do not invent addresses. */
 (function (global) {
   "use strict";
   var DEPLOY = {
@@ -21,6 +21,7 @@
     launchFeeWei: "1000000000000000",
     defaultLaunchConfigId: 0,
     obsoleteFactory: "0xFd0D4aaA8627646856CB14B1F9356C2f77a7F2ae",
+    rizToken: "0xf451035b8154d51850aba222df7640815692ffff",
     explorer: "https://bscscan.com",
     quotes: {
       BNB: "0x0000000000000000000000000000000000000000",

@@ -4,6 +4,8 @@ Creator picks a trading fee at launch in the **1% to 3%** band.
 
 That fee is taken on the **quote leg** (BNB, XAUt, or PAXG).
 
+Launch fee: **0.001 BNB** to the protocol recipient (separate from trading fees).
+
 ## Split (fixed)
 
 | Share | % | Goes to |
@@ -17,8 +19,6 @@ No creator VIP cut. If you hold, you get the holder share like everyone else.
 
 ## Notes
 
-Holder payout cadence is a product target (every 15 minutes once the distributor path is live). Nothing to claim. Do not assume it works on DEMO.
+Holder payout cadence is a product target (about every 15 minutes once the distributor path is fully live). Nothing to claim in a custodial sense.
 
-Preview the mock holder desk on the site **Rewards** tab (`#rewards`).
-
-DEMO buy/sell buttons on token pages only update local mock state. No wallet tx. No fee routing.
+`$RIZ` contract: [`0xf451035b8154d51850aba222df7640815692ffff`](https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff)

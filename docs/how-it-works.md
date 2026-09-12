@@ -28,6 +28,6 @@ At the endpoint, curve reserves seed a **Uniswap v4** full-range pool on BSC.
 - Post-grad fees go through the **v4 hook**
 - LP is locked. Nobody pulls it.
 
-## Honest status
+## Live status
 
-Protocol contracts are not live on mainnet yet. The public Launch flow is a **local DEMO** (browser storage only). No fake live factory addresses.
+Launcher is **live on BSC Mainnet**. Connect wallet, pay 0.001 BNB launch fee, get a real token + curve. Factory: [`0x5da9…c3c0`](https://bscscan.com/address/0x5da9d4bbe2eca15d198c254e4419a3d1c3b9c3c0). Protocol token `$RIZ`: [`0xf451…ffff`](https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff).
