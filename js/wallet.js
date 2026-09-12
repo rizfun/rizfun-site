@@ -1,14 +1,11 @@
-/* Riz.Fun. EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet).
- * No WalletConnect cloud. Never asks for seed / private key.
- * Connect = eth_requestAccounts only. No blind message signing from this module.
- */
+/* Riz.Fun — EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet). No WC cloud. */
 (function (global) {
   "use strict";
 
   var BSC = {
     chainId: "0x38",
     chainIdDec: 56,
-    chainName: "BNB Smart Chain",
+    chainName: "BSC Mainnet",
     nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
     rpcUrls: [
       "https://bsc-dataseed.binance.org/",
@@ -18,7 +15,6 @@
     blockExplorerUrls: ["https://bscscan.com"],
   };
 
-  /* localStorage: connected address only. Never seed, private key, or API secret. */
   var STORAGE_KEY = "rizfun.wallet.v1";
   var listeners = [];
   var state = {
@@ -126,22 +122,9 @@
     emit();
   }
 
-  /* Strict allowlist: connect + chain only. Never personal_sign / eth_sign / typed data /
-     sendTransaction from this helper. DEMO create does not need signatures. */
-  var ALLOWED_METHODS = {
-    eth_requestAccounts: true,
-    eth_accounts: true,
-    eth_chainId: true,
-    wallet_switchEthereumChain: true,
-    wallet_addEthereumChain: true,
-  };
-
   async function request(method, params) {
     var provider = getProvider();
-    if (!provider) throw new Error("No browser wallet found. Install MetaMask, Rabby, or Binance Wallet.");
-    if (!ALLOWED_METHODS[method]) {
-      throw new Error("Blocked wallet method: " + method + ". Riz.Fun never requests seeds, blind signatures, or arbitrary txs from this UI.");
-    }
+    if (!provider) throw new Error("No injected wallet. Install MetaMask, Rabby, or Binance Wallet.");
     return provider.request({ method: method, params: params || [] });
   }
 
@@ -176,7 +159,7 @@
     }
     await readChainId();
     if (!isBsc(state.chainId)) {
-      throw new Error("Switch to BNB Smart Chain (56).");
+      throw new Error("Please switch to BNB Smart Chain (56).");
     }
     return true;
   }
@@ -309,7 +292,7 @@
           disconnect();
         } else if (action === "switch") {
           ensureBsc().catch(function (err) {
-            setError((err && err.message) || "Could not switch network.");
+            setError((err && err.message) || "Could not switch network");
           });
         }
       });
@@ -321,11 +304,22 @@
     var msg = $("#createMsg");
     if (!submit) return;
     var s = getState();
-    /* Create is local DEMO only. never claim an on-chain launch tx.
-       Nav Connect Wallet stays independent (injected BSC). */
+    var ready = global.RizDeployments && global.RizDeployments.isReady();
     submit.disabled = false;
-    submit.dataset.mode = "demo";
-    submit.textContent = "Launch DEMO coin";
+    if (!s.connected) {
+      submit.textContent = "Connect Wallet";
+      submit.dataset.mode = "connect";
+    } else if (!s.onBsc) {
+      submit.textContent = "Switch to BSC Mainnet";
+      submit.dataset.mode = "switch";
+    } else if (!ready) {
+      submit.textContent = "Factory config missing";
+      submit.disabled = true;
+      submit.dataset.mode = "blocked";
+    } else {
+      submit.textContent = "Launch on BSC";
+      submit.dataset.mode = "launch";
+    }
     if (msg && s.error) {
       msg.textContent = s.error;
       msg.hidden = false;
@@ -341,17 +335,91 @@
       function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        /* Local DEMO create. no wallet tx, no claim of deployed contracts */
-        if (global.RizDemo && typeof global.RizDemo.createFromForm === "function") {
-          global.RizDemo.createFromForm();
+        var submit = $("#createSubmit");
+        var msg = $("#createMsg");
+        var mode = submit && submit.dataset.mode;
+        var s = getState();
+
+        if (mode === "connect" || !s.connected) {
+          connect()
+            .then(function () {
+              if (msg) {
+                msg.textContent = "Wallet connected on BSC Mainnet.";
+                msg.hidden = false;
+              }
+              updateCreateUi();
+            })
+            .catch(function (err) {
+              if (msg) {
+                msg.textContent = (err && err.message) || "Could not connect wallet.";
+                msg.hidden = false;
+              }
+            });
           return;
         }
-        var msg = $("#createMsg");
+        if (mode === "switch" || !s.onBsc) {
+          ensureBsc()
+            .then(function () {
+              if (msg) {
+                msg.textContent = "Switched to BSC Mainnet.";
+                msg.hidden = false;
+              }
+              updateCreateUi();
+            })
+            .catch(function (err) {
+              if (msg) {
+                msg.textContent = (err && err.message) || "Could not switch network.";
+                msg.hidden = false;
+              }
+            });
+          return;
+        }
+        if (mode !== "launch") {
+          if (msg) {
+            msg.textContent = "Launch unavailable — factory config missing.";
+            msg.hidden = false;
+          }
+          return;
+        }
+        if (!global.RizLaunch || typeof global.RizLaunch.launchFromForm !== "function") {
+          if (msg) {
+            msg.textContent = "Launch module not loaded.";
+            msg.hidden = false;
+          }
+          return;
+        }
+        submit.disabled = true;
+        submit.textContent = "Confirm in wallet…";
         if (msg) {
-          msg.textContent =
-            "DEMO board unavailable. Refresh the page. Contracts are not deployed. No transaction was sent.";
+          msg.textContent = "Sending launch tx to factory (0.001 BNB fee)…";
           msg.hidden = false;
         }
+        global.RizLaunch.launchFromForm(form)
+          .then(function (entry) {
+            var link = entry.txHash && global.RizDeployments
+              ? global.RizDeployments.txUrl(entry.txHash)
+              : "";
+            if (msg) {
+              msg.innerHTML =
+                "Launched <strong>" +
+                (entry.symbol || "") +
+                "</strong>" +
+                (entry.token ? " · <span class=\"mono\">" + entry.token + "</span>" : "") +
+                (link ? ' · <a href="' + link + '" target="_blank" rel="noopener">BscScan</a>' : "");
+              msg.hidden = false;
+            }
+            if (global.RizApp && typeof global.RizApp.refreshLaunches === "function") {
+              global.RizApp.refreshLaunches();
+            }
+            updateCreateUi();
+          })
+          .catch(function (err) {
+            if (msg) {
+              msg.textContent = (err && err.message) || "Launch failed.";
+              msg.hidden = false;
+            }
+            updateCreateUi();
+          });
       },
       true
     );

@@ -4,10 +4,8 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Riz.Fun · Got commodity rizz.</title>
-<meta name="description" content="Riz.Fun. Got commodity rizz. Memes that pair with commodities on BNB Chain. Live quotes: BNB, XAUt, PAXG. @RizForFun"/>
+<meta name="description" content="Riz.Fun — Got commodity rizz. Memes that pair with commodities on BNB Chain. Directory: gold, silver, oil, wheat, corn, coffee and more. Live BNB · XAUt · PAXG. @RizForFun"/>
 <meta name="theme-color" content="#000000"/>
-<meta name="referrer" content="strict-origin-when-cross-origin"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob:; media-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self'; form-action 'self'"/>
 <meta property="og:title" content="Riz.Fun · Got commodity rizz."/>
 <meta property="og:description" content="Got commodity rizz. Memes that pair with commodities on BNB. @RizForFun"/>
 <meta property="og:image" content="assets/rizfun-logo.png"/>
@@ -15,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/styles.css?v=demo-cards-1"/>
+<link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -29,15 +27,13 @@
     <nav class="nav-links" aria-label="Primary">
       <button type="button" class="nav-btn" data-view="home">Home</button>
       <button type="button" class="nav-btn" data-view="commodities">Commodities</button>
-      <button type="button" class="nav-btn" data-view="create">Launch</button>
-      <button type="button" class="nav-btn" data-view="rewards">Rewards</button>
-      <button type="button" class="nav-btn" data-view="riz">$RIZ</button>
-      <button type="button" class="nav-btn" data-view="about">Docs</button>
-      <span class="chain-pill mono"><span class="dot"></span> BSC</span>
+      <button type="button" class="nav-btn" data-view="create">Create</button>
+      <button type="button" class="nav-btn" data-view="about">How it works</button>
+      <span class="chain-pill mono"><span class="dot"></span> BSC Mainnet</span>
       <div class="wallet-slot" id="walletSlot">
         <button type="button" class="btn btn-primary btn-sm wallet-btn" data-wallet-action="connect">Connect Wallet</button>
       </div>
-      <button type="button" class="btn btn-ghost btn-sm" data-goto="create">Launch</button>
+      <button type="button" class="btn btn-ghost btn-sm" data-goto="create">Create</button>
     </nav>
   </div>
 </header>
@@ -47,46 +43,77 @@
   <section class="view" id="view-home">
     <div class="hero">
       <div class="hero-copy">
-        <div class="kicker mono">BNB CHAIN · COMMODITY PAIRS</div>
+        <div class="kicker mono">BNB CHAIN · COMMODITY QUOTE DIRECTORY</div>
         <h1 class="hero-punch">Memes that <em>pair</em> with commodities</h1>
-        <p class="hero-sub">Pair your coin with a real quote asset on BNB.</p>
+        <p class="hero-sub">Launch against real quote assets on BNB.</p>
         <p class="lead">
           Launch. Trade the curve. Graduate to locked Uniswap v4.
         </p>
         <div class="hero-cta">
-          <button type="button" class="btn btn-primary" data-goto="create">Launch a coin</button>
+          <button type="button" class="btn btn-primary" data-goto="create">Launch with a commodity</button>
           <button type="button" class="btn btn-ghost" data-goto="commodities">Browse commodities</button>
-          <button type="button" class="btn btn-ghost" data-goto="riz">$RIZ</button>
         </div>
         <div class="stats">
           <div class="stat"><div class="l">Chain</div><div class="v">BSC</div><div class="s">BNB Chain</div></div>
-          <div class="stat"><div class="l">Quotes</div><div class="v" id="statQuotesValue">31</div><div class="s" id="statQuotesSub">3 live · rest soon</div></div>
-          <div class="stat"><div class="l">Curve</div><div class="v">$5k→$35k</div><div class="s">then locked Uni v4</div></div>
-          <div class="stat"><div class="l">Token</div><div class="v">$RIZ</div><div class="s">30% fee buyback</div></div>
+          <div class="stat"><div class="l">Quotes</div><div class="v" id="statQuotesValue">31</div><div class="s" id="statQuotesSub">3 live · expanding registry</div></div>
+          <div class="stat"><div class="l">Curve</div><div class="v">$5k→$35k</div><div class="s">then locked Uniswap v4</div></div>
+          <div class="stat"><div class="l">Token</div><div class="v">$RIZ</div><div class="s">buyback leg</div></div>
         </div>
       </div>
+
       <aside class="hero-stage" aria-label="Brand animation">
-        <div class="riz-stage">
-          <video id="rizImagine" class="riz-imagine" autoplay muted playsinline
-            src="assets/riz-hero-imagine.mp4?v=demo-cards-1"
-            poster="assets/riz-hero-final-hold.png?v=demo-cards-1"></video>
-</div>
+        <div class="riz-stage" id="rizStage">
+          <div class="riz-char-slot">
+          <div class="riz-play" aria-hidden="true">
+            <div class="riz-figure">
+              <svg class="riz-limbs" viewBox="0 0 200 260" aria-hidden="true">
+                <g class="riz-leg riz-leg-l">
+                  <line x1="88" y1="168" x2="78" y2="228" stroke="#F3E6C8" stroke-width="7" stroke-linecap="round"/>
+                  <line x1="78" y1="228" x2="68" y2="232" stroke="#F3E6C8" stroke-width="7" stroke-linecap="round"/>
+                </g>
+                <g class="riz-leg riz-leg-r">
+                  <line x1="112" y1="168" x2="122" y2="228" stroke="#F3E6C8" stroke-width="7" stroke-linecap="round"/>
+                  <line x1="122" y1="228" x2="132" y2="232" stroke="#F3E6C8" stroke-width="7" stroke-linecap="round"/>
+                </g>
+                <g class="riz-arm riz-arm-l">
+                  <line x1="72" y1="118" x2="42" y2="165" stroke="#F3E6C8" stroke-width="7" stroke-linecap="round"/>
+                  <circle class="riz-hand" cx="38" cy="170" r="9" fill="#F3E6C8"/>
+                </g>
+                <g class="riz-arm riz-arm-r">
+                  <line x1="128" y1="118" x2="158" y2="165" stroke="#F3E6C8" stroke-width="7" stroke-linecap="round"/>
+                  <circle class="riz-hand" cx="164" cy="170" r="9" fill="#F3E6C8"/>
+                </g>
+              </svg>
+              <img class="riz-body" src="assets/rizfun-grain-body.png" alt="" width="200" height="200" draggable="false"/>
+              <img class="riz-glasses" src="assets/riz-glasses-logo.png" alt="" width="431" height="151" draggable="false"/>
+            </div>
+          </div>
+          <img class="riz-hold" src="assets/riz-hero-final-hold.png" alt="" width="512" height="512" draggable="false"/>
+          </div>
+          <p class="riz-tagline">Got commodity rizz.</p>
+        </div>
       </aside>
     </div>
 
     <div class="section">
       <div class="section-h">
         <div>
-          <h2>Demo board</h2>
-          <p>Local DEMO coins you make here. Bonding curve mock, not on-chain.</p>
+          <h2>Commodities directory</h2>
+          <p>Quote assets you can pair against — live ones work in Create; Soon stay fully visible.</p>
         </div>
-        <button type="button" class="btn btn-ghost btn-sm" data-goto="create">Launch DEMO</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-goto="commodities">Full directory →</button>
       </div>
-      <div class="demo-banner mono" role="status">
-        <span class="demo-badge">DEMO</span>
-        <span>Browser-only mock board. Persisted in localStorage. No contracts. No txs.</span>
+      <div class="commodity-gallery" id="commodityGallery"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-h">
+        <div>
+          <h2>Launches</h2>
+          <p>Launches created on BSC Mainnet from this wallet appear here.</p>
+        </div>
       </div>
-      <div id="featuredLaunches" class="demo-launch-grid"></div>
+      <div id="featuredLaunches"></div>
     </div>
   </section>
 
@@ -96,13 +123,13 @@
       <div class="section-h">
         <div>
           <h2>Commodities</h2>
-          <p>Quote directory: metals, energy, agriculture, native. Pair a meme against a real commodity.</p>
+          <p>Full quote-asset directory — metals, energy, agriculture, native. Pair your meme against real commodities.</p>
         </div>
         <div class="tabs" id="dirStatusFilters"></div>
       </div>
 
       <div class="tabs" id="dirCategoryFilters" style="margin-bottom:14px"></div>
-      <div class="mono board-label" id="directoryCount" style="margin-bottom:12px;color:var(--muted);font-size:.78rem">. </div>
+      <div class="mono board-label" id="directoryCount" style="margin-bottom:12px;color:var(--muted);font-size:.78rem">—</div>
 
       <div class="board">
         <div class="board-top">
@@ -130,7 +157,7 @@
         <div class="section-h">
           <div>
             <h2>Grid</h2>
-            <p>Same registry as cards. Live quotes work in Launch. Soon stays listed.</p>
+            <p>Same registry as cards — Live usable in Create; Soon fully listed.</p>
           </div>
         </div>
         <div class="commodity-gallery" id="directoryGrid"></div>
@@ -139,29 +166,24 @@
       <div class="section" style="padding-top:8px">
         <div class="section-h">
           <div>
-            <h2>Demo coins</h2>
-            <p>Same DEMO markets as Home. Local mock only.</p>
+            <h2>Launches board</h2>
+            <p>Launches on BSC Mainnet. Open a token on BscScan after you create one.</p>
           </div>
-        </div>
-        <div class="demo-banner mono" role="status">
-          <span class="demo-badge">DEMO</span>
-          <span>Mock launches from Launch. Not on-chain.</span>
         </div>
         <div class="board">
           <div class="board-top">
-            <div class="mono board-label">Demo coins</div>
-            <div class="pill soft">DEMO board</div>
+            <div class="mono board-label">Launches</div>
+            <div class="pill soft">Live board</div>
           </div>
           <div class="table-wrap">
-            <table class="markets-table">
+            <table>
               <thead>
                 <tr>
-                  <th>Pair</th>
-                  <th>Quote</th>
-                  <th>Mock mcap</th>
-                  <th>Vol</th>
-                  <th>Curve %</th>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Commodity</th>
                   <th>Status</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="launchesBody"></tbody>
@@ -177,8 +199,8 @@
     <div class="section" style="padding-top:28px">
       <div class="section-h">
         <div>
-          <h2>Launch a DEMO coin</h2>
-          <p>Pick a live quote (BNB / XAUt / PAXG), name it, drop it on Markets. Stays in this browser. No chain tx.</p>
+          <h2>Create a launch</h2>
+          <p>Step 1 — choose a <strong>live</strong> commodity pair. Then name, ticker, image, and fee.</p>
         </div>
       </div>
 
@@ -187,7 +209,7 @@
           <div class="card step-card">
             <div class="step-label mono">01 · Commodity pair</div>
             <h3>Choose your quote</h3>
-            <p class="card-lead">Live today: BNB, XAUt, PAXG. Full directory lists Soon quotes too.</p>
+            <p class="card-lead">Live quotes only: BNB, XAUt, PAXG. Browse the full directory for Soon commodities.</p>
             <div class="commodity-picker" id="quotePicker"></div>
           </div>
 
@@ -212,7 +234,7 @@
                 <input id="tokTicker" name="ticker" placeholder="e.g. BOWL" maxlength="10" required/>
               </div>
             </div>
-            <label for="feeRange">Trading fee <span class="hint">(1-3%)</span></label>
+            <label for="feeRange">Trading fee <span class="hint">(1–3%)</span></label>
             <div class="fee-range">
               <input id="feeRange" type="range" min="1" max="3" step="0.5" value="2"/>
               <span class="fee-val mono" id="feeVal">2.0%</span>
@@ -230,9 +252,9 @@
               </div>
             </div>
             <div style="margin-top:20px">
-              <button class="btn btn-primary" type="submit" id="createSubmit" style="width:100%" data-mode="demo">Launch DEMO coin</button>
+              <button class="btn btn-primary" type="submit" id="createSubmit" style="width:100%" data-mode="connect">Connect Wallet</button>
               <p id="createMsg" class="soft-note" hidden></p>
-              <p class="submit-note">Adds a <strong>DEMO</strong> row to Markets in this browser only. No contracts, no tx. Connect Wallet is for later mainnet use. Never type a recovery phrase into any site.</p>
+              <p class="submit-note">Connect MetaMask / Rabby / Binance Wallet on <strong>BSC Mainnet</strong>. Launch sends a real tx to the Riz.Fun factory (0.001 BNB fee). Never share a seed phrase.</p>
             </div>
           </div>
         </div>
@@ -246,648 +268,97 @@
             </div>
           </div>
           <h3>Launch summary</h3>
-          <div class="row"><span class="k">Name</span><span id="sumName">. </span></div>
-          <div class="row"><span class="k">Ticker</span><span class="mono" id="sumTicker">. </span></div>
+          <div class="row"><span class="k">Name</span><span id="sumName">—</span></div>
+          <div class="row"><span class="k">Ticker</span><span class="mono" id="sumTicker">—</span></div>
           <div class="row"><span class="k">Commodity</span><span class="mono" id="sumQuote">BNB</span></div>
           <div class="row"><span class="k">Trading fee</span><span class="mono" id="sumFee">2.0%</span></div>
           <div class="row"><span class="k">First buy</span><span class="mono" id="sumFirstBuy">None</span></div>
           <div class="row"><span class="k">Starting mcap</span><span class="mono">~$5,000</span></div>
           <div class="row"><span class="k">Graduate</span><span class="mono">~$35,000</span></div>
           <div class="row"><span class="k">Supply</span><span class="mono">1,000,000,000</span></div>
-          <div class="row"><span class="k">Liquidity</span><span>Locked Uniswap v4 LP</span></div>
+          <div class="row"><span class="k">Liquidity</span><span>Locked Uniswap v4 LP ()</span></div>
           <div class="fee-box">
             Fee split: <strong>40%</strong> holders (in paired commodity) ·
             <strong>30%</strong> buyback <strong>$RIZ</strong> ·
             <strong>30%</strong> protocol.
-          </div>
-          <div class="demo-banner compact mono" style="margin-top:14px">
-            <span class="demo-badge">DEMO</span>
-            <span>Preview only. Launch adds a mock Markets row.</span>
           </div>
         </aside>
       </form>
     </div>
   </section>
 
-
-  <!-- TOKEN DETAIL (DEMO) -->
-  <section class="view" id="view-token">
-    <div class="section token-page" style="padding-top:22px">
-      <div class="token-back-row">
-        <button type="button" class="btn btn-ghost btn-sm" data-goto="home" id="tokenBackBtn">← Demo board</button>
-        <span class="demo-badge">DEMO</span>
-      </div>
-
-      <div id="tokenEmpty" class="empty-state" hidden>
-        <p class="empty-title">No DEMO here</p>
-        <p class="empty-sub">That id is missing. Launch one first. Rows stay in this browser.</p>
-        <div class="demo-empty-actions">
-          <button type="button" class="btn btn-primary btn-sm" data-goto="create">Launch DEMO</button>
-          <button type="button" class="btn btn-ghost btn-sm" data-goto="home">Demo board</button>
-        </div>
-      </div>
-
-      <div id="tokenContent" hidden>
-        <header class="token-hero">
-          <div class="token-hero-left">
-            <div class="token-avatar" id="tokenAvatar"></div>
-            <div class="token-id-block">
-              <div class="token-title-row">
-                <h1 class="token-name" id="tokenName">-</h1>
-                <span class="token-ticker mono" id="tokenTicker">$-</span>
-              </div>
-              <div class="token-meta-row">
-                <span class="token-pair-pill mono" id="tokenPairPill">Paired with -</span>
-                <span class="demo-badge">DEMO</span>
-                <span class="token-fee-pill mono" id="tokenFeePill">Fee -</span>
-              </div>
-            </div>
-          </div>
-          <div class="token-hero-right">
-            <div class="token-mcap-label mono">Mock mcap</div>
-            <div class="token-mcap-val mono" id="tokenMcap">$-</div>
-            <div class="token-mcap-sub mono" id="tokenMcapSub">Curve $5k to $35k</div>
-          </div>
-        </header>
-
-        <div class="token-stats-row" id="tokenStatsRow">
-          <div class="token-stat-card">
-            <div class="l">Curve progress</div>
-            <div class="v mono" id="tokenCurvePct">-%</div>
-            <div class="progress token-curve-bar" aria-hidden="true"><i id="tokenCurveBar" style="width:0%"></i></div>
-            <div class="s mono" id="tokenCurveMeta">$5k to $35k</div>
-          </div>
-          <div class="token-stat-card">
-            <div class="l">Mock vol</div>
-            <div class="v mono" id="tokenVol">$-</div>
-            <div class="s">Local DEMO only</div>
-          </div>
-          <div class="token-stat-card">
-            <div class="l">Fee</div>
-            <div class="v mono" id="tokenFee">-%</div>
-            <div class="s">On the quote leg</div>
-          </div>
-          <div class="token-stat-card">
-            <div class="l">Fee split</div>
-            <div class="token-split-chips">
-              <span class="split-chip">40% holders</span>
-              <span class="split-chip">30% $RIZ</span>
-              <span class="split-chip">30% protocol</span>
-            </div>
-            <div class="s">Paid in the pair quote</div>
-          </div>
-        </div>
-
-        <div class="token-grid">
-          <div class="token-main">
-            <div class="card token-chart-card">
-              <div class="token-chart-head">
-                <div>
-                  <div class="mono board-label">Mock chart</div>
-                  <div class="token-chart-pair mono" id="tokenChartPair">$TICKER / QUOTE</div>
-                </div>
-                <div class="token-chart-tabs" role="tablist" aria-label="Timeframe">
-                  <button type="button" class="tab active" data-tf="1m">1m</button>
-                  <button type="button" class="tab" data-tf="5m">5m</button>
-                  <button type="button" class="tab" data-tf="1h">1h</button>
-                  <button type="button" class="tab" data-tf="1d">1d</button>
-                </div>
-              </div>
-              <div class="token-chart-wrap" id="tokenChartWrap" aria-hidden="true"></div>
-              <div class="token-chart-footnote mono">Mock sparkline. No market APIs. DEMO only.</div>
-            </div>
-
-            <div class="card token-trades-card">
-              <div class="section-h" style="margin-bottom:12px">
-                <div>
-                  <h2 style="font-size:1.05rem;margin:0">Recent trades</h2>
-                  <p style="margin:4px 0 0">Mock flow from the DEMO board.</p>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table class="token-trades-table">
-                  <thead>
-                    <tr>
-                      <th>Side</th>
-                      <th>Who</th>
-                      <th>Amount</th>
-                      <th>Quote</th>
-                      <th>When</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tokenTradesBody"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="card token-contract-card">
-              <div class="mono board-label" style="margin-bottom:8px">Contract · Explorer</div>
-              <div class="token-contract-line">
-                <span class="token-contract-label">Demo id. Not on-chain.</span>
-                <code class="mono" id="tokenContractId">-</code>
-                <button type="button" class="btn btn-ghost btn-sm" id="tokenCopyId">Copy</button>
-              </div>
-              <div class="token-explorer-row">
-                <span class="token-contract-label">BscScan</span>
-                <button type="button" class="btn btn-ghost btn-sm explorer-soon" disabled title="No live address yet" aria-disabled="true">Explorer · Soon</button>
-              </div>
-              <p class="submit-note" style="margin-top:10px">Local DEMO id only. Explorer stays Soon until a real BSC address ships. We never ask you to paste keys here.</p>
-            </div>
-          </div>
-
-          <aside class="token-side">
-            <div class="card token-trade-panel">
-              <div class="token-trade-tabs">
-                <button type="button" class="token-trade-tab on" data-side="buy" id="tabBuy">Buy</button>
-                <button type="button" class="token-trade-tab" data-side="sell" id="tabSell">Sell</button>
-              </div>
-              <div class="token-pay-row">
-                <span class="l">Pay with</span>
-                <span class="token-pay-pill mono" id="tokenPayPill">BNB</span>
-              </div>
-              <label for="tokenTradeAmt">Amount <span class="hint" id="tokenAmtHint">(quote)</span></label>
-              <input id="tokenTradeAmt" type="number" min="0" step="any" placeholder="0.0" value="0.1"/>
-              <div class="token-holdings mono" id="tokenHoldings">Bag: 0</div>
-              <button type="button" class="btn btn-primary" id="tokenTradeBtn" style="width:100%;margin-top:14px">Buy DEMO</button>
-              <p class="submit-note">Local mock. No wallet tx.</p>
-            </div>
-
-            <div class="card token-liq-card">
-              <div class="mono board-label" style="margin-bottom:10px">Liquidity</div>
-              <div class="summary">
-                <div class="row"><span class="k">Mode</span><span>Bonding curve</span></div>
-                <div class="row"><span class="k">Start</span><span class="mono">~$5k</span></div>
-                <div class="row"><span class="k">Grad</span><span class="mono">~$35k</span></div>
-                <div class="row"><span class="k">After</span><span>Locked Uniswap v4</span></div>
-                <div class="row"><span class="k">Pair</span><span class="mono" id="tokenLiqPair">- / -</span></div>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="toast-host" id="toastHost" aria-live="polite"></div>
-
-
-
-  <!-- $RIZ -->
-  <section class="view" id="view-riz">
-    <div class="section" style="padding-top:28px">
-      <div class="section-h">
-        <div>
-          <div class="kicker mono" style="margin-bottom:10px">PROTOCOL TOKEN · BUYBACK · BSC</div>
-          <h2>$RIZ</h2>
-          <p>Protocol token for Riz.Fun. Takes the 30% 30% fee buyback of every market fee. This page is a product preview, not a live listing.</p>
-        </div>
-        <span class="demo-badge">DEMO</span>
-      </div>
-
-      <div class="demo-banner mono" role="status">
-        <span class="demo-badge">DEMO</span>
-        <span>Stats are mock or Soon. No live contract. Wallet stays read-only until deploy.</span>
-      </div>
-
-      <div class="card riz-hero-card">
-        <div class="riz-hero-top">
-          <div class="riz-mark" aria-hidden="true">
-            <img src="assets/rizfun-logo.png" alt="" width="56" height="56"/>
-          </div>
-          <div>
-            <h3 class="riz-title">$RIZ</h3>
-            <p class="riz-lead">
-              Markets charge fees on the quote leg. Split is fixed: <strong>40%</strong> holders ·
-              <strong>30%</strong> buyback <strong>$RIZ</strong> · <strong>30%</strong> protocol.
-              $RIZ is the buyback sink. Your launch keeps its own ticker.
-            </p>
-          </div>
-        </div>
-        <div class="riz-split-row" aria-label="Buyback leg">
-          <span class="split-chip hot">30% buyback → $RIZ</span>
-          <span class="split-chip">40% holders</span>
-          <span class="split-chip">30% protocol</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-h">
-        <div>
-          <h2>Stats</h2>
-          <p>Placeholders until mainnet. Treat every number here as mock.</p>
-        </div>
-      </div>
-      <div class="stats riz-stats">
-        <div class="stat"><div class="l">TVL</div><div class="v">Soon</div><div class="s">MOCK · not live</div></div>
-        <div class="stat"><div class="l">Burned</div><div class="v">Soon</div><div class="s">MOCK · buyback offline</div></div>
-        <div class="stat"><div class="l">Supply</div><div class="v">Soon</div><div class="s">MOCK · no mint live</div></div>
-        <div class="stat"><div class="l">Buyback</div><div class="v">30%</div><div class="s">Fee leg</div></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-h">
-        <div>
-          <h2>Contract · Explorer</h2>
-          <p>No fake live address. BscScan stays disabled until a verified contract ships.</p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="summary">
-          <div class="row"><span class="k">Token</span><span class="mono">$RIZ</span></div>
-          <div class="row"><span class="k">Chain</span><span class="mono">BNB Chain (BSC)</span></div>
-          <div class="row"><span class="k">Contract</span><span class="mono">Soon</span></div>
-          <div class="row"><span class="k">Explorer</span>
-            <span><button type="button" class="btn btn-ghost btn-sm explorer-soon" disabled title="No live address yet" aria-disabled="true">BscScan · Soon</button></span>
-          </div>
-        </div>
-        <p class="submit-note" style="margin-top:12px">Explorer stays Soon until deploy. We do not invent a live contract address on this page.</p>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-h">
-        <div>
-          <h2>How it fits</h2>
-          <p>Role of $RIZ once fees are live.</p>
-        </div>
-      </div>
-      <div class="how">
-        <div class="step">
-          <div class="n">01</div>
-          <h3>Markets take fees</h3>
-          <p>Each market charges its fee on the paired quote. Same rule on DEMO and on mainnet later.</p>
-        </div>
-        <div class="step">
-          <div class="n">02</div>
-          <h3>30% buyback</h3>
-          <p>That share targets buy + burn of $RIZ when the pipeline is live. Not running on this DEMO.</p>
-        </div>
-        <div class="step">
-          <div class="n">03</div>
-          <h3>Not your launch ticker</h3>
-          <p>Your coin keeps its ticker. $RIZ is protocol-only. Holder desk is on <button type="button" class="linkish inline-link" data-goto="rewards">Rewards</button>.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- REWARDS (DEMO) -->
-  <section class="view" id="view-rewards">
-    <div class="section" style="padding-top:28px">
-      <div class="section-h">
-        <div>
-          <div class="kicker mono" style="margin-bottom:10px">HOLDERS · PAIRED COMMODITY · AUTO</div>
-          <h2>Rewards</h2>
-          <p>Hold a market. Earn the paired commodity. 40% of trading fees, every 15 minutes, automatic. Nothing to claim.</p>
-        </div>
-      </div>
-
-      <div class="demo-banner mono" role="status">
-        <span class="demo-badge">DEMO</span>
-        <span>Earnings below are mock. No claim tx. Distributor not live.</span>
-      </div>
-
-      <div class="card rewards-hero-card">
-        <h3 class="rewards-pitch-title">Hold a market. Get paid in commodities.</h3>
-        <p class="rewards-pitch">
-          40% of every trading fee goes to holders of that market, paid in the paired commodity, every 15 minutes.
-          No claim step. Connect to preview DEMO earnings from your local mock coins.
-        </p>
-        <div class="rewards-split-row" aria-label="Fee split">
-          <span class="split-chip hot">40% holders</span>
-          <span class="split-chip">30% $RIZ buyback</span>
-          <span class="split-chip">30% protocol</span>
-          <span class="split-chip muted">0% creator</span>
-        </div>
-        <p class="docs-note" style="margin-top:14px;margin-bottom:0">
-          Paid in the market quote (BNB, XAUt, PAXG today).
-          <strong>Cashout:</strong> sell to stable later. Not live. No USDG rail on this DEMO.
-        </p>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-h">
-        <div>
-          <h2>How payouts work</h2>
-          <p>Auto every 15 minutes once live. Preview the desk here.</p>
-        </div>
-      </div>
-      <div class="how">
-        <div class="step">
-          <div class="n">01</div>
-          <h3>Hold any market token</h3>
-          <p>Every trade takes a fee. 40% goes to holders. Creator cut is 0%.</p>
-        </div>
-        <div class="step">
-          <div class="n">02</div>
-          <h3>Get paid automatically</h3>
-          <p>Target cadence: every 15 minutes. Paid in the paired commodity, by balance, to the wallet. No claim.</p>
-        </div>
-        <div class="step">
-          <div class="n">03</div>
-          <h3>Keep the commodity</h3>
-          <p>You earn the quote asset. Hold it or wait for sell-to-stable later. Cashout is not live.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-h">
-        <div>
-          <h2>DEMO earnings</h2>
-          <p>Mock accrued amounts for DEMO coins in this browser. Connect to preview.</p>
-        </div>
-        <div class="rewards-tick mono" id="rewardsTick" aria-live="polite">
-          <span class="rewards-tick-label">Next DEMO tick</span>
-          <span class="rewards-tick-val" id="rewardsCountdown">--:--</span>
-        </div>
-      </div>
-
-      <div id="rewardsPanel">
-        <div class="card rewards-connect-card" id="rewardsDisconnected">
-          <div class="rewards-connect-copy">
-            <h3>Connect to see DEMO earnings</h3>
-            <p>Injected wallet only. Accruals are mocked from your local DEMO launches and holdings. No txs.</p>
-          </div>
-          <button type="button" class="btn btn-primary" id="rewardsConnectBtn" data-wallet-action="connect">Connect Wallet</button>
-        </div>
-
-        <div id="rewardsConnected" hidden>
-          <div class="board">
-            <div class="board-top">
-              <div class="mono board-label">Accrued (DEMO)</div>
-              <div class="pill soft" id="rewardsWalletPill">wallet</div>
-            </div>
-            <div class="table-wrap">
-              <table class="rewards-table">
-                <thead>
-                  <tr>
-                    <th>Market</th>
-                    <th>Quote</th>
-                    <th>Your bag</th>
-                    <th>Accrued</th>
-                    <th>Last tick</th>
-                  </tr>
-                </thead>
-                <tbody id="rewardsBody"></tbody>
-              </table>
-            </div>
-          </div>
-          <p class="docs-note" id="rewardsEmptyNote" hidden>
-            No DEMO coins yet. <button type="button" class="linkish inline-link" data-goto="create">Launch a DEMO coin</button>, trade it, then come back. Accruals stay in this browser.
-          </p>
-          <div class="demo-banner compact mono" style="margin-top:14px">
-            <span class="demo-badge">DEMO</span>
-            <span>Auto payout mock. Nothing to claim. Numbers are illustrative.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-h">
-        <div>
-          <h2>DEMO Leaderboard</h2>
-          <p>Mock ranks from DEMO launches and sample wallets. Not live points.</p>
-        </div>
-        <span class="demo-badge">DEMO</span>
-      </div>
-      <div class="demo-banner mono" role="status">
-        <span class="demo-badge">DEMO</span>
-        <span>Mock rows. Sample wallets. No claim.</span>
-      </div>
-      <div class="board">
-        <div class="board-top">
-          <div class="mono board-label">Top earners (mock)</div>
-          <div class="pill soft">15m cycle · 40/30/30</div>
-        </div>
-        <div class="table-wrap">
-          <table class="rewards-table leaderboard-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Wallet</th>
-                <th>Market</th>
-                <th>Quote</th>
-                <th>Mock accrued</th>
-              </tr>
-            </thead>
-            <tbody id="rewardsLeaderboardBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-h">
-        <div>
-          <h2>Full fee split</h2>
-          <p>Creator cut is zero. Split: 40% holders · 30% $RIZ buyback · 30% protocol.</p>
-        </div>
-      </div>
-      <div class="card" style="overflow:auto">
-        <table class="split-table">
-          <thead>
-            <tr><th>Share</th><th>%</th><th>Goes to</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Holders</td><td class="mono">40%</td><td>Paid in the <strong>paired commodity</strong> of that market</td></tr>
-            <tr><td>Buyback</td><td class="mono">30%</td><td>Buy + burn of protocol token <strong>$RIZ</strong></td></tr>
-            <tr><td>Protocol</td><td class="mono">30%</td><td>Treasury / ops</td></tr>
-            <tr><td>Creator</td><td class="mono">0%</td><td>No special cut. Earn as a holder like everyone else.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="docs-note">
-        See also <button type="button" class="linkish inline-link" data-docs-jump="docs-fees">Docs · Fees</button>.
-        Once live, payouts target every 15 minutes, automatic.
-      </p>
-    </div>
-  </section>
-
-  <!-- DOCS (about alias) -->
+  <!-- ABOUT / HOW IT WORKS -->
   <section class="view" id="view-about">
     <div class="section" style="padding-top:28px">
       <div class="section-h">
         <div>
-          <h2>Docs</h2>
-          <p>How Riz.Fun works. Site is DEMO UI until contracts ship.</p>
-        </div>
-      </div>
-      <nav class="docs-toc" aria-label="Docs sections">
-        <button type="button" class="docs-toc-link" data-docs-jump="docs-how">How it works</button>
-        <button type="button" class="docs-toc-link" data-docs-jump="docs-fees">Fees</button>
-        <button type="button" class="docs-toc-link" data-goto="rewards">Rewards</button>
-        <button type="button" class="docs-toc-link" data-goto="riz">$RIZ</button>
-        <button type="button" class="docs-toc-link" data-docs-jump="docs-quotes">Quotes</button>
-        <button type="button" class="docs-toc-link" data-docs-jump="docs-security">Security</button>
-        <button type="button" class="docs-toc-link" data-docs-jump="docs-faq">FAQ</button>
-        <button type="button" class="docs-toc-link" data-docs-jump="docs-about">About</button>
-      </nav>
-    </div>
-
-    <div class="section" id="docs-how">
-      <div class="section-h">
-        <div>
           <h2>How it works</h2>
-          <p>Pair a meme with a commodity quote. Trade the curve. Graduate into a locked Uniswap v4 pool.</p>
+          <p>Commodity pair → bonding curve → <strong>locked Uniswap v4</strong> pool ().</p>
         </div>
       </div>
       <div class="how">
         <div class="step">
           <div class="n">01</div>
           <h3>Pair with a commodity</h3>
-          <p>Live quotes: <strong>BNB</strong>, <strong>XAUt</strong>, <strong>PAXG</strong>. Your coin trades against that quote from day one. Metals, energy, and ag stay Soon in the directory until mints land.</p>
+          <p>Day-1 live quotes: BNB, XAUt, PAXG. Your meme bonds against that quote from day one. The directory lists metals, energy, and agriculture as Soon until mints land.</p>
         </div>
         <div class="step">
           <div class="n">02</div>
           <h3>Ride the curve</h3>
-          <p>Bonding curve from about <strong>$5k</strong> to about <strong>$35k</strong>. Fixed <strong>1B</strong> supply. Buy and sell in the paired quote until graduation.</p>
+          <p>Constant-product bonding curve from ~$5k to ~$35k. Fixed 1B supply. Trade in the chosen commodity until graduation.</p>
         </div>
         <div class="step">
           <div class="n">03</div>
           <h3>Graduate to locked Uniswap v4</h3>
-          <p>Curve reserves seed a <strong>Uniswap v4</strong> full-range pool on BSC. Fees after grad go through the <strong>v4 hook</strong>. LP stays locked.</p>
+          <p>At the endpoint, reserves seed a <strong>Uniswap v4</strong> full-range pool on BSC. Post-grad fees go through the <strong>v4 hook</strong>. LP is locked permanently. .</p>
         </div>
       </div>
     </div>
 
-    <div class="section" id="docs-fees">
+    <div class="section">
       <div class="section-h">
         <div>
-          <h2>Fees</h2>
-          <p>Creator picks <strong>1% to 3%</strong> at launch. Fee hits the quote leg. Split stays fixed.</p>
+          <h2>Fee split</h2>
+          <p>Of the trading fee on the quote leg.</p>
         </div>
       </div>
       <div class="card" style="overflow:auto">
         <table class="split-table">
           <thead>
-            <tr><th>Share</th><th>%</th><th>Goes to</th></tr>
+            <tr><th>Share</th><th>%</th><th>Destination</th></tr>
           </thead>
           <tbody>
             <tr><td>Holders</td><td class="mono">40%</td><td>Paid in the <strong>paired commodity</strong></td></tr>
             <tr><td>Buyback</td><td class="mono">30%</td><td>Buy + burn of protocol token <strong>$RIZ</strong></td></tr>
             <tr><td>Protocol</td><td class="mono">30%</td><td>Treasury / ops</td></tr>
-            <tr><td>Creator</td><td class="mono">0%</td><td>No special cut. Earn as a holder.</td></tr>
+            <tr><td>Creator</td><td class="mono">0%</td><td>Earns only as a holder — no special cut</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="docs-note">Holder cadence target: every 15 minutes, automatic, no claim. DEMO buttons do not move real fees. Preview on <button type="button" class="linkish inline-link" data-goto="rewards">Rewards</button>.</p>
     </div>
 
-    <div class="section" id="docs-quotes">
-      <div class="section-h">
-        <div>
-          <h2>Quotes</h2>
-          <p>Quotes are the pair assets. Memes trade against them.</p>
-        </div>
-      </div>
-      <div class="how how-2">
-        <div class="step">
-          <div class="n">LIVE</div>
-          <h3>BNB · XAUt · PAXG</h3>
-          <p>These three work in Launch today. Native BNB plus two tokenized gold quotes on BSC.</p>
-        </div>
-        <div class="step">
-          <div class="n">SOON</div>
-          <h3>Full directory</h3>
-          <p>Commodities lists softs, metals, energy, and more as Soon. Registry only until mints land. Home keeps the markets board, not the full list.</p>
-        </div>
-      </div>
-      <p class="docs-note">Tokenized quotes only. Not a physical vault. See <span class="mono">commodities.json</span> and <button type="button" class="linkish inline-link" data-goto="commodities">Commodities</button>.</p>
-    </div>
-
-        <div class="section" id="docs-security">
-      <div class="section-h">
-        <div>
-          <h2>Security</h2>
-          <p>Safe defaults while the site is DEMO-only.</p>
-        </div>
-      </div>
-      <div class="how how-2">
-        <div class="step">
-          <div class="n">WALLET</div>
-          <h3>Injected wallet only</h3>
-          <p>Connect uses your browser extension (EIP-1193). No recovery phrase forms. No key paste boxes. Method allowlist: connect and chain switch only. Read-only until a real deploy.</p>
-        </div>
-        <div class="step">
-          <div class="n">DEMO</div>
-          <h3>Clear labeling</h3>
-          <p>DEMO badges stay on. Mock markets, rewards, and leaderboards are local. Explorer and contract rows stay Soon until verified BSC addresses ship. No fake live addresses. Pages ship with a strict CSP meta.</p>
-        </div>
-      </div>
-      <p class="docs-note">If something looks spendable and the protocol is not live, it is not spendable. See <span class="mono">docs/security.md</span>.</p>
-    </div>
-
-    <div class="section" id="docs-faq">
-      <div class="section-h">
-        <div>
-          <h2>FAQ</h2>
-          <p>Common questions.</p>
-        </div>
-      </div>
-      <div class="faq-list">
-        <details class="faq-item" open>
-          <summary>Is it live on-chain?</summary>
-          <p>No. Contracts are not public yet. This site is DEMO UI.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>Do you ask for a seed or private key?</summary>
-          <p>No. Connect is injected wallet only. Never type a seed into this site.</p>
-        </details>
-        <details class="faq-item">
-          <summary>What is DEMO?</summary>
-          <p>Launch stores a coin in your browser. Markets, mock trades, and <span class="mono">#token/&lt;id&gt;</span> stay local. Clear site data and they go. No mainnet txs.</p>
-        </details>
-        <details class="faq-item">
-          <summary>How do holder rewards work?</summary>
-          <p>40% of trading fees go to holders, paid in the paired commodity. Target: every 15 minutes, no claim. See <button type="button" class="linkish inline-link" data-goto="rewards">Rewards</button>.</p>
-        </details>
-        <details class="faq-item">
-          <summary>What is $RIZ?</summary>
-          <p><strong>$RIZ</strong> is the protocol token and the 30% 30% fee buyback. Your launch keeps its own ticker. See <button type="button" class="linkish inline-link" data-goto="riz">$RIZ</button>. Contract and explorer stay Soon.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Do you custody gold or oil?</summary>
-          <p>No. On-chain quotes only. No warehouse. No vault claim.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Where does liquidity go after the curve?</summary>
-          <p>Locked Uniswap v4 on BSC. Hook fees after grad.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Why is Home not the full commodity list?</summary>
-          <p>Home stays light: pitch plus the Markets board. Full catalog lives under Commodities.</p>
-        </details>
-      </div>
-    </div>
-
-    <div class="section" id="docs-about">
+    <div class="section">
       <div class="section-h">
         <div>
           <h2>About Riz.Fun</h2>
-          <p>Memes that pair with commodities. On BNB. <a href="https://x.com/RizForFun" target="_blank" rel="noopener">@RizForFun</a></p>
+          <p>Commodities-first · CT English · BSC · <a href="https://x.com/RizForFun" target="_blank" rel="noopener">@RizForFun</a></p>
         </div>
       </div>
       <div class="how">
         <div class="step">
           <div class="n">BRAND</div>
-          <h3>Got commodity rizz.</h3>
-          <p>Cream grain mark, block sunglasses, black UI. Tagline stays. Memes that pair with commodities.</p>
+          <h3>Got commodity rizz</h3>
+          <p>Hard cream grain mark with block sunglasses. Pure black + cream. Protocol token <strong>$RIZ</strong>. Got commodity rizz. Memes that pair with commodities.</p>
         </div>
         <div class="step">
-          <div class="n">STACK</div>
-          <h3>Curve then Uniswap v4</h3>
-          <p>Bonding curve first. Graduation seeds a locked Uniswap v4 pool. Hook fees.</p>
+          <div class="n">QUOTES</div>
+          <h3>Directory + live mints</h3>
+          <p>Live: BNB, XAUt, PAXG. The directory tracks a full softs / metals / energy list as Soon — no fake sample memecoins. See <span class="mono">commodities.json</span>.</p>
         </div>
         <div class="step">
           <div class="n">SCOPE</div>
-          <h3>DEMO until deploy</h3>
-          <p>No invented live factory addresses. UI stays DEMO until contracts ship.</p>
+          <h3>On-chain quotes only</h3>
+          <p>Tokenized commodity quotes — not a physical vault. No invented live contract addresses.</p>
         </div>
       </div>
     </div>
@@ -897,7 +368,7 @@
 <footer>
   <div class="wrap footer-inner">
     <div class="footer-brand">
-      <img class="footer-logo" src="assets/rizfun-logo.png" alt="" width="32" height="32"/>
+      <img src="assets/rizfun-logo.png" alt="" width="32" height="32"/>
       <div>
         <div class="footer-name">Riz.Fun</div>
         <div class="footer-sub mono">Got commodity rizz. · $RIZ · BSC</div>
@@ -906,17 +377,17 @@
     <div class="footer-links">
       <button type="button" class="linkish" data-goto="home">Home</button>
       <button type="button" class="linkish" data-goto="commodities">Commodities</button>
-      <button type="button" class="linkish" data-goto="create">Launch</button>
-      <button type="button" class="linkish" data-goto="rewards">Rewards</button>
-      <button type="button" class="linkish" data-goto="riz">$RIZ</button>
-      <button type="button" class="linkish" data-goto="about">Docs</button>
-      <button type="button" class="linkish explorer-soon" disabled title="No live address yet" aria-disabled="true">Explorer · Soon</button>
+      <button type="button" class="linkish" data-goto="create">Create</button>
+      <button type="button" class="linkish" data-goto="about">How it works</button>
       <a class="linkish" href="https://x.com/RizForFun" target="_blank" rel="noopener">X</a>
     </div>
   </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+<script src="js/deployments.js"></script>
+<script src="js/launch.js"></script>
+<script src="js/wallet.js"></script>
+<script src="js/app.js"></script>
 
-<script src="js/wallet.js?v=demo-cards-1"></script>
-<script src="js/app.js?v=demo-cards-1"></script>
 </body>
 </html>
