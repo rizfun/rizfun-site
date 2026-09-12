@@ -6,6 +6,15 @@
 <title>Riz.Fun · Got commodity rizz.</title>
 <meta name="description" content="Riz.Fun  -  Got commodity rizz. Memes that pair with commodities on BNB Chain. Directory: gold, silver, oil, wheat, corn, coffee and more. Live BNB · XAUt · PAXG. @RizForFun"/>
 <meta name="theme-color" content="#000000"/>
+<script>
+(function () {
+  try {
+    if (location.protocol === "http:" && /^(riz4\.fun|www\.riz4\.fun|rizfun\.github\.io)$/i.test(location.hostname)) {
+      location.replace("https://" + location.host + location.pathname + location.search + location.hash);
+    }
+  } catch (e) {}
+})();
+</script>
 <meta property="og:title" content="Riz.Fun · Got commodity rizz."/>
 <meta property="og:description" content="Got commodity rizz. Memes that pair with commodities on BNB. @RizForFun"/>
 <meta property="og:image" content="assets/rizfun-logo.png"/>
@@ -57,7 +66,7 @@
           <div class="stat"><div class="l">Chain</div><div class="v">BSC</div><div class="s">BNB Chain</div></div>
           <div class="stat"><div class="l">Quotes</div><div class="v" id="statQuotesValue">31</div><div class="s" id="statQuotesSub">3 live · expanding registry</div></div>
           <div class="stat"><div class="l">Curve</div><div class="v">$5k→$35k</div><div class="s">then locked Uniswap v4</div></div>
-          <div class="stat"><div class="l">Token</div><div class="v">$RIZ</div><div class="s">buyback leg</div></div>
+          <a class="stat" href="#riz-protocol" style="text-decoration:none;color:inherit"><div class="l">Token</div><div class="v">$RIZ</div><div class="s">0xf451…ffff</div></a>
         </div>
       </div>
 
@@ -70,6 +79,36 @@
       </aside>
     </div>
 
+
+    <div class="section" id="riz-protocol">
+      <div class="section-h">
+        <div>
+          <h2>Protocol token · $RIZ</h2>
+          <p>Buyback leg (30%). Live on BNB Chain via Four.meme. Graduated.</p>
+        </div>
+        <span class="status-badge live">Graduated</span>
+      </div>
+      <div class="riz-feature card">
+        <div class="riz-feature-top">
+          <img src="assets/rizfun-logo.png" alt="$RIZ" width="56" height="56"/>
+          <div>
+            <div class="riz-feature-name">$RIZ <span class="mono soft">· Riz.Fun</span></div>
+            <div class="mono riz-feature-ca" id="rizContractDisplay">0xf451035b8154d51850aba222df7640815692ffff</div>
+          </div>
+        </div>
+        <div class="riz-feature-meta">
+          <div><span class="k">Chain</span><span>BNB Chain (56)</span></div>
+          <div><span class="k">Status</span><span>Graduated (Four.meme mode 1)</span></div>
+          <div><span class="k">Supply</span><span class="mono">1,000,000,000</span></div>
+          <div><span class="k">Role</span><span>Protocol buyback token</span></div>
+        </div>
+        <div class="riz-feature-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="copyRizCa">Copy contract</button>
+          <a class="btn btn-ghost btn-sm" href="https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff" target="_blank" rel="noopener">BscScan</a>
+          <a class="btn btn-primary btn-sm" href="https://four.meme/token/0xf451035b8154d51850aba222df7640815692ffff" target="_blank" rel="noopener">Trade on Four.meme</a>
+        </div>
+      </div>
+    </div>
 
     <div class="section">
       <div class="section-h">
@@ -323,7 +362,9 @@
         <div class="step">
           <div class="n">ON-CHAIN</div>
           <h3>$RIZ + factory</h3>
-          <p>Protocol token <a class="mono" href="https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff" target="_blank" rel="noopener">0xf451…ffff</a>. Launch factory <a class="mono" href="https://bscscan.com/address/0xE9468A60067B935aeA99D2353407070522201b72" target="_blank" rel="noopener">0xE946…1b72</a>. BSC Mainnet.</p>
+          <p><strong>$RIZ contract</strong><br/><a class="mono" href="https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff" target="_blank" rel="noopener">0xf451035b8154d51850aba222df7640815692ffff</a></p>
+          <p style="margin-top:10px"><strong>Launch factory</strong><br/><a class="mono" href="https://bscscan.com/address/0xE9468A60067B935aeA99D2353407070522201b72" target="_blank" rel="noopener">0xE9468A60067B935aeA99D2353407070522201b72</a></p>
+          <p style="margin-top:10px">BNB Chain · Graduated on Four.meme.</p>
         </div>
       </div>
     </div>
@@ -419,10 +460,10 @@
   </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
-<script src="js/deployments.js?v=stack-e946-2026-09-12"></script>
-<script src="js/launch.js?v=stack-e946-2026-09-12"></script>
-<script src="js/wallet.js"></script>
-<script src="js/app.js"></script>
+<script src="js/deployments.js?v=stack-e946-riz-2026-09-12"></script>
+<script src="js/launch.js?v=stack-e946-riz-2026-09-12"></script>
+<script src="js/wallet.js?v=connect-fix-2026-09-12"></script>
+<script src="js/app.js?v=riz-home-2026-09-12"></script>
 
 </body>
 </html>

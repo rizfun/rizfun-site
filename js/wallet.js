@@ -1,11 +1,11 @@
-/* Riz.Fun — EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet). No WC cloud. */
+/* Riz.Fun - EIP-1193 injected wallet (MetaMask / Rabby / Binance Wallet). BNB Chain. */
 (function (global) {
   "use strict";
 
   var BSC = {
     chainId: "0x38",
     chainIdDec: 56,
-    chainName: "BSC Mainnet",
+    chainName: "BNB Smart Chain",
     nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
     rpcUrls: [
       "https://bsc-dataseed.binance.org/",
@@ -43,6 +43,7 @@
       }
     });
     renderNav();
+    showBanner(state.error);
   }
 
   function getState() {
@@ -76,33 +77,64 @@
 
   function getProvider() {
     var eth = global.ethereum;
-    if (!eth) return null;
-    if (Array.isArray(eth.providers) && eth.providers.length) {
-      var mm = eth.providers.find(function (p) {
-        return p.isMetaMask && !p.isBraveWallet;
-      });
-      var rabby = eth.providers.find(function (p) {
-        return p.isRabby;
-      });
-      var binance = eth.providers.find(function (p) {
-        return p.isBinance || p.isBinanceWallet;
-      });
-      return rabby || mm || binance || eth.providers[0] || eth;
+    if (eth) {
+      if (Array.isArray(eth.providers) && eth.providers.length) {
+        var mm = eth.providers.find(function (p) {
+          return p.isMetaMask && !p.isBraveWallet;
+        });
+        var rabby = eth.providers.find(function (p) {
+          return p.isRabby;
+        });
+        var binance = eth.providers.find(function (p) {
+          return p.isBinance || p.isBinanceWallet || p.isBinanceChain;
+        });
+        return rabby || mm || binance || eth.providers[0] || eth;
+      }
+      return eth;
     }
-    return eth;
+    if (global.BinanceChain && typeof global.BinanceChain.request === "function") {
+      return global.BinanceChain;
+    }
+    if (global.okxwallet && global.okxwallet.ethereum) return global.okxwallet.ethereum;
+    return null;
   }
 
   function hasInjected() {
     return !!getProvider();
   }
 
+  function waitForProvider(ms) {
+    ms = ms || 2500;
+    return new Promise(function (resolve) {
+      if (getProvider()) return resolve(getProvider());
+      var done = false;
+      function finish(p) {
+        if (done) return;
+        done = true;
+        global.removeEventListener("ethereum#initialized", onInit);
+        resolve(p || getProvider());
+      }
+      function onInit() {
+        finish(getProvider());
+      }
+      global.addEventListener("ethereum#initialized", onInit, { once: true });
+      var t0 = Date.now();
+      var iv = setInterval(function () {
+        if (getProvider()) {
+          clearInterval(iv);
+          finish(getProvider());
+        } else if (Date.now() - t0 > ms) {
+          clearInterval(iv);
+          finish(null);
+        }
+      }, 100);
+    });
+  }
+
   function persist(addr) {
     try {
-      if (addr) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ address: addr }));
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+      if (addr) localStorage.setItem(STORAGE_KEY, JSON.stringify({ address: addr }));
+      else localStorage.removeItem(STORAGE_KEY);
     } catch (_) {}
   }
 
@@ -122,9 +154,29 @@
     emit();
   }
 
+  function showBanner(msg) {
+    var el = $("#walletErrorBanner");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "walletErrorBanner";
+      el.className = "wallet-error-banner";
+      el.hidden = true;
+      var nav = document.querySelector("header.nav");
+      if (nav && nav.parentNode) nav.parentNode.insertBefore(el, nav.nextSibling);
+      else document.body.insertBefore(el, document.body.firstChild);
+    }
+    if (msg) {
+      el.hidden = false;
+      el.textContent = msg;
+    } else {
+      el.hidden = true;
+      el.textContent = "";
+    }
+  }
+
   async function request(method, params) {
     var provider = getProvider();
-    if (!provider) throw new Error("No injected wallet. Install MetaMask, Rabby, or Binance Wallet.");
+    if (!provider) throw new Error("No injected wallet. Open https://riz4.fun and unlock MetaMask / Rabby / Binance Wallet.");
     return provider.request({ method: method, params: params || [] });
   }
 
@@ -158,9 +210,7 @@
       }
     }
     await readChainId();
-    if (!isBsc(state.chainId)) {
-      throw new Error("Please switch to BNB Smart Chain (56).");
-    }
+    if (!isBsc(state.chainId)) throw new Error("Please switch to BNB Chain (56).");
     return true;
   }
 
@@ -170,8 +220,12 @@
     state.error = null;
     emit();
     try {
+      if (location.protocol === "http:" && /riz4\.fun|rizfun\.github\.io/i.test(location.hostname)) {
+        throw new Error("Open the site in HTTPS (https://riz4.fun) so MetaMask can connect.");
+      }
+      await waitForProvider(3000);
       if (!hasInjected()) {
-        throw new Error("No browser wallet found. Install MetaMask, Rabby, or Binance Wallet.");
+        throw new Error("No browser wallet found. Install MetaMask, Rabby, or Binance Wallet, then unlock it on https://riz4.fun");
       }
       var accounts = await request("eth_requestAccounts");
       if (!accounts || !accounts.length) throw new Error("No account returned.");
@@ -180,6 +234,7 @@
       await ensureBsc();
       bindProviderEvents();
       state.connecting = false;
+      state.error = null;
       emit();
       return getState();
     } catch (err) {
@@ -202,6 +257,7 @@
   }
 
   async function silentRestore() {
+    await waitForProvider(1500);
     if (!hasInjected()) return;
     var saved = readPersisted();
     if (!saved) return;
@@ -219,9 +275,7 @@
       } else {
         persist(null);
       }
-    } catch (_) {
-      /* ignore silent restore failures */
-    }
+    } catch (_) {}
   }
 
   var eventsBound = false;
@@ -283,20 +337,6 @@
       slot.innerHTML =
         '<button type="button" class="btn btn-primary btn-sm wallet-btn" data-wallet-action="connect">Connect Wallet</button>';
     }
-    slot.querySelectorAll("[data-wallet-action]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var action = btn.getAttribute("data-wallet-action");
-        if (action === "connect") {
-          connect().catch(function () {});
-        } else if (action === "disconnect") {
-          disconnect();
-        } else if (action === "switch") {
-          ensureBsc().catch(function (err) {
-            setError((err && err.message) || "Could not switch network");
-          });
-        }
-      });
-    });
   }
 
   function updateCreateUi() {
@@ -310,7 +350,7 @@
       submit.textContent = "Connect Wallet";
       submit.dataset.mode = "connect";
     } else if (!s.onBsc) {
-      submit.textContent = "Switch to BSC Mainnet";
+      submit.textContent = "Switch to BNB Chain";
       submit.dataset.mode = "switch";
     } else if (!ready) {
       submit.textContent = "Factory config missing";
@@ -344,7 +384,7 @@
           connect()
             .then(function () {
               if (msg) {
-                msg.textContent = "Wallet connected on BSC Mainnet.";
+                msg.textContent = "Wallet connected on BNB Chain.";
                 msg.hidden = false;
               }
               updateCreateUi();
@@ -361,7 +401,7 @@
           ensureBsc()
             .then(function () {
               if (msg) {
-                msg.textContent = "Switched to BSC Mainnet.";
+                msg.textContent = "Switched to BNB Chain.";
                 msg.hidden = false;
               }
               updateCreateUi();
@@ -376,7 +416,7 @@
         }
         if (mode !== "launch") {
           if (msg) {
-            msg.textContent = "Launch unavailable — factory config missing.";
+            msg.textContent = "Launch unavailable - factory config missing.";
             msg.hidden = false;
           }
           return;
@@ -396,15 +436,16 @@
         }
         global.RizLaunch.launchFromForm(form)
           .then(function (entry) {
-            var link = entry.txHash && global.RizDeployments
-              ? global.RizDeployments.txUrl(entry.txHash)
-              : "";
+            var link =
+              entry.txHash && global.RizDeployments
+                ? global.RizDeployments.txUrl(entry.txHash)
+                : "";
             if (msg) {
               msg.innerHTML =
                 "Launched <strong>" +
                 (entry.symbol || "") +
                 "</strong>" +
-                (entry.token ? " · <span class=\"mono\">" + entry.token + "</span>" : "") +
+                (entry.token ? ' · <span class="mono">' + entry.token + "</span>" : "") +
                 (link ? ' · <a href="' + link + '" target="_blank" rel="noopener">BscScan</a>' : "");
               msg.hidden = false;
             }
@@ -425,9 +466,50 @@
     );
   }
 
+  function wireGlobalClicks() {
+    if (document.documentElement.dataset.rizWalletClick) return;
+    document.documentElement.dataset.rizWalletClick = "1";
+    document.addEventListener("click", function (e) {
+      var btn = e.target && e.target.closest && e.target.closest("[data-wallet-action]");
+      if (!btn) return;
+      e.preventDefault();
+      var action = btn.getAttribute("data-wallet-action");
+      if (action === "connect") {
+        connect().catch(function () {});
+      } else if (action === "disconnect") {
+        disconnect();
+      } else if (action === "switch") {
+        ensureBsc().catch(function (err) {
+          setError((err && err.message) || "Could not switch network");
+        });
+      }
+    });
+  }
+
+  function wireRizCopy() {
+    var btn = $("#copyRizCa");
+    if (!btn || btn.dataset.wired) return;
+    btn.dataset.wired = "1";
+    btn.addEventListener("click", function () {
+      var ca =
+        (global.RizDeployments && global.RizDeployments.DEPLOY.rizToken) ||
+        "0xf451035b8154d51850aba222df7640815692ffff";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ca).then(function () {
+          btn.textContent = "Copied";
+          setTimeout(function () {
+            btn.textContent = "Copy contract";
+          }, 1200);
+        });
+      }
+    });
+  }
+
   function init() {
+    wireGlobalClicks();
     renderNav();
     wireCreateSubmit();
+    wireRizCopy();
     updateCreateUi();
     onChange(updateCreateUi);
     silentRestore().then(function () {
