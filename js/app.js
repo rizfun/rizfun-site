@@ -411,11 +411,17 @@
               "<td class=\"mono\">" +
               (L.quote || "") +
               "</td>" +
-              '<td class="mono"><a href="' +
-              href +
-              '" target="_blank" rel="noopener">' +
-              short +
-              "</a></td>" +
+              '<td class="mono"><div class="ca-row">' +
+              (token
+                ? '<button type="button" class="ca-copy mono" data-copy="' +
+                  token +
+                  '">' +
+                  short +
+                  '</button><button type="button" class="ca-icon" data-copy="' +
+                  token +
+                  '" title="Copy">⧉</button>'
+                : short) +
+              "</div></td>" +
               "<td class=\"mono\">live</td>" +
               "<td>BSC</td>" +
               "</tr>"
@@ -439,17 +445,31 @@
               : L.txHash
                 ? explorer + "/tx/" + L.txHash
                 : "#";
+            const ca = token || "";
             return (
-              '<a class="launch-card" href="' +
-              href +
-              '" target="_blank" rel="noopener">' +
+              '<div class="launch-card">' +
               "<strong>" +
               (L.symbol || "TOKEN") +
               "</strong>" +
               '<span class="mono">' +
               (L.quote || "") +
               " · BSC Mainnet</span>" +
-              "</a>"
+              (ca
+                ? '<div class="ca-row" style="margin-top:8px">' +
+                  '<button type="button" class="ca-copy mono" data-copy="' +
+                  ca +
+                  '">' +
+                  ca +
+                  "</button>" +
+                  '<button type="button" class="ca-icon" data-copy="' +
+                  ca +
+                  '" aria-label="Copy" title="Copy">⧉</button>' +
+                  '<a class="btn btn-ghost btn-sm" href="' +
+                  href +
+                  '" target="_blank" rel="noopener">BscScan</a>' +
+                  "</div>"
+                : "") +
+              "</div>"
             );
           })
           .join("");
@@ -592,8 +612,9 @@
       faq: "about",
       security: "about",
       riz: "about",
+      "riz-protocol": "home",
     };
-    const scrollIds = new Set(["how", "fees", "faq", "security"]);
+    const scrollIds = new Set(["how", "fees", "faq", "security", "riz-protocol"]);
 
     function go(hash) {
       const h = (hash || "home").replace(/^#/, "");
@@ -655,7 +676,63 @@
     });
   })();
 
+
+  function copyText(text, el) {
+    if (!text) return;
+    var done = function () {
+      if (!el) return;
+      el.classList.add("copied");
+      var prev = el.getAttribute("data-prev-label");
+      if (el.classList.contains("ca-icon")) {
+        if (!prev) el.setAttribute("data-prev-label", el.textContent);
+        el.textContent = "✓";
+      }
+      setTimeout(function () {
+        el.classList.remove("copied");
+        if (el.classList.contains("ca-icon")) {
+          el.textContent = el.getAttribute("data-prev-label") || "⧉";
+        }
+      }, 1000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function () {
+        fallbackCopy(text);
+        done();
+      });
+    } else {
+      fallbackCopy(text);
+      done();
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand("copy");
+    } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  function wireCopyButtons() {
+    if (document.documentElement.dataset.rizCopyWired) return;
+    document.documentElement.dataset.rizCopyWired = "1";
+    document.addEventListener("click", function (e) {
+      var btn = e.target && e.target.closest && e.target.closest("[data-copy]");
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      copyText(btn.getAttribute("data-copy"), btn);
+    });
+  }
+
   async function init() {
+    wireCopyButtons();
     setupNav();
     setupCreateForm();
     await loadQuotes();
