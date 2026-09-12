@@ -11,7 +11,7 @@ Commodities-first launcher: pair memes against a **commodity quote directory**. 
 ## Live
 
 - Site: https://rizfun.github.io/rizfun-site/
-- Factory: `0x5da9d4bbe2eca15d198c254e4419a3d1c3b9c3c0`
+- Factory: `0xE9468A60067B935aeA99D2353407070522201b72`
 - `$RIZ`: `0xf451035b8154d51850aba222df7640815692ffff`
 - Chain: BSC Mainnet (56). Launch fee: 0.001 BNB.
 

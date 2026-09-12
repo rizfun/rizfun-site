@@ -11,7 +11,7 @@ Riz.Fun is live on **BSC Mainnet**. Non-custodial.
 
 ## On-chain
 
-- Launch factory: [`0x5da9d4bbe2eca15d198c254e4419a3d1c3b9c3c0`](https://bscscan.com/address/0x5da9d4bbe2eca15d198c254e4419a3d1c3b9c3c0)
+- Launch factory: [`0xE9468A60067B935aeA99D2353407070522201b72`](https://bscscan.com/address/0xE9468A60067B935aeA99D2353407070522201b72)
 - Protocol token `$RIZ`: [`0xf451035b8154d51850aba222df7640815692ffff`](https://bscscan.com/token/0xf451035b8154d51850aba222df7640815692ffff)
 - Chain id **56**. Launch fee **0.001 BNB**.
 - Day-1 live quotes: BNB, XAUt, PAXG. Other commodities stay Soon until wired.
